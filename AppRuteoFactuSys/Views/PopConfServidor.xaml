@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Inventario.Views.PopConfServidor"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Volver" ZIndex="10">
+ 
+    <VerticalStackLayout>
+        <Label
+            Margin="0,10,0,0"
+            FontAttributes="Bold"
+            FontSize="20"
+            HorizontalOptions="Center"
+            Text="DATOS DE CONEXION"
+            VerticalOptions="Center" />
+
+        <Grid Grid.Row="0" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="150" />
+                <RowDefinition Height="10" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <!--  IP SERVIDOR  -->
+
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    HorizontalOptions="End"
+                    Text="IP:"
+                    VerticalOptions="Center" />
+                <Entry
+                    x:Name="txtIP"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    HorizontalOptions="Start"
+                    Text="192.168.1.xxx"
+                    VerticalOptions="Center"
+                    WidthRequest="200" />
+                <!--  BASE DE DATOS  -->
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    HorizontalOptions="End"
+                    Text="BD:"
+                    VerticalOptions="Center" />
+                <Entry
+                    x:Name="txtBD"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    HorizontalOptions="Start"
+                    Text="db_factusys"
+                    VerticalOptions="Center"
+                    WidthRequest="200" />
+                <!--  PUERTO  -->
+                <Label
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    HorizontalOptions="End"
+                    Text="PUERTO:"
+                    VerticalOptions="Center" />
+                <Entry
+                    x:Name="txtPuerto"
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    HorizontalOptions="Start"
+                    Text="3307"
+                    VerticalOptions="Center"
+                    WidthRequest="200" />
+            </Grid>
+            <!--  BOTON GUARDAR  -->
+            <Button
+                Grid.Row="1"
+                Clicked="Button_Clicked"
+                HeightRequest="40"
+                HorizontalOptions="Center"
+                Text="GUARDAR"
+                VerticalOptions="Center"
+                WidthRequest="100" />
+            <!--  BOTON PRUEBA CONEXION  -->
+            <Button
+                x:Name="btnTestConection"
+                Grid.Row="2"
+                BackgroundColor="Crimson"
+                Clicked="btnTestConection_Clicked"
+                HeightRequest="40"
+                HorizontalOptions="Center"
+                Text="PROBAR"
+                VerticalOptions="Center"
+                WidthRequest="100" />
+
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>

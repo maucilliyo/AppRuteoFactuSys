@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppRuteoFactuSys.Views.ListaProductosPage"
+             xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
+
+             Title="Lista de clientes">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <!--  // BUSCAR  -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="90" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+
+
+            <Entry
+                x:Name="txtBuscar"
+                Grid.Column="0"
+                Margin="5,0,0,0"
+                CursorPosition="1"
+                HorizontalOptions="Start"
+                Placeholder="Nombre  a buscar"
+                WidthRequest="300" />
+            <Button
+                Grid.Column="1"
+                FontSize="10"
+                HeightRequest="30"
+                HorizontalOptions="Center"
+                Text="|||"
+                VerticalOptions="Center"
+                WidthRequest="45" />
+
+        </Grid>
+        <!--  PANEL PRINCIPAL  -->
+        <!--  DataGrid Cuenta  -->
+        <dg:DataGrid
+            x:Name="dgProductos"
+            Grid.Row="1"
+            Margin="3,10,3,0"
+            BackgroundColor="#E8EED4"
+            BorderColor="#fff"
+            HeaderBackground="#E8EED4"
+            HeaderHeight="25"
+            IsClippedToBounds="False"
+            IsRefreshing="{Binding IsRefreshing}"
+            PullToRefreshCommand="{Binding RefreshCommand}"
+            SelectedItem="{Binding SelectedProducto}"
+            PaginationEnabled="True"
+            PageSize="100"
+            SelectionEnabled="True"  >
+            <dg:DataGrid.NoDataView>
+                <Label
+                    BackgroundColor="White"
+                    HorizontalOptions="Center"
+                    Text="NO HAY DATOS"
+                    VerticalOptions="Center" />
+            </dg:DataGrid.NoDataView>
+            <dg:DataGrid.Columns>
+                <dg:DataGridColumn
+                    Title="Cedula"
+                    Width="80"
+                    HorizontalContentAlignment="Start"
+                    PropertyName="Cedula" />
+                <dg:DataGridColumn
+                    Title="Nombre"
+                    HorizontalContentAlignment="Start"
+                    PropertyName="Nombre" />
+                <dg:DataGridColumn
+                    Title="fecha"
+                    PropertyName="FechaUpdate" />
+            </dg:DataGrid.Columns>
+        </dg:DataGrid>
+        <!--  Agrega el DataGrid  -->
+
+
+
+        <!--<dg:DataGrid x:Name="dgProductos"
+        Grid.Row="1">
+        <dg:DataGrid.Columns>
+        <dg:DataGridColumn Title="Cedula"
+        PropertyName="Cedula"/>
+        <dg:DataGridColumn Title="Nombre"
+        PropertyName="Nombre"/>
+        <dg:DataGridColumn Title="FechaUpdate"
+        PropertyName="FechaUpdate"/>
+        </dg:DataGrid.Columns>
+        <dg:DataGrid.RowsBackgroundColorPalette>
+        <dg:PaletteCollection>
+        <Color>#F2F2F2</Color>
+        <Color>#FFFFFF</Color>
+        </dg:PaletteCollection>
+        </dg:DataGrid.RowsBackgroundColorPalette>
+        </dg:DataGrid>-->
+    </Grid>
+
+</ContentPage>

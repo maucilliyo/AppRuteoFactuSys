@@ -1,0 +1,136 @@
+﻿using AppRuteoFactuSys.Models;
+using AppRuteoFactuSys.MySql;
+using AppRuteoFactuSys.Service.Interfaces;
+using AppRuteoFactuSys.SqlLite;
+using Microsoft.EntityFrameworkCore;
+
+namespace AppRuteoFactuSys.Service
+{
+    public class PreventaService : IPreventaService
+    {
+
+        private readonly LocalPreventaRepository _sqlLitePreventaRepository;
+        private readonly PreventaRepository _preventaRepository;
+        public PreventaService(LocalPreventaRepository sqlLitePreventaRepository, PreventaRepository preventaRepository)
+        {
+            _sqlLitePreventaRepository = sqlLitePreventaRepository;
+            _preventaRepository = preventaRepository;
+        }
+        public Task Actualizar(Preventa entity)
+        {
+            throw new NotImplementedException();
+        }
+        public Task<Preventa> GetById(int id)
+        {
+            return _sqlLitePreventaRepository.GetPreventaById(id);
+        }
+        public async Task<List<Preventa>> Listar()
+        {
+            return await _sqlLitePreventaRepository.GetPreventas();
+        }
+        public async Task Nuevo(Preventa entity)
+        {
+            await _sqlLitePreventaRepository.GuardarPreventa(entity);
+        }
+        public async Task Sincronizar()
+        {
+            await SincronizarDBApp();
+            await SincronizarDBSistema();
+        }
+        private async Task SincronizarDBApp()
+        {
+            var preventaSql = await _preventaRepository.GetPreventasSinEntregar();
+            //lista de preventas en la app
+            var preventasApp = await Listar();
+            //recorer las prventas en el sistema para evaluar cambios u otras
+            foreach (var preventa in preventaSql)
+            {
+                //traer la proforma del sistema
+                var proforma = await _preventaRepository.GetPreventaById(preventa.Nproforma);
+                //verificar si no existe la preventa en al app
+                var noExiste = !preventasApp.Any(p => p.Nproforma == proforma.Nproforma);
+                //si no existe la agregamos a la app
+                if (noExiste)
+                {
+                    try
+                    {
+                        _sqlLitePreventaRepository.GuardarPreventa(proforma);
+                    }
+                    catch (DbUpdateException ex)
+                    {
+
+                        throw new Exception(ex.Message);
+                    }
+
+                }
+                // si existe se evalua si algo cambio
+                else
+                {
+                    var proformaApp = await GetPreventaByNProforma(proforma.Nproforma);
+
+                    if (proformaApp.FechaUpdate < proforma.FechaUpdate)
+                        try
+                        {
+                            await _sqlLitePreventaRepository.ActualizarPreventa(proforma);
+                        }
+                        catch (DbUpdateException ex)
+                        {
+
+                            throw new Exception(ex.Message);
+                        }
+                }
+            }
+        }
+        private async Task SincronizarDBSistema()
+        {
+            //listar preventas del servidor
+            var preventaSql = await _preventaRepository.GetPreventasSinEntregar();
+            //listra de preventas en la app
+            var preventasApp = await Listar();
+            //recorrer las lista del la app
+            foreach (var preventa in preventasApp)
+            {
+                //traer la preventa de la app
+                var preventaApp = await GetById(preventa.LocalID);
+                //verificar si no existe la preventa en el servidor
+                var noExiste = !preventaSql.Any(p => p.Nproforma == preventa.Nproforma);
+
+                if (noExiste)
+                {
+                    try
+                    {
+                        var id = await _preventaRepository.Guardar(preventaApp);
+
+                        await _sqlLitePreventaRepository.ActualizarNProforma(id, preventa.LocalID);
+                    }
+                    catch (DbUpdateException ex)
+                    {
+
+                        throw new Exception(ex.Message);
+                    }
+                }
+                // si existe se evalua si algo cambio
+                else
+                {
+                    var preventaServer = await _preventaRepository.GetPreventaById(preventa.Nproforma);
+
+                    if (preventaServer.FechaUpdate > preventa.FechaUpdate)
+                        try
+                        {
+                            string actualizar = "";
+                        }
+                        catch (DbUpdateException ex)
+                        {
+
+                            throw new Exception(ex.Message);
+                        }
+                }
+            }
+
+        }
+        public async Task<Preventa> GetPreventaByNProforma(int nProforma)
+        {
+            return await _sqlLitePreventaRepository.GetPreventaByNProforma(nProforma);
+        }
+    }
+}

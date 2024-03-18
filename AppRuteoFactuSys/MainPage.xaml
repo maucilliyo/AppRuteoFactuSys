@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppRuteoFactuSys.MainPage">
+
+    <ScrollView VerticalOptions="Start">
+
+        <VerticalStackLayout VerticalOptions="Start">
+            <Grid
+                Padding="0"
+                Background="#8f4775"
+                ColumnSpacing="0"
+                HeightRequest="30"
+                RowSpacing="0">
+                <Label
+                    FontAttributes="Bold, Italic"
+                    HorizontalOptions="Center"
+                    Text=" MENU SISTEMA PREVENTA "
+                    TextColor="White"
+                    VerticalOptions="Center" />
+            </Grid>
+            <!--#region Activity-->
+            <ActivityIndicator x:Name="activityIndicator"
+                               IsRunning="False"
+                               IsVisible="False"
+                               Color="Green"
+                               WidthRequest="60"
+                               HeightRequest="60" />
+            <Label x:Name="lblActivityIndicatorText"
+                   Text="Sincronizando..."
+                   IsVisible="False"
+                   FontSize="Small"
+                   TextColor="Black"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+            <!--#endregion-->
+            <!--  PANEL PRINCIPAL  -->
+            <Grid Padding="10" RowSpacing="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Button
+                    x:Name="btnListaPro"
+                    Grid.Row="1"
+                    Clicked="btnListaPro_Clicked"
+                    FontSize="12"
+                    HeightRequest="40"
+                    HorizontalOptions="Center"
+                    Text="CLIENTES"
+                    WidthRequest="150" />
+                <Button
+                    x:Name="btnAjusta"
+                    Grid.Row="2"
+                    BackgroundColor="#A568FE"
+                    Clicked="btnAjusta_Clicked_1"
+                    FontSize="12"
+                    HeightRequest="40"
+                    HorizontalOptions="Center"
+                    Text="PREVENTAS"
+                    WidthRequest="150" />
+                <Button
+                    x:Name="btnSincronizar"
+                    Grid.Row="3"
+                    BackgroundColor="#4887A7"
+                    Clicked="btnSincronizar_Clicked"
+                    FontSize="12"
+                    HeightRequest="40"
+                    HorizontalOptions="Center"
+                    Text="SINCONIZAR"
+                    WidthRequest="150" />
+                <Button
+                    x:Name="btnConexion"
+                    Grid.Row="4"
+                    BackgroundColor="Chocolate"
+                    Clicked="btnConexion_Clicked"
+                    FontSize="12"
+                    HeightRequest="40"
+                    HorizontalOptions="Center"
+                    Text="CONEXION"
+                    WidthRequest="150" />
+                <Button
+                    x:Name="btnPruebas"
+                    Grid.Row="5"
+                    BackgroundColor="#349267"
+                    Clicked="btnPruebas_Clicked"
+                    FontSize="12"
+                    HeightRequest="40"
+                    HorizontalOptions="Center"
+                    Text="PRUEBAS"
+                    WidthRequest="150" />
+                <Button
+                    x:Name="btnResetDB"
+                    Grid.Row="6"
+                    BackgroundColor="#CA5100"
+                    Clicked="btnEliminarDB_Clicked"
+                    FontSize="12"
+                    HeightRequest="40"
+                    HorizontalOptions="Center"
+                    Text="Resetear BD"
+                    WidthRequest="150" />
+
+                <!--  IMAGEN  -->
+                <Image Grid.Row="5" Source="fondo.jpg" />
+
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

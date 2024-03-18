@@ -1,0 +1,85 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppRuteoFactuSys.Views.ClienteAddPage"
+             xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
+             Title="ClienteAddPage">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <!-- BUSCAR -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="90" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+
+            <Entry
+                x:Name="txtBuscar"
+                Grid.Column="0"
+                Margin="5,0,0,0"
+                CursorPosition="1"
+                HorizontalOptions="Start"
+                Placeholder="Nombre a buscar"
+                WidthRequest="300" />
+            <Button
+                Grid.Column="1"
+                FontSize="10"
+                HeightRequest="30"
+                HorizontalOptions="Center"
+                Text="|||"
+                VerticalOptions="Center"
+                WidthRequest="45" />
+
+        </Grid>
+        <!-- PANEL PRINCIPAL -->
+        <!-- DataGrid Cuenta -->
+        <dg:DataGrid
+            x:Name="dgClientes"
+            Grid.Row="1"
+            Margin="3,10,3,0"
+            BackgroundColor="#E8EED4"
+            BorderColor="#fff"
+            HeaderBackground="#E8EED4"
+            HeaderHeight="25"
+            PaginationEnabled="True"
+            PageSize="100"
+            IsClippedToBounds="False"
+            IsRefreshing="{Binding IsRefreshing}"
+            SelectedItem="{Binding SelectedProducto}"
+            SelectionEnabled="True">
+            <dg:DataGrid.NoDataView>
+                <Label
+                    BackgroundColor="White"
+                    HorizontalOptions="Center"
+                    Text="NO HAY DATOS"
+                    VerticalOptions="Center" />
+            </dg:DataGrid.NoDataView>
+            <dg:DataGrid.Columns>
+                <dg:DataGridColumn
+                    Title="Cedula"
+                    Width="80"
+                    HorizontalContentAlignment="Start"
+                    PropertyName="Cedula" />
+                <dg:DataGridColumn
+                    Title="Nombre"
+                    HorizontalContentAlignment="Start"
+                    PropertyName="Nombre" />
+                <dg:DataGridColumn Width="30">
+                    <dg:DataGridColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Text="*"
+                                    Command="{Binding BindingContext.SendSelectedDataCommand,
+                                    Source={x:Reference dgClientes}}"
+                                    CommandParameter="{Binding .}" />
+                        </DataTemplate>
+                    </dg:DataGridColumn.CellTemplate>
+                </dg:DataGridColumn>
+            </dg:DataGrid.Columns>
+        </dg:DataGrid>
+    </Grid>
+</ContentPage>

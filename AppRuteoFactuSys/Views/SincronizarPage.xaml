@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppRuteoFactuSys.Views.SincronizarPage">
+    <VerticalStackLayout VerticalOptions="FillAndExpand" Margin="1">
+        <Label
+            Text="Sincronización de Datos"
+            FontSize="16"
+            FontAttributes="Bold"
+            Margin="0,0,0,15"
+            VerticalOptions="Center"
+            HorizontalOptions="Center" />
+
+        <!--#region  BOTONES-->
+        <StackLayout Grid.Row="3" Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+            <Button
+                x:Name="btnSincronizarClientes1"
+                BackgroundColor="#4887A7"
+                Clicked="btnSincronizarClientes_Clicked"
+                FontSize="10"
+                HeightRequest="50"
+                Text="SINCRONIZAR CLIENTES"
+                WidthRequest="150" />
+            <Button
+                x:Name="btnSincronizarPreventa"
+                BackgroundColor="#415A25"
+                Margin="10,0,0,0"
+                Clicked="btnSincronizarPreventa_Clicked"
+                FontSize="10"
+                HeightRequest="50"
+                Text="SINCRONIZAR PREVENTAS"
+                WidthRequest="150" />
+        </StackLayout>
+        <StackLayout Grid.Row="3" 
+                     Orientation="Horizontal" 
+                     Margin="-15,10,0,0"
+                     HorizontalOptions="CenterAndExpand">
+
+            <Button
+                x:Name="btnSincronizarProducto"
+                BackgroundColor="#F73E7D"
+                Margin="10,0,0,0"
+                Clicked="btnSincronizarProducto_Clicked"
+                FontSize="9"
+                HeightRequest="50"
+                Text="SINCRONIZAR PRODUCTOS"
+                WidthRequest="150" />
+            <Button
+                x:Name="btnSincronizarTodos"
+                BackgroundColor="#E4C977"
+                Margin="10,0,0,0"
+                Clicked="btnSincronizarTodos_Clicked"
+                FontSize="10"
+                TextColor="Black"
+                FontAttributes="Bold"
+                HeightRequest="50"
+                Text="SINCRONIZAR TODO"
+                WidthRequest="150" />
+        </StackLayout>
+        <!--#endregion-->
+
+        <!--#region Activity-->
+        <ActivityIndicator x:Name="activityIndicator"
+                           IsRunning="False"
+                           IsVisible="False"
+                           Color="Green"
+                           WidthRequest="60"
+                           HeightRequest="60" />
+        <Label x:Name="lblActivityIndicatorText"
+               Text="Sincronizando..."
+               IsVisible="False"
+               FontSize="Small"
+               TextColor="Black"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" />
+        <!--#endregion-->
+
+    </VerticalStackLayout>
+
+</ContentPage>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppRuteoFactuSys.Views.EditarLineaPage"
+             Title="EditarLineaPage">
+    <VerticalStackLayout>
+        <Label
+            Text="MODIFICAR LINEA"
+            VerticalOptions="Center"
+            HorizontalOptions="Center" />
+
+        <Label
+            Margin="0,20,0,0"
+            x:Name="lblProducto"
+            VerticalOptions="Center"
+            HorizontalOptions="Center" />
+
+
+        <Entry
+            x:Name="txtCantidad"
+            Keyboard="Numeric"
+            HorizontalOptions="Center"
+            HorizontalTextAlignment="Center"
+            Unfocused="txtCantidad_Unfocused"
+            Text="0"
+            VerticalOptions="Center"
+            WidthRequest="80" />
+
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+            <Button x:Name="btnGuardar"
+                    Margin="0,20,0,0"
+                    HorizontalOptions="Center"
+                    FontSize="10"
+                    HeightRequest="40"
+                    BackgroundColor="#33C481"
+                    TextColor="Black"
+                    FontAttributes="Bold"
+                    Clicked="btnGuardar_Clicked"
+                    Text="Guardar"
+                    WidthRequest="80" />
+
+            <Button x:Name="btnEliminar"
+                    Clicked="btnEliminar_Clicked"
+                    Margin="20,20,0,0"
+                    HorizontalOptions="Center"
+                    FontSize="10"
+                    HeightRequest="40"
+                    BackgroundColor="#F73E7D"
+                    TextColor="Black"
+                    FontAttributes="Bold"
+                    Text="Eliminar"
+                    WidthRequest="80" />
+        </StackLayout>
+
+    </VerticalStackLayout>
+</ContentPage>
