@@ -15,7 +15,7 @@ namespace AppRuteoFactuSys.MySql
         {
             using (var conn = await Conexion.GetConnection())
             {
-                string query = @"SELECT * FROM proforma where entregado = false and facturado = false;";
+                string query = @"SELECT * FROM proforma where entregado = false and estado = 'Pendiente';";
                 var response = await conn.QueryAsync<Preventa>(query);
 
                 return response.ToList();
@@ -47,11 +47,11 @@ namespace AppRuteoFactuSys.MySql
                 {
                     //sql para insert de proforma
                     string sql = @"INSERT INTO proforma (cedcliente, fecha, condicionventa, formapago, totalcomprobante, totaldescuento, totalgrabado, totalexento, 
-                               totalimpuesto, totalventa, codvendedor, codigomoneda, totalservgravados, totalservexentos, diasplazo, facturado, notas, serviciosexonerados, 
+                               totalimpuesto, totalventa, codvendedor, codigomoneda, totalservgravados, totalservexentos, diasplazo, estado, notas, serviciosexonerados, 
                                mercanciasexoneradas, totalmercanciasgravadas, totalmercanciasexentas, totalventaneta, totalexonerado, nombre_cliente, terminal, 
                                id_usuario, fecha_update, entregado) 
                             VALUES (@Cedcliente, @Fecha, @CondicionVenta, @Formapago, @TotalComprobante, @TotalDescuento, @TotalGrabado, @TotalExento, @TotalImpuesto, 
-                               @TotalVentaNeta, @Id_Usuario, @CodigoMoneda, @TotalServGravados, @TotalServExentos, @DiasPlazo, @Facturado, @Notas, @ServiciosExonerados, 
+                               @TotalVentaNeta, @Id_Usuario, @CodigoMoneda, @TotalServGravados, @TotalServExentos, @DiasPlazo, @estado, @Notas, @ServiciosExonerados, 
                                @mercanciasexoneradas, @totalmercanciasgravadas, @totalmercanciasexentas, @totalventaneta, @totalexonerado, @nombre_cliente, @terminal,
                                 @id_usuario, @FechaUpdate, @Entregado);
                             SELECT LAST_INSERT_ID();";
@@ -88,6 +88,86 @@ namespace AppRuteoFactuSys.MySql
                     }
                 }
             }
+        }
+        public async Task Actuazar(Preventa preventa)
+        {
+            using (var conn = await Conexion.GetConnection())
+            {
+                using (var Transaction = conn.BeginTransaction())
+                {
+                    // SQL para actualizar la proforma
+                    string updateProforma = @"UPDATE proforma 
+                                  SET cedcliente = @Cedcliente, 
+                                      fecha = @Fecha, 
+                                      condicionventa = @CondicionVenta, 
+                                      formapago = @Formapago, 
+                                      totalcomprobante = @TotalComprobante, 
+                                      totaldescuento = @TotalDescuento, 
+                                      totalgrabado = @TotalGrabado, 
+                                      totalexento = @TotalExento, 
+                                      totalimpuesto = @TotalImpuesto, 
+                                      totalventa = @TotalVentaNeta, 
+                                      codvendedor = @Id_Usuario, 
+                                      codigomoneda = @CodigoMoneda, 
+                                      totalservgravados = @TotalServGravados, 
+                                      totalservexentos = @TotalServExentos, 
+                                      diasplazo = @DiasPlazo, 
+                                      estado = @Estado, 
+                                      notas = @Notas, 
+                                      serviciosexonerados = @ServiciosExonerados, 
+                                      mercanciasexoneradas = @mercanciasexoneradas, 
+                                      totalmercanciasgravadas = @totalmercanciasgravadas, 
+                                      totalmercanciasexentas = @totalmercanciasexentas, 
+                                      totalventaneta = @totalventaneta, 
+                                      totalexonerado = @totalexonerado, 
+                                      nombre_cliente = @nombre_cliente, 
+                                      terminal = @terminal, 
+                                      id_usuario = @id_usuario, 
+                                      fecha_update = @FechaUpdate, 
+                                      entregado = @Entregado
+                                  WHERE nproforma = @Nproforma and estado = 'Pendiente';";
+
+                    // SQL para eliminar las líneas existentes de la proforma
+                    string deleteLineas = @"DELETE FROM lineasproforma WHERE n_proforma = @Nproforma;";
+
+                    // SQL para insertar las nuevas líneas de la proforma
+                    string insertLineas = @"INSERT INTO lineasproforma
+                                (n_proforma,linea,codpro,unidadmedida,detalle,preciounidad,cantidad,subtotal,descuento,impuesto,totallinea,montoexonerado,porimpuesto,
+                                subtotaldescuento, impuestoneto,porexonerado,codigo_impuesto,codigo_tarifa,codecabys)
+                                VALUES(@Nproforma,@linea,@codpro,@unidadmedida,@detalle,@preciounidad,@cantidad,@subtotal,@descuento,@impuesto,@totallinea,@montoexonerado,
+                                @porimpuesto, @subtotaldescuento,@impuestoneto,@porexonerado,@CodigoImpuesto,@CodigoTarifa,@codecabys);";
+
+                    try
+                    {
+                        // Actualizar la proforma
+                        var result = await conn.ExecuteAsync(updateProforma, preventa, transaction: Transaction);
+                        //validamos si hay filas afectadas
+                        if(result > 0)
+                        {
+                            // Eliminar las líneas existentes de la proforma
+                            await conn.ExecuteAsync(deleteLineas, new { preventa.Nproforma }, transaction: Transaction);
+
+                            // Insertar las nuevas líneas de la proforma
+                            int nLinea = 1;
+                            foreach (var linea in preventa.Lineas)
+                            {
+                                linea.NProforma = preventa.Nproforma; // Usar el ID de la proforma existente
+                                linea.Linea = nLinea;
+                                await conn.ExecuteAsync(insertLineas, linea, transaction: Transaction);
+                                nLinea++;
+                            }
+                        }
+                        // Hacer el commit si todo salió bien
+                        Transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        Transaction.Rollback();
+                        throw new Exception("Error al modificar la proforma " + ex.Message);
+                    }
+                }
+            }
+
         }
 
     }

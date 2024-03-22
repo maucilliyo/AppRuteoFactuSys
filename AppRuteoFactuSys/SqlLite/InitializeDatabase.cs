@@ -1,14 +1,8 @@
-﻿using Microsoft.Data.Sqlite;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AppRuteoFactuSys.SqlLite
+﻿namespace AppRuteoFactuSys.SqlLite
 {
     public static class SQLiteInitialization
     {
+
         public static void InitializeDatabase()
         {
             using (var connection = SqlLiteConexion.GetConnection())
@@ -39,7 +33,7 @@ namespace AppRuteoFactuSys.SqlLite
                             totalservgravados REAL,
                             totalservexentos REAL,
                             diasplazo INTEGER,
-                            facturado INTEGER,
+                            estado TEXT,
                             notas TEXT,
                             serviciosexonerados REAL,
                             mercanciasexoneradas REAL,

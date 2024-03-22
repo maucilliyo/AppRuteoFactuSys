@@ -65,8 +65,19 @@
                     Text="PREVENTAS"
                     WidthRequest="150" />
                 <Button
-                    x:Name="btnSincronizar"
+                    x:Name="btnFacturadas"
                     Grid.Row="3"
+                    BackgroundColor="#349267"
+                    Clicked="btnFacturadas_Clicked"
+                    FontSize="12"
+                    HeightRequest="40"
+                    HorizontalOptions="Center"
+                    Text="ENTREGADAS"
+                    WidthRequest="150" />
+                
+                <Button
+                    x:Name="btnSincronizar"
+                    Grid.Row="4"
                     BackgroundColor="#4887A7"
                     Clicked="btnSincronizar_Clicked"
                     FontSize="12"
@@ -76,7 +87,7 @@
                     WidthRequest="150" />
                 <Button
                     x:Name="btnConexion"
-                    Grid.Row="4"
+                    Grid.Row="5"
                     BackgroundColor="Chocolate"
                     Clicked="btnConexion_Clicked"
                     FontSize="12"
@@ -84,16 +95,7 @@
                     HorizontalOptions="Center"
                     Text="CONEXION"
                     WidthRequest="150" />
-                <Button
-                    x:Name="btnPruebas"
-                    Grid.Row="5"
-                    BackgroundColor="#349267"
-                    Clicked="btnPruebas_Clicked"
-                    FontSize="12"
-                    HeightRequest="40"
-                    HorizontalOptions="Center"
-                    Text="PRUEBAS"
-                    WidthRequest="150" />
+
                 <Button
                     x:Name="btnResetDB"
                     Grid.Row="6"

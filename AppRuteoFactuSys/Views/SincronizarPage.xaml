@@ -31,14 +31,14 @@
                 Text="SINCRONIZAR PREVENTAS"
                 WidthRequest="150" />
         </StackLayout>
-        <StackLayout Grid.Row="3" 
-                     Orientation="Horizontal" 
+        <StackLayout Grid.Row="3"
+                     Orientation="Horizontal"
                      Margin="-15,10,0,0"
                      HorizontalOptions="CenterAndExpand">
 
             <Button
                 x:Name="btnSincronizarProducto"
-                BackgroundColor="#F73E7D"
+                BackgroundColor="#2B8AE0"
                 Margin="10,0,0,0"
                 Clicked="btnSincronizarProducto_Clicked"
                 FontSize="9"
@@ -55,6 +55,21 @@
                 FontAttributes="Bold"
                 HeightRequest="50"
                 Text="SINCRONIZAR TODO"
+                WidthRequest="150" />
+        </StackLayout>
+        <StackLayout Grid.Row="3"
+                     Orientation="Horizontal"
+                     Margin="-15,10,0,0"
+                     HorizontalOptions="CenterAndExpand">
+
+            <Button
+                x:Name="btnEliminarFacturadas"
+                BackgroundColor="#D1255F"
+                Margin="10,0,0,0"
+                Clicked="btnEliminarFacturadas_Clicked"
+                FontSize="9"
+                HeightRequest="50"
+                Text="ELIMINAR FACTURADAS"
                 WidthRequest="150" />
         </StackLayout>
         <!--#endregion-->

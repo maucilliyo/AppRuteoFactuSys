@@ -96,5 +96,20 @@ namespace AppRuteoFactuSys.Views
         {
             await Sincronizar("Todo");
         }
+
+        private void btnSincronizarSistema_Clicked(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void btnEliminarFacturadas_Clicked(object sender, EventArgs e)
+        {
+            var response = await DisplayAlert("AVISO", "Esta seguro de eliminar las preventas facturadas?", "Sí", "No");
+
+            if (response)
+            {
+                await _preventaService.EliminarFacturadas();
+            }
+        }
     }
 }

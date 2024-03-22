@@ -1,4 +1,6 @@
-﻿namespace AppRuteoFactuSys
+﻿using AppRuteoFactuSys.SqlLite;
+
+namespace AppRuteoFactuSys
 {
     public partial class App : Application
     {
@@ -9,7 +11,12 @@
             MainPage = new AppShell();
 
         }
-
+        protected override void OnStart()
+        {
+            base.OnStart();
+            // Inicializar el proveedor de base de datos
+            SQLiteInitialization.InitializeDatabase();
+        }
         protected override Window CreateWindow(IActivationState activationState)
         {
             //minstras este activa la app no se suspende el telefono

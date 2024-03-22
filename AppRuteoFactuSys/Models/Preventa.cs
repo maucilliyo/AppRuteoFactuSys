@@ -1,12 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AppRuteoFactuSys.Models
+﻿namespace AppRuteoFactuSys.Models
 {
     public class Preventa
     {
@@ -39,7 +31,7 @@ namespace AppRuteoFactuSys.Models
         public decimal TotalVentaNeta { get; set; }
         public decimal TotalImpuesto { get; set; }
         public decimal TotalComprobante { get; set; }
-        public bool Facturado { get; set; }
+        public string Estado { get; set; }
         public string Terminal { get; set; }
         public int Id_Usuario { get; set; }
         public int? DiasPlazo { get; set; }

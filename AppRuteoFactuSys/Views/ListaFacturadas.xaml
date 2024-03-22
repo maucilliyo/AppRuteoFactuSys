@@ -1,29 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AppRuteoFactuSys.Views.ListaPreventaPage"
-             xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
-             Padding="2,10,5,2">
-
+             x:Class="AppRuteoFactuSys.Views.ListaFacturadas"
+             xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
             <RowDefinition Height="40" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Button
-            x:Name="btnNuevaProforma"
-            Clicked="btnNuevaProforma_Clicked"
-            FontSize="10"
-            HeightRequest="35"
-            Margin="10,0,0,0"
-            HorizontalOptions="Start"
-            BackgroundColor="#33C481"
-            TextColor="Black"
-            FontAttributes="Bold"
-            Text="Nueva"
-            VerticalOptions="Center"
-            WidthRequest="75" />
         <!--  // BUSCAR  -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -43,14 +28,6 @@
                 HorizontalOptions="Start"
                 Placeholder="Nombre  a buscar"
                 WidthRequest="300" />
-            <Button
-                Grid.Column="1"
-                FontSize="10"
-                HeightRequest="30"
-                HorizontalOptions="Center"
-                Text="|||"
-                VerticalOptions="Center"
-                WidthRequest="45" />
 
         </Grid>
         <!--  PANEL PRINCIPAL  -->
@@ -106,5 +83,4 @@
             </dg:DataGrid.Columns>
         </dg:DataGrid>
     </Grid>
-    
 </ContentPage>

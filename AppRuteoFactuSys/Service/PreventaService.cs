@@ -2,7 +2,6 @@
 using AppRuteoFactuSys.MySql;
 using AppRuteoFactuSys.Service.Interfaces;
 using AppRuteoFactuSys.SqlLite;
-using Microsoft.EntityFrameworkCore;
 
 namespace AppRuteoFactuSys.Service
 {
@@ -16,17 +15,21 @@ namespace AppRuteoFactuSys.Service
             _sqlLitePreventaRepository = sqlLitePreventaRepository;
             _preventaRepository = preventaRepository;
         }
-        public Task Actualizar(Preventa entity)
+        public async Task Actualizar(Preventa entity)
         {
-            throw new NotImplementedException();
+            await _sqlLitePreventaRepository.ActualizarPreventaSync(entity);
+        }
+        public async Task ActualizarOnly(Preventa entity)
+        {
+            await _sqlLitePreventaRepository.ActualizarPreventaAppOnly(entity);
         }
         public Task<Preventa> GetById(int id)
         {
             return _sqlLitePreventaRepository.GetPreventaById(id);
         }
-        public async Task<List<Preventa>> Listar()
+        public async Task<List<Preventa>> Listar(bool entregado)
         {
-            return await _sqlLitePreventaRepository.GetPreventas();
+            return await _sqlLitePreventaRepository.GetPreventas(entregado);
         }
         public async Task Nuevo(Preventa entity)
         {
@@ -54,9 +57,9 @@ namespace AppRuteoFactuSys.Service
                 {
                     try
                     {
-                        _sqlLitePreventaRepository.GuardarPreventa(proforma);
+                        await _sqlLitePreventaRepository.GuardarPreventa(proforma);
                     }
-                    catch (DbUpdateException ex)
+                    catch (Exception ex)
                     {
 
                         throw new Exception(ex.Message);
@@ -68,12 +71,15 @@ namespace AppRuteoFactuSys.Service
                 {
                     var proformaApp = await GetPreventaByNProforma(proforma.Nproforma);
 
-                    if (proformaApp.FechaUpdate < proforma.FechaUpdate)
+                    TimeSpan diferencia = proforma.FechaUpdate - proformaApp.FechaUpdate;
+
+                    if (diferencia.TotalSeconds > 1)
                         try
                         {
-                            await _sqlLitePreventaRepository.ActualizarPreventa(proforma);
+                            proforma.LocalID = proformaApp.LocalID;
+                            await _sqlLitePreventaRepository.ActualizarPreventaSync(proforma);
                         }
-                        catch (DbUpdateException ex)
+                        catch (Exception ex)
                         {
 
                             throw new Exception(ex.Message);
@@ -95,15 +101,15 @@ namespace AppRuteoFactuSys.Service
                 //verificar si no existe la preventa en el servidor
                 var noExiste = !preventaSql.Any(p => p.Nproforma == preventa.Nproforma);
 
-                if (noExiste)
+                //validar si no existe y si la proforma es 0 es porque fue creada del lado de la app entonces se guarda en el sistema
+                if (noExiste && preventa.Nproforma == 0)
                 {
                     try
                     {
                         var id = await _preventaRepository.Guardar(preventaApp);
-
-                        await _sqlLitePreventaRepository.ActualizarNProforma(id, preventa.LocalID);
+                        await _sqlLitePreventaRepository.ActualizarNumeroProforma(id, preventa.LocalID);
                     }
-                    catch (DbUpdateException ex)
+                    catch (Exception ex)
                     {
 
                         throw new Exception(ex.Message);
@@ -114,23 +120,34 @@ namespace AppRuteoFactuSys.Service
                 {
                     var preventaServer = await _preventaRepository.GetPreventaById(preventa.Nproforma);
 
-                    if (preventaServer.FechaUpdate > preventa.FechaUpdate)
+                    TimeSpan diferencia = preventa.FechaUpdate - preventaServer.FechaUpdate;
+
+                    if (diferencia.TotalSeconds > 2)
                         try
                         {
-                            string actualizar = "";
+
+                            await _preventaRepository.Actuazar(preventaApp);
                         }
-                        catch (DbUpdateException ex)
+                        catch (Exception ex)
                         {
 
                             throw new Exception(ex.Message);
                         }
                 }
             }
-
         }
         public async Task<Preventa> GetPreventaByNProforma(int nProforma)
         {
             return await _sqlLitePreventaRepository.GetPreventaByNProforma(nProforma);
+        }
+        public async Task<List<Preventa>> Listar()
+        {
+            return await _sqlLitePreventaRepository.GetPreventas();
+        }
+
+        public async Task EliminarFacturadas()
+        {
+           await _sqlLitePreventaRepository.EliminarFacturadas();
         }
     }
 }

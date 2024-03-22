@@ -3,10 +3,7 @@ using AppRuteoFactuSys.Service;
 using AppRuteoFactuSys.Service.Interfaces;
 using AppRuteoFactuSys.SqlLite;
 using AppRuteoFactuSys.Views;
-using Inventario.Views;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
 
 namespace AppRuteoFactuSys
 {
@@ -23,13 +20,13 @@ namespace AppRuteoFactuSys
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
             Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true; 
-            SQLiteInitialization.InitializeDatabase();
             //dependencias
            // builder.Services.AddDbContext<ConexionDb>();
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<SincronizarPage>();
             builder.Services.AddTransient<ListaProductosPage>();
-            builder.Services.AddTransient<PreventaPage>();
+            builder.Services.AddTransient<PreventaPage>(); //VerFacturaPage
+            builder.Services.AddTransient<VerFacturaPage>();
 
             builder.Services.AddScoped<IClienteService, ClienteService>();
             builder.Services.AddSingleton<IPreventaService,PreventaService>();

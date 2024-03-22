@@ -1,7 +1,6 @@
 ﻿using AppRuteoFactuSys.Models;
 using Dapper;
 using Microsoft.Data.Sqlite;
-using System.Linq;
 
 namespace AppRuteoFactuSys.SqlLite
 {
@@ -21,12 +20,12 @@ namespace AppRuteoFactuSys.SqlLite
                         string sqlInsertPreventa = @"
                         INSERT INTO proforma
                         (nproforma,cedcliente, fecha, condicionventa, formapago, totalcomprobante, totaldescuento, totalgrabado, totalexento, 
-                        totalimpuesto, totalventa,  codigomoneda, codvendedor, totalservgravados, totalservexentos, facturado,
+                        totalimpuesto, totalventa,  codigomoneda, codvendedor, totalservgravados, totalservexentos, estado,
                         notas, serviciosexonerados, mercanciasexoneradas, totalmercanciasgravadas, diasplazo,
                         totalmercanciasexentas, totalventaneta, totalexonerado, nombre_cliente, terminal, id_usuario,fecha_update,entregado)
                         VALUES
-                        (@Nproforma,@Cedcliente, datetime('now'), @CondicionVenta, @Formapago, @TotalComprobante, @TotalDescuento, @TotalGrabado,
-                        @TotalExento, @TotalImpuesto, @TotalVenta, @CodigoMoneda, 0, @TotalServGravados, @TotalServExentos, 0,
+                        (@Nproforma,@Cedcliente, @Fecha, @CondicionVenta, @Formapago, @TotalComprobante, @TotalDescuento, @TotalGrabado,
+                        @TotalExento, @TotalImpuesto, @TotalVenta, @CodigoMoneda, 0, @TotalServGravados, @TotalServExentos, 'Pendiente',
                         @Notas, @ServiciosExonerados, @MercanciasExoneradas, @TotalMercanciasGravadas, 0, @TotalMercanciasExentas,
                         @TotalVentaNeta, @TotalExonerado, @Nombre_Cliente, @Terminal, @Id_Usuario,@FechaUpdate,@Entregado);
                         SELECT last_insert_rowid();";
@@ -53,14 +52,15 @@ namespace AppRuteoFactuSys.SqlLite
                 }
             }
         }
-        public async Task<List<Preventa>> GetPreventas()
+        public async Task<List<Preventa>> GetPreventas(bool? entregado = null)
         {
             using (var connection = SqlLiteConexion.GetConnection())
             {
-                string sql = "SELECT * FROM proforma;";
+                string sql = @"SELECT * FROM proforma WHERE entregado = COALESCE(@entregado, entregado) and estado != 'Facturado' 
+                               ORDER BY fecha DESC;";
                 connection.Open();
 
-                var response = await connection.QueryAsync<Preventa>(sql);
+                var response = await connection.QueryAsync<Preventa>(sql, new { entregado });
 
                 return response.ToList();
             }
@@ -106,7 +106,21 @@ namespace AppRuteoFactuSys.SqlLite
                 return proforma;
             }
         }
-        public async Task ActualizarPreventa(Preventa preventa)
+        public async Task EliminarFacturadas()
+        {
+            using (var conn = SqlLiteConexion.GetConnection())
+            {
+                string sqlEliminar = @"-- Paso 1: Eliminar los registros relacionados en la tabla lineasproforma
+                                        DELETE FROM lineasproforma 
+                                        WHERE Local_ID IN (SELECT LocalID FROM proforma WHERE entregado = true);
+
+                                        -- Paso 2: Eliminar los registros de la tabla proforma
+                                        DELETE FROM proforma WHERE entregado = true;";
+
+                await conn.ExecuteAsync(sqlEliminar);
+            }
+        }
+        public async Task ActualizarPreventaSync(Preventa preventa)
         {
             using (var connection = SqlLiteConexion.GetConnection())
             {
@@ -144,37 +158,19 @@ namespace AppRuteoFactuSys.SqlLite
                             terminal = @Terminal,
                             id_usuario = @Id_Usuario,
                             fecha_update = @FechaUpdate,
+                            estado=@Estado,
                             entregado = @Entregado
-                        WHERE Local_ID = @LocalID";
+                        WHERE LocalID = @LocalID";
 
                         await connection.ExecuteAsync(sqlUpdatePreventa, preventa);
                         // Actualizar las líneas de la proforma
-                        //obtengo la preventa de la base de datos de la app
-                        var preventaApp = await GetPreventaByNProforma(preventa.Nproforma);
-
-                        //ELIMINA LAS LINEAS QUE ESTEN DE LADO DE LA APP PERO YA NO EN EL LADO DEL SERVIDOR
-                        foreach (var linea in preventaApp.Lineas)
-                        {
-                            if (!preventa.Lineas.Any(l => l.Codpro == linea.Codpro))
-                            {
-                                await EliminaLinea(linea, connection);
-                            }
-
-                        }
+                        string sqlDeleteLineas = @"DELETE FROM lineasproforma WHERE Local_ID = @LocalID";
+                        await connection.ExecuteAsync(sqlDeleteLineas, new { preventa.LocalID });
                         //recorro las lineas la BD del servidor
                         foreach (var linea in preventa.Lineas)
                         {
-                            // Comparar con las nuevas líneas y actualizar, agregar o eliminar según sea necesario
-                            //reviso si la linea existe
-                            if (preventaApp.Lineas.Any(l => l.Codpro == linea.Codpro))
-                            {
-                                await AcualizaLinea(linea, connection);
-                            }
-                            else// si no existe la agrega 
-                            {
-                                linea.LocalID = preventaApp.LocalID;
-                                await AgregaLinea(linea, connection);
-                            }
+                            linea.LocalID = preventa.LocalID;
+                            await AgregaLinea(linea, connection);
                         }
                         // Commit de la transacción
                         transaction.Commit();
@@ -188,7 +184,86 @@ namespace AppRuteoFactuSys.SqlLite
                 }
             }
         }
-        public async Task ActualizarNProforma(int Nproforma, int LocalID)
+        public async Task ActualizarPreventaAppOnly(Preventa preventa)
+        {
+            using (var connection = SqlLiteConexion.GetConnection())
+            {
+                connection.Open();
+
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        // Actualizar la Preventa
+                        string sqlUpdatePreventa = @"
+                        UPDATE proforma
+                        SET
+                            cedcliente = @Cedcliente,
+                            fecha = @Fecha,
+                            condicionventa = @CondicionVenta,
+                            formapago = @Formapago,
+                            totalcomprobante = @TotalComprobante,
+                            totaldescuento = @TotalDescuento,
+                            totalgrabado = @TotalGrabado,
+                            totalexento = @TotalExento,
+                            totalimpuesto = @TotalImpuesto,
+                            totalventa = @TotalVenta,
+                            codigomoneda = @CodigoMoneda,
+                            totalservgravados = @TotalServGravados,
+                            totalservexentos = @TotalServExentos,
+                            notas = @Notas,
+                            serviciosexonerados = @ServiciosExonerados,
+                            mercanciasexoneradas = @MercanciasExoneradas,
+                            totalmercanciasgravadas = @TotalMercanciasGravadas,
+                            totalmercanciasexentas = @TotalMercanciasExentas,
+                            totalventaneta = @TotalVentaNeta,
+                            totalexonerado = @TotalExonerado,
+                            nombre_cliente = @Nombre_Cliente,
+                            terminal = @Terminal,
+                            id_usuario = @Id_Usuario,
+                            fecha_update = @FechaUpdate,
+                            estado=@Estado,
+                            entregado = @Entregado
+                        WHERE LocalID = @LocalID";
+
+                        await connection.ExecuteAsync(sqlUpdatePreventa, preventa);
+                        // Actualizar las líneas de la proforma
+                        //ELIMINA TODAS LAS LINEAS 
+                        await EliminaTodasLineasById(preventa.LocalID, connection);
+                        foreach (var linea in preventa.Lineas)
+                        {
+                            linea.LocalID = preventa.LocalID;
+                            //LA VUELVE A AGREGAR
+                            await AgregaLinea(linea, connection);
+                        }
+                        // Commit de la transacción
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        // Rollback en caso de error
+                        transaction.Rollback();
+                        throw new Exception("Error al actualizar la preventa " + ex.Message);
+                    }
+                }
+            }
+        }
+        public async Task ActualizarEntregado(int LocalID)
+        {
+            using (var connection = SqlLiteConexion.GetConnection())
+            {
+                connection.Open();
+
+                // Actualizar la Preventa
+                string sqlUpdatePreventa = @"
+                        UPDATE proforma
+                        SET entregado = true,
+                            estado='Entregado'
+                        WHERE LocalID = @LocalID";
+                await connection.ExecuteAsync(sqlUpdatePreventa, new { LocalID });
+            }
+        }
+        public async Task ActualizarNumeroProforma(int Nproforma, int LocalID)
         {
             using (var connection = SqlLiteConexion.GetConnection())
             {
@@ -199,41 +274,16 @@ namespace AppRuteoFactuSys.SqlLite
                         SET Nproforma = @Nproforma
                         WHERE LocalID = @LocalID";
 
-              await  connection.ExecuteAsync(sqlUpdatePreventa, new { Nproforma, LocalID });
+                await connection.ExecuteAsync(sqlUpdatePreventa, new { Nproforma, LocalID });
             }
         }
 
         #region METODOS PARA LAS LINEAS
-        private async Task EliminaLinea(PreventaLineas linea, SqliteConnection connection)
+        private async Task EliminaTodasLineasById(int LocalID, SqliteConnection connection)
         {
-            string sqlEliminarLiea = @"DELETE FROM lineasproforma WHERE n_proforma = @NProforma AND Codpro = @Codpro;";
+            string sqlEliminarLiea = @"DELETE FROM lineasproforma WHERE Local_ID = @LocalID;";
 
-            await connection.ExecuteAsync(sqlEliminarLiea, linea);
-        }
-        private async Task AcualizaLinea(PreventaLineas linea, SqliteConnection connection)
-        {
-            // Actualizar las líneas de la proforma
-            string sqlUpdateLinea = @"
-
-                             UPDATE lineasproforma
-                             SET
-                                 Codpro = @Codpro,
-                                 Unidadmedida = @UnidadMedida,
-                                 Detalle = @Detalle,
-                                 Preciounidad = @PrecioUnidad,
-                                 Cantidad = @Cantidad,
-                                 Subtotal = @Subtotal,
-                                 Descuento = @Descuento,
-                                 Impuesto = @Impuesto,
-                                 Totallinea = @TotalLinea,
-                                 Codigo_impuesto = @CodigoImpuesto,
-                                 Codigo_tarifa = @CodigoTarifa,
-                                 Codecabys = @CodeCabys
-
-                             WHERE n_proforma = @NProforma AND Codpro = @Codpro";
-
-
-            await connection.ExecuteAsync(sqlUpdateLinea, linea);
+            await connection.ExecuteAsync(sqlEliminarLiea, new { LocalID });
         }
         private async Task AgregaLinea(PreventaLineas linea, SqliteConnection connection)
         {

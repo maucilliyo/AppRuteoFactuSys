@@ -2,12 +2,6 @@
 using AppRuteoFactuSys.MySql;
 using AppRuteoFactuSys.Service.Interfaces;
 using AppRuteoFactuSys.SqlLite;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppRuteoFactuSys.Service
 {
@@ -60,7 +54,7 @@ namespace AppRuteoFactuSys.Service
                         //agregamos el producto a la base de datos de la app
                         await _sqlLiteProductoRepository.Agregar(producto);
                     }
-                    catch (DbUpdateException ex)
+                    catch (Exception ex)
                     {
                         throw new Exception(ex.Message);
                     }
@@ -73,7 +67,7 @@ namespace AppRuteoFactuSys.Service
                         //actualizamos el prodcto en la base de datos de la app
                         await _sqlLiteProductoRepository.Actualizar(producto);
                     }
-                    catch (DbUpdateException ex)
+                    catch (Exception ex)
                     {
                         throw new Exception(ex.Message);
                     }

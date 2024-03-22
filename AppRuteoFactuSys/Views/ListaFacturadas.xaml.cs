@@ -5,47 +5,47 @@ using System.Windows.Input;
 
 namespace AppRuteoFactuSys.Views;
 
-public partial class ListaPreventaPage : ContentPage
+public partial class ListaFacturadas : ContentPage
 {
     private readonly IPreventaService _preventaService;
     private readonly IClienteService _clienteService;
     private readonly IProductoService _productoService;
+
     public bool IsRefreshing { get; set; }
     public Command RefreshCommand { get; set; }
     public ICommand SendSelectedDataCommand { get; private set; }
-    public ListaPreventaPage(IPreventaService preventaService, IClienteService clienteService, IProductoService productoService)
+    public ListaFacturadas(IPreventaService preventaService, IClienteService clienteService, IProductoService productoService)
     {
-        RefreshCommand = new Command(async () =>
-        {
-            await CargarPreventas();
-
-            IsRefreshing = false;
-            OnPropertyChanged(nameof(IsRefreshing));
-        });
-
-        BindingContext = this;
         InitializeComponent();
         _preventaService = preventaService;
         _clienteService = clienteService;
         _productoService = productoService;
+
+        RefreshCommand = new Command(async () =>
+        {
+            await CargarFacturadas();
+
+            IsRefreshing = false;
+            OnPropertyChanged(nameof(IsRefreshing));
+        });
         SendSelectedDataCommand = new Command<object>(ExecuteSendSelectedDataCommand);
+        BindingContext = this;
+    }
+    protected async override void OnAppearing()
+    {
+        base.OnAppearing();
+        await CargarFacturadas();
     }
     private async void ExecuteSendSelectedDataCommand(object parameter)
     {
         // Aquí puedes manejar la lógica para procesar los datos de la fila seleccionada.
         var rowData = (Preventa)parameter; // Asegúrate de cambiar YourDataType al tipo de objeto de tus datos
-        PreventaPage preventaPage = new(_clienteService, _preventaService, _productoService, true)
-        {
-            idPreventa = rowData.LocalID
-        };
-        await Navigation.PushAsync(preventaPage);
+                                           // Hacer algo con rowData
+        var preventa = await _preventaService.GetById(rowData.LocalID);
+
+        await Navigation.PushAsync(new VerFacturaPage(preventa));
     }
-    protected async override void OnAppearing()
-    {
-        base.OnAppearing();
-        await CargarPreventas();
-    }
-    private async Task CargarPreventas()
+    private async Task CargarFacturadas()
     {
         //VALIDAR SI HAY CONEXION
         if (Conexion.GetConnection() == null)
@@ -60,11 +60,8 @@ public partial class ListaPreventaPage : ContentPage
         }
         //VALIDAR SI LA BD SE CARGO BIEN
         //var products = await _clienteRepository.GetClientes();
-        var products = await _preventaService.Listar(false);
+        var products = await _preventaService.Listar(true);
         dgPreventas.ItemsSource = products;
     }
-    private async void btnNuevaProforma_Clicked(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new PreventaPage(_clienteService, _preventaService, _productoService));
-    }
+
 }

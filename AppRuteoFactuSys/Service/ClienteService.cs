@@ -2,7 +2,6 @@
 using AppRuteoFactuSys.MySql;
 using AppRuteoFactuSys.Service.Interfaces;
 using AppRuteoFactuSys.SqlLite;
-using Microsoft.EntityFrameworkCore;
 
 namespace AppRuteoFactuSys.Service
 {
@@ -58,7 +57,7 @@ namespace AppRuteoFactuSys.Service
                     {
                         await _sqlLiteClientesRepository.Agregar(clienteSistema);
                     }
-                    catch (DbUpdateException ex)
+                    catch (Exception ex)
                     {
 
                         throw new Exception(ex.Message);
@@ -70,7 +69,7 @@ namespace AppRuteoFactuSys.Service
                     {
                         await _sqlLiteClientesRepository.Actualizar(clienteSistema);
                     }
-                    catch (DbUpdateException ex)
+                    catch (Exception ex)
                     {
 
                         throw new Exception(ex.Message);

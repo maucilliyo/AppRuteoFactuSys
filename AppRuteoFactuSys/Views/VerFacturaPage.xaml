@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AppRuteoFactuSys.Views.PreventaPage"
-             xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
-             Padding="10,5,5,10">
-
+             x:Class="AppRuteoFactuSys.Views.VerFacturaPage"
+             xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="127" />
+            <RowDefinition Height="130" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="40" />
-            <RowDefinition Height="50" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="100" />
         </Grid.RowDefinitions>
 
-        <StackLayout VerticalOptions="FillAndExpand">
+        <StackLayout VerticalOptions="FillAndExpand"
+                     Padding="0,5,0,0">
+            <Label Text="PREVENTA ENTREGADA"
+                   FontSize="18"
+                   Padding="0,0,0,10"
+                   TextColor="Black"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
             <!-- Datos del Cliente -->
             <Label Text="Datos del Cliente"
                    FontSize="16"
@@ -27,48 +33,21 @@
                      HeightRequest="0.5"
                      HorizontalOptions="FillAndExpand" />
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition  Width="*"/>
-                    <ColumnDefinition  Width="20"/>
-                    <ColumnDefinition  Width="45"/>
-                </Grid.ColumnDefinitions>
+            <StackLayout Orientation="Horizontal"
+                         Padding="0,5,0,0"
+                         HorizontalOptions="FillAndExpand">
+                <Label x:Name="lblNombreCliente"
+                       Text="Contado"
+                       FontSize="Small"
+                       TextColor="Black"
+                       HorizontalOptions="StartAndExpand"
+                       VerticalOptions="Center"
+                       LineBreakMode="WordWrap"
+                       MaxLines="2" />
 
-                <Editor
-                    Grid.Column="0"
-                    HeightRequest="60"
-                    x:Name="lblNombreCliente"
-                    Text="Contado"
-                    FontSize="Small"
-                    TextColor="Black"/>
+            </StackLayout>
 
-                <Label x:Name="lblTipoCliente"
-                       Grid.Column="1"
-                       Text="C"
-                       FontAttributes="Bold"
-                       FontSize="18"
-                       TextColor="Red"
-                       Padding="0,0,10,0"
-                       HorizontalOptions="Start"
-                       VerticalOptions="Center" />
-
-                <Button x:Name="btnListaCliente"
-                        HorizontalOptions="End"
-                        Grid.Column="2"
-                        Clicked="btnListaCliente_Clicked"
-                        FontSize="10"
-                        HeightRequest="30"
-                        BackgroundColor="#33C481"
-                        TextColor="Black"
-                        FontAttributes="Bold"
-                        Text="|||" />
-                
-            </Grid>
-
-
-
-
-            <BoxView Margin="0,0,0,0"
+            <BoxView Margin="0,5,0,0"
                      Color="Black"
                      HeightRequest="0.5"
                      HorizontalOptions="FillAndExpand" />
@@ -81,17 +60,6 @@
                                WidthRequest="60"
                                HeightRequest="60" />
 
-            <!-- Agregar producto -->
-            <Button x:Name="btnListaProductos"
-                    Clicked="btnListaProductos_Clicked"
-                    FontSize="10"
-                    HeightRequest="35"
-                    Margin="0,5,0,0"
-                    BackgroundColor="#1BA1E2"
-                    TextColor="Black"
-                    FontAttributes="Bold"
-                    Text="Agregar producto"
-                    WidthRequest="120" />
         </StackLayout>
 
 
@@ -102,13 +70,8 @@
                      BackgroundColor="#E8EED4"
                      BorderColor="#fff"
                      HeaderBackground="#E8EED4"
-                     HeaderHeight="25"
-                     IsClippedToBounds="False"
-                     IsRefreshing="{Binding IsRefreshing}"
-                     SelectedItem="{Binding SelectedProducto}"
-                     PullToRefreshCommand="{Binding RefreshCommand}"
                      ItemsSource="{Binding Lineas}"
-                     SelectionEnabled="True">
+                     HeaderHeight="25">
             <dg:DataGrid.NoDataView>
                 <Label BackgroundColor="White"
                        HorizontalOptions="Center"
@@ -132,16 +95,6 @@
                                    HorizontalContentAlignment="End"
                                    PropertyName="TotalLinea" />
 
-                <dg:DataGridColumn Width="20">
-                    <dg:DataGridColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Text="E"
-                                    Command="{Binding BindingContext.ModificarLineaCommand,
-                                    Source={x:Reference dgLineas}}"
-                                    CommandParameter="{Binding .}" />
-                        </DataTemplate>
-                    </dg:DataGridColumn.CellTemplate>
-                </dg:DataGridColumn>
             </dg:DataGrid.Columns>
         </dg:DataGrid>
 
@@ -170,8 +123,8 @@
         <StackLayout Orientation="Horizontal"
                      HorizontalOptions="Center"
                      Grid.Row="3">
-            <Button x:Name="btnGuardar"
-                    Clicked="btnGuardar_Clicked"
+            <Button x:Name="btnImprimir"
+                    Clicked="btnImprimir_Clicked"
                     Margin="0,20,0,0"
                     HorizontalOptions="Center"
                     FontSize="10"
@@ -179,19 +132,7 @@
                     BackgroundColor="#33C481"
                     TextColor="Black"
                     FontAttributes="Bold"
-                    Text="Guardar"
-                    WidthRequest="80" />
-
-            <Button x:Name="btnFacturar"
-                    Margin="20,20,0,0"
-                    Clicked="btnFacturar_Clicked"
-                    HorizontalOptions="Center"
-                    FontSize="10"
-                    HeightRequest="40"
-                    BackgroundColor="#8CADC1"
-                    TextColor="Black"
-                    FontAttributes="Bold"
-                    Text="Facturar"
+                    Text="IMPRIMIR"
                     WidthRequest="80" />
         </StackLayout>
 

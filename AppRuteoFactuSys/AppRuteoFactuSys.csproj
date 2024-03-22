@@ -39,6 +39,11 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android|AnyCPU'">
 	  <AndroidPackageFormat>apk</AndroidPackageFormat>
+	  <Debugger>Xamarin</Debugger>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|AnyCPU'">
+	  <Debugger>Xamarin</Debugger>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -62,8 +67,8 @@
 	<ItemGroup>
 		<PackageReference Include="akgul.Maui.DataGrid" Version="3.0.0" />
 		<PackageReference Include="Dapper" Version="2.1.28" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.2" />
+		<PackageReference Include="Microsoft.Data.Sqlite.Core" Version="8.0.3" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.3" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.7" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.7" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
@@ -90,6 +95,9 @@
 	  <MauiXaml Update="Views\ListaClientesPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\ListaFacturadas.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\ListaPreventaPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -106,6 +114,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\SincronizarPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\VerFacturaPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

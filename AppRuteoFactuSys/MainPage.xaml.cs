@@ -37,7 +37,20 @@ namespace AppRuteoFactuSys
         {
             try
             {
-                await Navigation.PushAsync(new PopConfServidor());
+                string result = await DisplayPromptAsync("Aviso", "Digite la clave para Ingresar al menu de configuracion", "Aceptar", "Cancelar", "Clave maestra",
+                                            keyboard: Keyboard.Numeric); //keyboard: Keyboard.Numeric es para que solo acepta numeros
+                if (result != null)
+                {
+                    if (result == "246")
+                    {
+                        await Navigation.PushAsync(new PopConfServidor());
+                    }
+                    else
+                    {
+                        // Aquí puedes manejar el valor ingresado por el usuario
+                        await DisplayAlert("Aviso", $"Error en la clave", "Aceptar");
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -73,7 +86,7 @@ namespace AppRuteoFactuSys
         private async void btnPruebas_Clicked(object sender, EventArgs e)
         {
             //SQLiteInitialization.DeleteDataBase();
-             var preventas = await _preventaService.Listar();
+            var preventas = await _preventaService.Listar();
 
             // var preventa = await _preventaService.GetById(18);
 
@@ -98,7 +111,7 @@ namespace AppRuteoFactuSys
 
         private async void btnEliminarDB_Clicked(object sender, EventArgs e)
         {
-            string result = await DisplayPromptAsync("Aviso", "Digite la clave para RESETEAR la base de datos", "Aceptar", "Cancelar", "Clave maestra", 
+            string result = await DisplayPromptAsync("Aviso", "Digite la clave para RESETEAR la base de datos", "Aceptar", "Cancelar", "Clave maestra",
                                                         keyboard: Keyboard.Numeric); //keyboard: Keyboard.Numeric es para que solo acepta numeros
             if (result != null)
             {
@@ -114,6 +127,13 @@ namespace AppRuteoFactuSys
                     await DisplayAlert("Aviso", $"Error en la clave", "Aceptar");
                 }
             }
+        }
+
+        private async void btnFacturadas_Clicked(object sender, EventArgs e)
+        {
+            ListaFacturadas listaFacturadas = new(_preventaService, _clienteService, _productoService);
+
+            await Navigation.PushAsync(new NavigationPage(listaFacturadas));
         }
     }
 

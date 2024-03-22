@@ -12,19 +12,22 @@ namespace AppRuteoFactuSys.Views
         private readonly IPreventaService _preventaService;
         private readonly IProductoService _productoService;
         public ObservableCollection<PreventaLineas> Lineas { get; set; } = [];
-
-        private Preventa preventa = new();
+        public int idPreventa = 0;
+        private bool _modificar { get; set; }
         private Cliente cliente = new();
-        public bool IsRefreshing { get; set; }
+        private bool IsRefreshing { get; set; }
+        private bool alreadyLoaded { get; set; }
         public Command RefreshCommand { get; set; }
         public ICommand ModificarLineaCommand { get; }
         public static PreventaPage load;
-        public PreventaPage(IClienteService clienteService, IPreventaService preventaService, IProductoService productoService)
+
+        public PreventaPage(IClienteService clienteService, IPreventaService preventaService, IProductoService productoService, bool modificar = false)
         {
             InitializeComponent();
             _clienteService = clienteService;
             _preventaService = preventaService;
             _productoService = productoService;
+            _modificar = modificar;
 
             RefreshCommand = new Command(async () =>
             {
@@ -45,7 +48,22 @@ namespace AppRuteoFactuSys.Views
         protected async override void OnAppearing()
         {
             base.OnAppearing();
-            await Cargarlineas();
+
+            if (!alreadyLoaded)
+            {
+                //si es una preventa para modificar
+                if (_modificar)
+                {
+                    _ = Task.Run(() => Task.FromResult(CargarPreventaMod()));
+                }
+                else
+                {
+                    cliente = await _clienteService.GetByCedula("0");
+                }
+                await Cargarlineas();
+                
+                alreadyLoaded = true;
+            }
         }
         private async Task Cargarlineas()
         {
@@ -74,7 +92,7 @@ namespace AppRuteoFactuSys.Views
         }
         private async void ClienteAddPage_ClienteSeleccionadoEvent(object sender, Cliente clienteSeleccionado)
         {
-            if (clienteSeleccionado.TipoPrecio != cliente.TipoPrecio)
+            if (clienteSeleccionado.TipoPrecio != cliente.TipoPrecio && Lineas.Count > 0)
             {
                 var response = await DisplayAlert("AVISO", "El cliente tiene un precio diferente a los agregados, " +
                                                    "desea borrar los productos para agegar el nuevo cliente?", "Sí", "No");
@@ -161,7 +179,7 @@ namespace AppRuteoFactuSys.Views
             {
                 total += item.TotalLinea;
             }
-            lblTotal.Text = total.ToString("N2");
+            lblTotal.Text = total.ToString("N0");
         }
         public async void ModificarLinea(PreventaLineas linea, string accion)
         {
@@ -194,18 +212,27 @@ namespace AppRuteoFactuSys.Views
             await Navigation.PushAsync(productoAddPage);
             HideActivityIndicator();
         }
-
         private async void btnGuardar_Clicked(object sender, EventArgs e)
         {
-            Preventa preventa = new Preventa
+            await GuardarPreventa();
+        }
+        private async Task GuardarPreventa(bool entregado = false)
+        {
+            //validaciones
+            if (Lineas.Count == 0)
+            {
+                await DisplayAlert("Aviso", "Debe haber al menos una linea", "Aceptar");
+                return;
+            }
+            Preventa preventa = new()
             {
                 Cedcliente = cliente.Cedula,
                 Nombre_Cliente = lblNombreCliente.Text,
                 CodigoMoneda = "CRC",
                 CondicionVenta = "01",
                 DiasPlazo = 0,
-                Entregado = false,
-                Facturado = false,
+                Entregado = entregado,
+                Estado = entregado ? "Entregado" : "Pendiente",
                 Fecha = DateTime.Now,
                 FechaUpdate = DateTime.Now,
                 Formapago = "01",
@@ -245,12 +272,43 @@ namespace AppRuteoFactuSys.Views
             preventa.TotalVenta = preventa.TotalGrabado + preventa.TotalExento + preventa.TotalExonerado;
             preventa.TotalVentaNeta = preventa.TotalVenta - preventa.TotalDescuento;
             preventa.TotalComprobante = preventa.TotalVentaNeta + preventa.TotalImpuesto;
-
-            await _preventaService.Nuevo(preventa);
-
-            await DisplayAlert("Aviso", "Preventa Guardada con exito!", "Aceptar");
-
+            //evaluar si hay que modificar o crear una nueva preventa
+            if (_modificar)
+            {
+                preventa.LocalID = idPreventa;
+                await _preventaService.ActualizarOnly(preventa);
+                await DisplayAlert("Aviso", "Preventa Actualizada con exito!", "Aceptar");
+            }
+            else
+            {
+                await _preventaService.Nuevo(preventa);
+                await DisplayAlert("Aviso", "Preventa Guardada con exito!", "Aceptar");
+            }
             await Navigation.PopAsync();
+        }
+        private async Task CargarPreventaMod()
+        {
+            //obtenemos la preventa
+            var preventa = await _preventaService.GetById(idPreventa);
+            //cargamos el cliente
+            cliente = await _clienteService.GetByCedula(preventa.Cedcliente);
+            //cargamos los datos de la preventa en la pagina
+            lblNombreCliente.Text = preventa.Nombre_Cliente;
+            lblTipoCliente.Text = cliente.TipoPrecio;
+            //recorrer las lineas para agregarla a la preventa
+            foreach (var linea in preventa.Lineas)
+            {
+                Lineas.Add(linea);
+            }
+            //refrescamos los totales
+            Totales();
+        }
+        private async void btnFacturar_Clicked(object sender, EventArgs e)
+        {
+
+            //primero la guardamos por aquello de cambios y le enviamos entregado  = true
+            await GuardarPreventa(true);
+
         }
     }
 }
