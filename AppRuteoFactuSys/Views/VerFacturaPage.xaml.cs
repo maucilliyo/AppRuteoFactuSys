@@ -1,4 +1,5 @@
 using AppRuteoFactuSys.Models;
+using AppRuteoFactuSys.Service;
 using AppRuteoFactuSys.Service.Interfaces;
 using System.Collections.ObjectModel;
 using System.Net.Http.Headers;
@@ -41,7 +42,9 @@ public partial class VerFacturaPage : ContentPage
     }
     private void btnImprimir_Clicked(object sender, EventArgs e)
     {
+        ImpresionService impresionService = new();
 
+        impresionService.ImprimirTicket(_preventa);
     }
 
 }

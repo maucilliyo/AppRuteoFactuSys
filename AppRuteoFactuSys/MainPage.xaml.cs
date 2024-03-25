@@ -88,13 +88,12 @@ namespace AppRuteoFactuSys
             //SQLiteInitialization.DeleteDataBase();
             var preventas = await _preventaService.Listar();
 
-            // var preventa = await _preventaService.GetById(18);
+            var preventa = await _preventaService.GetById(2);
+ 
 
-            //var preventa = await _preventaService.GetPreventaByNProforma(18);
-            //var preventaSqlLite = await _preventaService.GetById(1);
-            //await _preventaService.Sincronizar();
-            //var cliente = await _clienteService.GetByCedula("102920526");
+            ImpresionService impresionService = new();
 
+           impresionService.ImprimirTicket(preventa);
         }
 
         private async void btnAjusta_Clicked_1(object sender, EventArgs e)
