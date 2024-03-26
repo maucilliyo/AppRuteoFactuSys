@@ -29,6 +29,8 @@ namespace AppRuteoFactuSys.MySql
                 string queryPrebenta = @"SELECT * FROM proforma where nproforma = @id;";
                 var response = await conn.QueryAsync<Preventa>(queryPrebenta, new { id });
                 var prefactura = response.FirstOrDefault();
+                //si viene nula paramos el codigo y retornamos null
+                if (prefactura == null) return null;
                 //traer las lineas
                 string queryLineas = @"SELECT * FROM lineasproforma 
                                        where n_proforma = @NProforma order by linea asc;";

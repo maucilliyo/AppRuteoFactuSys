@@ -17,7 +17,6 @@ namespace AppRuteoFactuSys.Service
             List<Paragraph> Impuestos = new List<Paragraph>();
             //
             #region PARAMETROS PARA LA IMPRESION
-            int yPage = 340;
             //todo esto es para guardar el pdf
             string fileName = "Ticket.pdf";
             var docsDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -32,9 +31,10 @@ namespace AppRuteoFactuSys.Service
             var filePath = System.IO.Path.Combine(documentsDirectory, fileName);
 
             // CREAMOS LA ESTRUCTURA DEL PDF
-            // Define el tamaño personalizado para el papel (80 mm x longitud arbitraria)
-            yPage += preventa.Lineas.Count * 43;//aumenta 43 por cada renglon extra por linea de la factura
-            PageSize customPageSize = new(340, yPage);
+            // Define el tamaño personalizado para el papel
+            int yPage = 380;//TAMAÑO INICIAL CON UNA SOLA LINEA
+            yPage += preventa.Lineas.Count * 35;//aumenta por cada renglon extra por linea de la factura
+            PageSize customPageSize = new(320, yPage);
 
             // Crear un nuevo documento PDF
             PdfWriter writer = new(filePath);
@@ -42,7 +42,7 @@ namespace AppRuteoFactuSys.Service
             pdf.SetDefaultPageSize(customPageSize);
             // Establecer los márgenes izquierdo y derecho en cero
             Document document = new(pdf, new PageSize(customPageSize));
-            document.SetMargins(0, 0, 0, 0);
+            document.SetMargins(0, 0, 0, 0);//MARGENES DEL DOCUMENTO
             // Configurar fuentes
             PdfFont font = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
             PdfFont boldFont = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
@@ -74,31 +74,33 @@ namespace AppRuteoFactuSys.Service
 
             document.Add(new Paragraph($"Fecha: {preventa.Fecha}")
                 .SetMarginLeft(25)
-                .SetFontSize(12));
+                .SetFontSize(10));
 
             document.Add(new Paragraph($"Cliente: {preventa.Nombre_Cliente}")
                 .SetMarginLeft(25)
-                .SetFixedLeading(3)
-            .SetFontSize(12));
+                .SetFixedLeading(12)
+            .SetFontSize(12)
+            .SetMarginTop(1));
 
-            document.Add(new Paragraph("---  Codigo  ----  Detalle  ----  PrecioU  ----  Cant  ----  Total  ---")
+            document.Add(new Paragraph("--- Codigo ---- Detalle ---- PrecioU ---- Cant ---- Total ---")
                         .SetFont(boldFont)
                         .SetFixedLeading(2)
-                        .SetMarginTop(20));
+                        .SetMarginTop(10));
             document.Add(new Paragraph("____________________________________________________")
                 .SetFixedLeading(0)
                 .SetMarginBottom(20));
             //LINEAS
             // Ordenar preventa.Lineas alfabéticamente por el detalle
             var lineasOrdenadas = preventa.Lineas.OrderBy(linea => linea.Detalle);
+           
             // Iterar sobre las lineas ordenadas
-
             foreach (var item in lineasOrdenadas)
             {
                 // Crear tablas para usarlas como filas
                 Table fila1 = new(new UnitValue[] { UnitValue.CreatePointValue(40), UnitValue.CreatePointValue(250) });
 
-                Table fila2 = new(new UnitValue[] { UnitValue.CreatePointValue(100), UnitValue.CreatePointValue(100), UnitValue.CreatePointValue(150) });
+                Table fila2 = new(new UnitValue[] { UnitValue.CreatePointValue(100), UnitValue.CreatePointValue(100), 
+                                                    UnitValue.CreatePointValue(100), UnitValue.CreatePointValue(150) });
 
 
                 #region PRIMERA FILA
@@ -129,6 +131,17 @@ namespace AppRuteoFactuSys.Service
                 //agregamos el Precio unitario
                 fila2.AddCell(
                     new iText.Layout.Element.Cell()
+                        .Add(new Paragraph("%IVA: " + (item.Porimpuesto * 100).ToString("N0"))
+                               .SetFont(boldFont)
+                               .SetFontSize(10)
+                               .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER)
+                               .SetMarginTop(0)
+
+                        ).SetBorder(iText.Layout.Borders.Border.NO_BORDER)
+                    );
+                //agregamos el Precio unitario
+                fila2.AddCell(
+                    new iText.Layout.Element.Cell()
                         .Add(new Paragraph(item.PrecioUnidad.ToString("N2"))
                                .SetFont(boldFont)
                                .SetFontSize(10)
@@ -150,9 +163,9 @@ namespace AppRuteoFactuSys.Service
                 //agregamos el total de la linea
                 fila2.AddCell(
                     new iText.Layout.Element.Cell()
-                        .Add(new Paragraph(item.TotalLinea.ToString("N2"))
+                        .Add(new Paragraph(item.Subtotaldescuento.ToString("N2"))
                                 .SetFont(boldFont)
-                                .SetFontSize(11)
+                                .SetFontSize(10)
                                 .SetMarginRight(30)
                                 .SetMarginTop(0)
                                 .SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT)
@@ -164,10 +177,11 @@ namespace AppRuteoFactuSys.Service
                 document.Add(fila1);
                 document.Add(fila2);
                 // Añadir la línea después de la tabla
-                document.Add(new Paragraph("___________________________________________________________________________________________________________________________")
+                document.Add(new Paragraph("_________________________________________________________________________________________________________________")
                     .SetFont(font)
                     .SetFontSize(5)
-                    .SetMarginTop(-5));
+                    .SetMarginBottom(10)
+                    .SetMarginTop(-7));
                 //valorar la cantidad
                 if (item.UnidadMedida == "Unid")
                 {
@@ -187,14 +201,39 @@ namespace AppRuteoFactuSys.Service
                 .SetMarginRight(30)
                 .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER)
                 );
+            //subtotal
+            Table filaSubtotal = new(new UnitValue[] { UnitValue.CreatePointValue(220), UnitValue.CreatePointValue(90) });
+            filaSubtotal.AddCell(
+               new iText.Layout.Element.Cell()
+                   .Add(new Paragraph($"Subtotal:")
+                    .SetFont(boldFont)
+                    .SetMarginBottom(10)
+                    .SetFixedLeading(0)
+                    .SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT)
+                   ).SetBorder(iText.Layout.Borders.Border.NO_BORDER)
+               );
+
+            filaSubtotal.AddCell(
+               new iText.Layout.Element.Cell()
+                   .Add(new Paragraph(preventa.TotalVentaNeta.ToString("N2"))
+                   .SetMarginBottom(10)
+                   .SetFont(boldFont)
+                   .SetFixedLeading(0)
+                   .SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT)
+                   .SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.RIGHT)
+                   ).SetBorder(iText.Layout.Borders.Border.NO_BORDER)
+
+               );
+
+            document.Add(filaSubtotal);
 
             #region IMPUESTOS PARA MOSTRAR
             // Agrupa los impuestos por tipo
-            var impuestosAgrupados = preventa.Lineas.GroupBy(impuesto => impuesto.Porimpuesto);
+            var impuestosAgrupados = preventa.Lineas.Where(l => l.Porimpuesto > 0).GroupBy(impuesto => impuesto.Porimpuesto);
             // Recorre cada grupo de impuestos
             foreach (var grupoImpuestos in impuestosAgrupados.OrderBy(l => l.Key))
             {
-                Table fila1 = new(new UnitValue[] { UnitValue.CreatePointValue(200), UnitValue.CreatePointValue(110) });
+                Table fila1 = new(new UnitValue[] { UnitValue.CreatePointValue(220), UnitValue.CreatePointValue(90) });
 
                 fila1.AddCell(
                   new iText.Layout.Element.Cell()
@@ -206,7 +245,7 @@ namespace AppRuteoFactuSys.Service
                   );
 
                 // Calcula el total del impuesto sumando los montos de todas las líneas de impuestos en este grupo
-                decimal totalImpuesto = grupoImpuestos.Sum(impuesto => impuesto.TotalLinea);
+                decimal totalImpuesto = grupoImpuestos.Sum(impuesto => impuesto.Impuestoneto);
 
                 fila1.AddCell(
                    new iText.Layout.Element.Cell()

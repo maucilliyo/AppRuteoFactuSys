@@ -42,18 +42,18 @@ namespace AppRuteoFactuSys.Service
         }
         private async Task SincronizarDBApp()
         {
-            var preventaSql = await _preventaRepository.GetPreventasSinEntregar();
+            var preventasServer = await _preventaRepository.GetPreventasSinEntregar();
             //lista de preventas en la app
-            var preventasApp = await Listar();
+            //var preventasApp = await Listar();
             //recorer las prventas en el sistema para evaluar cambios u otras
-            foreach (var preventa in preventaSql)
+            foreach (var preventaServer in preventasServer)
             {
                 //traer la proforma del sistema
-                var proforma = await _preventaRepository.GetPreventaById(preventa.Nproforma);
+                var proforma = await _preventaRepository.GetPreventaById(preventaServer.Nproforma);
                 //verificar si no existe la preventa en al app
-                var noExiste = !preventasApp.Any(p => p.Nproforma == proforma.Nproforma);
+                var preventasApp =  await _sqlLitePreventaRepository.GetPreventaByNProforma(preventaServer.Nproforma);
                 //si no existe la agregamos a la app
-                if (noExiste)
+                if (preventasApp==null)
                 {
                     try
                     {
@@ -89,8 +89,6 @@ namespace AppRuteoFactuSys.Service
         }
         private async Task SincronizarDBSistema()
         {
-            //listar preventas del servidor
-            var preventaSql = await _preventaRepository.GetPreventasSinEntregar();
             //listra de preventas en la app
             var preventasApp = await Listar();
             //recorrer las lista del la app
@@ -99,10 +97,9 @@ namespace AppRuteoFactuSys.Service
                 //traer la preventa de la app
                 var preventaApp = await GetById(preventa.LocalID);
                 //verificar si no existe la preventa en el servidor
-                var noExiste = !preventaSql.Any(p => p.Nproforma == preventa.Nproforma);
-
+                var preventaServer = await _preventaRepository.GetPreventaById(preventa.Nproforma);
                 //validar si no existe y si la proforma es 0 es porque fue creada del lado de la app entonces se guarda en el sistema
-                if (noExiste && preventa.Nproforma == 0)
+                if (preventaServer == null)
                 {
                     try
                     {
@@ -118,8 +115,6 @@ namespace AppRuteoFactuSys.Service
                 // si existe se evalua si algo cambio
                 else
                 {
-                    var preventaServer = await _preventaRepository.GetPreventaById(preventa.Nproforma);
-
                     TimeSpan diferencia = preventa.FechaUpdate - preventaServer.FechaUpdate;
 
                     if (diferencia.TotalSeconds > 2)
@@ -144,7 +139,6 @@ namespace AppRuteoFactuSys.Service
         {
             return await _sqlLitePreventaRepository.GetPreventas();
         }
-
         public async Task EliminarFacturadas()
         {
            await _sqlLitePreventaRepository.EliminarFacturadas();

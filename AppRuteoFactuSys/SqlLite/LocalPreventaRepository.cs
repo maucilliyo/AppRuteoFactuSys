@@ -76,6 +76,8 @@ namespace AppRuteoFactuSys.SqlLite
 
                 var proforma = response.FirstOrDefault();
 
+                if (proforma == null) return null;
+
                 string sqlLineas = "SELECT * FROM lineasproforma where n_proforma =@nProforma;";
 
                 var lineas = await connection.QueryAsync<PreventaLineas>(sqlLineas, new { nProforma });
