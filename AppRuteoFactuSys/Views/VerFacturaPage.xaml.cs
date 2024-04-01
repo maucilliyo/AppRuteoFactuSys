@@ -42,9 +42,7 @@ public partial class VerFacturaPage : ContentPage
     }
     private void btnImprimir_Clicked(object sender, EventArgs e)
     {
-        ImpresionService impresionService = new();
-
-        impresionService.ImprimirTicket(_preventa);
+        ImpresionService.ImprimirTicket(_preventa);
     }
 
 }

@@ -10,5 +10,6 @@ namespace AppRuteoFactuSys.Service.Interfaces
     public interface IClienteService : IBaseService<Cliente>
     {
         Task<Cliente> GetByCedula(string cedula);
+        Task<List<Cliente>> Listar(string nombre);
     }
 }

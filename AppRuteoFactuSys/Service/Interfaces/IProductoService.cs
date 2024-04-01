@@ -9,6 +9,6 @@ namespace AppRuteoFactuSys.Service.Interfaces
 {
     public interface IProductoService:IBaseService<Producto>
     {
-
+        Task<List<Producto>> Listar(string detalle);
     }
 }

@@ -143,5 +143,9 @@ namespace AppRuteoFactuSys.Service
         {
            await _sqlLitePreventaRepository.EliminarFacturadas();
         }
+        public async Task<List<Preventa>> Listar(string provincia, string canton, string distrito, bool? entregado = null)
+        {
+           return await _sqlLitePreventaRepository.GetPreventas(provincia,canton, distrito, entregado);
+        }
     }
 }

@@ -24,13 +24,13 @@ namespace AppRuteoFactuSys.SqlLite
                 return response.FirstOrDefault();
             }
         }
-        public async Task<List<Cliente>> GetClientes()
+        public async Task<List<Cliente>> GetClientes(string nombre = null)
         {
             using (var conn = SqlLiteConexion.GetConnection())
             {
-                string sql = @"SELECT * FROM clientes";
+                string sql = @"SELECT * FROM clientes WHERE nombre LIKE '%' || COALESCE(@nombre, nombre) || '%'";
                 await conn.OpenAsync();
-                var response = await conn.QueryAsync<Cliente>(sql);
+                var response = await conn.QueryAsync<Cliente>(sql, new { nombre });
                 return response.ToList();
             }
         }
@@ -41,14 +41,14 @@ namespace AppRuteoFactuSys.SqlLite
                 // Consulta SQL para la inserción
                 string sqlInsert = @"
                 INSERT INTO clientes (
-                    cedula, tipocedula, nombre, apellido, tel, email, codigoprovincia,
-                    codigocanton, codigodistrito, otrassenas, contacto, credito, tipocliente,
+                    cedula, tipocedula, nombre, apellido, tel, email, provincia,
+                    canton, distrito, otrassenas, contacto, credito, tipocliente,
                     pordescuento, diascredito, tipo_cliente_impuesto, tipodocpreferido, tipo_precio,
                     fecha_update
                 )
                 VALUES (
-                    @Cedula, @TipoCedula, @Nombre, @Apellido, @Tel, @Email, @CodigoProvincia,
-                    @CodigoCanton, @CodigoDistrito, @OtrasSenas, @Contacto, @Credito, @TipoCliente,
+                    @Cedula, @TipoCedula, @Nombre, @Apellido, @Tel, @Email, @Provincia,
+                    @Canton, @Distrito, @OtrasSenas, @Contacto, @Credito, @TipoCliente,
                     @PorDescuento, @DiasCredito, @TipoClienteImpuesto, @TipoDocPreferido, @TipoPrecio,
                     @FechaUpdate
                 )";
@@ -68,9 +68,9 @@ namespace AppRuteoFactuSys.SqlLite
                 apellido = @Apellido,
                 tel = @Tel,
                 email = @Email,
-                codigoprovincia = @CodigoProvincia,
-                codigocanton = @CodigoCanton,
-                codigodistrito = @CodigoDistrito,
+                provincia = @Provincia,
+                canton = @Canton,
+                distrito = @Distrito,
                 otrassenas = @OtrasSenas,
                 contacto = @Contacto,
                 credito = @Credito,
@@ -90,7 +90,6 @@ namespace AppRuteoFactuSys.SqlLite
                 await connection.ExecuteAsync(sqlUpdate, cliente);
             }
         }
-
         public async Task<IEnumerable<string>> FiltroByCedula()
         {
             return null;

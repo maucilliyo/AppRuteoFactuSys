@@ -5,25 +5,12 @@
              xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
              Padding="2,10,5,2">
 
-    <Grid>
+    <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
             <RowDefinition Height="40" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Button
-            x:Name="btnNuevaProforma"
-            Clicked="btnNuevaProforma_Clicked"
-            FontSize="10"
-            HeightRequest="35"
-            Margin="10,0,0,0"
-            HorizontalOptions="Start"
-            BackgroundColor="#33C481"
-            TextColor="Black"
-            FontAttributes="Bold"
-            Text="Nueva"
-            VerticalOptions="Center"
-            WidthRequest="75" />
         <!--  // BUSCAR  -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -106,5 +93,5 @@
             </dg:DataGrid.Columns>
         </dg:DataGrid>
     </Grid>
-    
+
 </ContentPage>

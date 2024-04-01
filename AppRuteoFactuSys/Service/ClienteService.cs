@@ -29,9 +29,9 @@ namespace AppRuteoFactuSys.Service
             var clienteApp = await _sqlLiteClientesRepository.GetClienteByCedula(cedula);
             return clienteApp;
         }
-        public async Task<List<Cliente>> Listar()
+        public async Task<List<Cliente>> Listar(string nombre)
         {
-            return await _sqlLiteClientesRepository.GetClientes();
+            return await _sqlLiteClientesRepository.GetClientes( nombre);
         }
 
         public Task Nuevo(Cliente entity)
@@ -78,6 +78,11 @@ namespace AppRuteoFactuSys.Service
 
             }
 
+        }
+
+        public async Task<List<Cliente>> Listar()
+        {
+            return await _sqlLiteClientesRepository.GetClientes();
         }
     }
 }

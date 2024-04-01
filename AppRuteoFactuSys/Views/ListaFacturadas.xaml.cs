@@ -1,5 +1,6 @@
 using AppRuteoFactuSys.Models;
 using AppRuteoFactuSys.MySql;
+using AppRuteoFactuSys.Service;
 using AppRuteoFactuSys.Service.Interfaces;
 using System.Windows.Input;
 
@@ -43,7 +44,7 @@ public partial class ListaFacturadas : ContentPage
                                            // Hacer algo con rowData
         var preventa = await _preventaService.GetById(rowData.LocalID);
 
-        await Navigation.PushAsync(new VerFacturaPage(preventa));
+        ImpresionService.ImprimirTicket(preventa);
     }
     private async Task CargarFacturadas()
     {

@@ -56,11 +56,32 @@ namespace AppRuteoFactuSys.SqlLite
         {
             using (var connection = SqlLiteConexion.GetConnection())
             {
-                string sql = @"SELECT * FROM proforma WHERE entregado = COALESCE(@entregado, entregado) and estado != 'Facturado' 
+                string sql = @"SELECT * FROM proforma 
+                               WHERE entregado = COALESCE(@entregado, entregado) and estado != 'Facturado'                               
                                ORDER BY fecha DESC;";
                 connection.Open();
 
                 var response = await connection.QueryAsync<Preventa>(sql, new { entregado });
+
+                return response.ToList();
+            }
+        }
+        public async Task<List<Preventa>> GetPreventas(string provincia,string canton, string distrito, bool? entregado = null)
+        {
+            using (var connection = SqlLiteConexion.GetConnection())
+            {
+                string sql = @"SELECT p.* 
+                                FROM proforma p
+                                INNER JOIN clientes c ON p.cedcliente = c.cedula
+                                WHERE p.entregado = COALESCE(@entregado, p.entregado) 
+                                AND p.estado != 'Facturado' 
+                                AND c.provincia = @provincia 
+                                AND c.canton = @canton 
+                                AND c.distrito = @distrito
+                                ORDER BY p.fecha DESC;";
+                connection.Open();
+
+                var response = await connection.QueryAsync<Preventa>(sql, new { provincia, canton,distrito, entregado });
 
                 return response.ToList();
             }

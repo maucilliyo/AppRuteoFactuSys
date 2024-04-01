@@ -48,4 +48,10 @@ public partial class ProductoAddPage : ContentPage
         var products = await _productoService.Listar();
         dgProductos.ItemsSource = products;
     }
+
+    private async void btnBuscar_Clicked(object sender, EventArgs e)
+    {
+        var products = await _productoService.Listar(txtBuscar.Text);
+        dgProductos.ItemsSource = products;
+    }
 }

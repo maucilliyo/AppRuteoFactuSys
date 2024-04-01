@@ -46,8 +46,8 @@ namespace AppRuteoFactuSys.Views
             }
 
             //VALIDAR SI LA BD SE CARGO BIEN
-            var products = await _clienteService.Listar();
-            dgClientes.ItemsSource = products;
+            var clientes = await _clienteService.Listar();
+            dgClientes.ItemsSource = clientes;
         }
 
         private void SendSelectedData(object parameter)
@@ -57,6 +57,12 @@ namespace AppRuteoFactuSys.Views
             ClienteSeleccionadoEvent?.Invoke(this, clienteSeleccionado);
             // Volver a la página anterior (PreventaPage)
             Navigation.PopAsync();
+        }
+
+        private async void btnBuscar_Clicked(object sender, EventArgs e)
+        {
+            var clientes = await _clienteService.Listar(txtBuscar.Text);
+            dgClientes.ItemsSource = clientes;
         }
     }
 }

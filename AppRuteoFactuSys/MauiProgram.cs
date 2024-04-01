@@ -19,14 +19,15 @@ namespace AppRuteoFactuSys
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
-            Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true; 
+            Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
             //dependencias
-           // builder.Services.AddDbContext<ConexionDb>();
+            // builder.Services.AddDbContext<ConexionDb>();
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<SincronizarPage>();
             builder.Services.AddTransient<ListaProductosPage>();
             builder.Services.AddTransient<PreventaPage>(); //VerFacturaPage
             builder.Services.AddTransient<VerFacturaPage>();
+            builder.Services.AddTransient<MenuPreventaPage>();
 
             builder.Services.AddScoped<IClienteService, ClienteService>();
             builder.Services.AddSingleton<IPreventaService,PreventaService>();
@@ -45,5 +46,6 @@ namespace AppRuteoFactuSys
 
             return builder.Build();
         }
+
     }
 }

@@ -16,9 +16,9 @@ namespace AppRuteoFactuSys.Models
         public string? Apellido { get; set; }
         public string? Tel { get; set; }
         public string? Email { get; set; }
-        public string? CodigoProvincia { get; set; }
-        public string? CodigoCanton { get; set; }
-        public string? CodigoDistrito { get; set; }
+        public string? Provincia { get; set; }
+        public string? Canton { get; set; }
+        public string? Distrito { get; set; }
         public string? OtrasSenas { get; set; }
         public string? Contacto { get; set; }
         public Nullable<bool> Credito { get; set; }

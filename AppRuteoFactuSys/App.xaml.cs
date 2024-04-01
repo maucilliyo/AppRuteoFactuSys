@@ -1,4 +1,5 @@
-﻿using AppRuteoFactuSys.SqlLite;
+﻿using Android.Content.PM;
+using AppRuteoFactuSys.SqlLite;
 
 namespace AppRuteoFactuSys
 {
@@ -11,9 +12,11 @@ namespace AppRuteoFactuSys
             MainPage = new AppShell();
 
         }
+
         protected override void OnStart()
         {
             base.OnStart();
+ 
             // Inicializar el proveedor de base de datos
             SQLiteInitialization.InitializeDatabase();
         }

@@ -47,4 +47,10 @@ public partial class ListaProductosPage : ContentPage
         var products = await _clienteService.Listar();
         dgProductos.ItemsSource = products;
     }
+
+    private async void btnBustar_Clicked(object sender, EventArgs e)
+    {
+        var products = await _clienteService.Listar(txtBuscar.Text);
+        dgProductos.ItemsSource = products;
+    }
 }

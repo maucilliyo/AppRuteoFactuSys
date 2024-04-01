@@ -28,6 +28,8 @@
                 Placeholder="Nombre a buscar"
                 WidthRequest="300" />
             <Button
+                x:Name="btnBuscar"
+                Clicked="btnBuscar_Clicked"
                 Grid.Column="1"
                 FontSize="10"
                 HeightRequest="30"

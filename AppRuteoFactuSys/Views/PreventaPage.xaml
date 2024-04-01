@@ -3,14 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AppRuteoFactuSys.Views.PreventaPage"
              xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
-             Padding="10,5,5,10">
+             Padding="10,15,5,10">
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="127" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="40" />
-            <RowDefinition Height="50" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="65" />
         </Grid.RowDefinitions>
 
         <StackLayout VerticalOptions="FillAndExpand">
@@ -62,7 +62,7 @@
                         TextColor="Black"
                         FontAttributes="Bold"
                         Text="|||" />
-                
+
             </Grid>
 
 
@@ -184,11 +184,12 @@
 
             <Button x:Name="btnFacturar"
                     Margin="20,20,0,0"
+                    IsEnabled="False"
                     Clicked="btnFacturar_Clicked"
                     HorizontalOptions="Center"
                     FontSize="10"
                     HeightRequest="40"
-                    BackgroundColor="#8CADC1"
+                    BackgroundColor="Gray"
                     TextColor="Black"
                     FontAttributes="Bold"
                     Text="Facturar"

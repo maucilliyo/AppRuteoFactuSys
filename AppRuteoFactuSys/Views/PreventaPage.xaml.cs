@@ -1,5 +1,6 @@
 using AppRuteoFactuSys.Models;
 using AppRuteoFactuSys.MySql;
+using AppRuteoFactuSys.Service;
 using AppRuteoFactuSys.Service.Interfaces;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -113,7 +114,7 @@ namespace AppRuteoFactuSys.Views
             lblNombreCliente.Text = clienteSeleccionado.Nombre;
             lblTipoCliente.Text = clienteSeleccionado.TipoPrecio;
         }
-        private async void ProductoAddPage_SeleccionadoEvent(object sender, Producto productoSeleccionado)
+        private void ProductoAddPage_SeleccionadoEvent(object sender, Producto productoSeleccionado)
         {
             //VALIDAR EL TIPO DE PRECIO DEL CLIENTE
             if (cliente.TipoPrecio == "A")
@@ -302,13 +303,22 @@ namespace AppRuteoFactuSys.Views
             }
             //refrescamos los totales
             Totales();
+            btnFacturar.IsEnabled = true;
+            btnFacturar.BackgroundColor = Color.FromRgb(255, 143, 107);
         }
         private async void btnFacturar_Clicked(object sender, EventArgs e)
         {
+            var response = await DisplayAlert("AVISO", "Esta seguro de facturar esta preventa?", "Sí", "No");
 
+            if (!response)
+            {
+                return;
+            }
             //primero la guardamos por aquello de cambios y le enviamos entregado  = true
             await GuardarPreventa(true);
-
+            //IMPRIMIR
+            var preventa = await _preventaService.GetById(idPreventa);
+            ImpresionService.ImprimirTicket(preventa);
         }
     }
 }

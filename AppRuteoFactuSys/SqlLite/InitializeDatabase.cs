@@ -94,9 +94,9 @@
                                   apellido TEXT,
                                   tel INTEGER,
                                   email TEXT,
-                                  codigoprovincia INTEGER,
-                                  codigocanton INTEGER,
-                                  codigodistrito INTEGER,
+                                  provincia TEXT,
+                                  canton TEXT,
+                                  distrito TEXT,
                                   otrassenas TEXT,
                                   contacto TEXT,
                                   credito INTEGER,
@@ -188,6 +188,7 @@
                     {
                         // Borrar la tabla proforma si existe
                         string dropProformaTable = @"DROP TABLE IF EXISTS lineasproforma;
+                                                     DROP TABLE IF EXISTS clientes;
                                                      DROP TABLE IF EXISTS proforma;";
                         using (var command = connection.CreateCommand())
                         {

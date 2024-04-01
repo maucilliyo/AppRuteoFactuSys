@@ -19,8 +19,8 @@ namespace AppRuteoFactuSys.MySql
                 DynamicParameters p = new DynamicParameters();
                 p.Add("@cedula", cedula);
                 string query = @"SELECT json_merge(
-                    json_object('cedula', c.cedula,'tipoCedula',c.tipocedula,'nombre',c.nombre,'tel',c.tel,'email',c.email,'codigoprovincia',
-                        c.codigoprovincia,'codigocanton',c.codigocanton,'codigodistrito',c.codigodistrito,'otrassenas',c.otrassenas,'contacto',
+                    json_object('cedula', c.cedula,'tipoCedula',c.tipocedula,'nombre',c.nombre,'tel',c.tel,'email',c.email,'provincia',
+                        pr.provincia,'canton',ct.canton,'distrito',dt.distrito,'otrassenas',c.otrassenas,'contacto',
                         c.contacto,'credito',c.credito,'tipocliente',c.tipocliente,'pordescuento',c.pordescuento,'diascredito',
                         c.diascredito,'tipo_cliente_impuesto',c.tipo_cliente_impuesto,'tipodocpreferido',c.tipodocpreferido,'TipoPrecio',c.tipo_precio,
                         'FechaUpdate',c.fecha_update), 
@@ -36,6 +36,9 @@ namespace AppRuteoFactuSys.MySql
                  left join creditoclientes cc on c.cedula= cc.cedcliente
                  left join exoneraciones e on  c.cedula=e.cedula
                  left join cabysexoneradoscliente ce on e.id = ce.id_Exoneracion
+                 inner join provincia pr on c.codigoprovincia = pr.codigo
+                 inner join canton ct on c.codigocanton = ct.id
+                 inner join distrito dt on c.codigodistrito = dt.codigo and c.codigocanton =dt.codigocanton
                  where c.cedula=@cedula;";
                 var response = await conn.ExecuteReaderAsync(query, p);
 

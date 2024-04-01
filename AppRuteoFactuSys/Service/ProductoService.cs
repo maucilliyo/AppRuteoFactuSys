@@ -9,10 +9,10 @@ namespace AppRuteoFactuSys.Service
     {
         private readonly ProductoRepository _productoRepository;
         private readonly LocalProductoRepository _sqlLiteProductoRepository;
-        public ProductoService(ProductoRepository productoRepository , LocalProductoRepository sqlLiteProductoRepository)
+        public ProductoService(ProductoRepository productoRepository, LocalProductoRepository sqlLiteProductoRepository)
         {
-             _productoRepository = productoRepository;
-            _sqlLiteProductoRepository= sqlLiteProductoRepository;
+            _productoRepository = productoRepository;
+            _sqlLiteProductoRepository = sqlLiteProductoRepository;
         }
         public Task Actualizar(Producto entity)
         {
@@ -26,7 +26,11 @@ namespace AppRuteoFactuSys.Service
 
         public async Task<List<Producto>> Listar()
         {
-          return   await _sqlLiteProductoRepository.GetProductos();
+            return await _sqlLiteProductoRepository.GetProductos();
+        }
+        public async Task<List<Producto>> Listar(string detalle)
+        {
+            return await _sqlLiteProductoRepository.GetProductos(detalle);
         }
 
         public Task Nuevo(Producto entity)
@@ -45,7 +49,7 @@ namespace AppRuteoFactuSys.Service
             {
                 var productoApp = await _sqlLiteProductoRepository.GetProductoByCodigo(producto.CodPro);
 
-                var noExiste = !productosApp.Any(p=> p.CodPro == producto.CodPro);
+                var noExiste = !productosApp.Any(p => p.CodPro == producto.CodPro);
                 //el producto no existe
                 if (noExiste)
                 {
@@ -74,5 +78,6 @@ namespace AppRuteoFactuSys.Service
                 }
             }
         }
+
     }
 }

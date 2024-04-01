@@ -90,10 +90,7 @@ namespace AppRuteoFactuSys
 
             var preventa = await _preventaService.GetById(2);
  
-
-            ImpresionService impresionService = new();
-
-           impresionService.ImprimirTicket(preventa);
+            ImpresionService.ImprimirTicket(preventa);
         }
 
         private async void btnAjusta_Clicked_1(object sender, EventArgs e)
@@ -101,7 +98,7 @@ namespace AppRuteoFactuSys
             activityIndicator.IsRunning = true;
             activityIndicator.IsVisible = true;
 
-            await Navigation.PushAsync(new ListaPreventaPage(_preventaService, _clienteService, _productoService));
+            //await Navigation.PushAsync(new ListaPreventaPage(_preventaService, _clienteService, _productoService));
 
             activityIndicator.IsRunning = false;
             activityIndicator.IsVisible = false;
@@ -133,6 +130,11 @@ namespace AppRuteoFactuSys
             ListaFacturadas listaFacturadas = new(_preventaService, _clienteService, _productoService);
 
             await Navigation.PushAsync(new NavigationPage(listaFacturadas));
+        }
+
+        private async void btnPreventa_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new NavigationPage(new MenuPreventaPage( _preventaService, _clienteService, _productoService)));
         }
     }
 

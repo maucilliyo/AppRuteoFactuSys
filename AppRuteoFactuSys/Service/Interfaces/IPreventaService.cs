@@ -11,6 +11,7 @@ namespace AppRuteoFactuSys.Service.Interfaces
     {
         Task EliminarFacturadas();
         Task<List<Preventa>> Listar(bool entregado);
+        Task<List<Preventa>> Listar(string provincia, string canton, string distrito, bool? entregado = null);
         Task<Preventa> GetPreventaByNProforma(int nProforma);
         Task ActualizarOnly(Preventa entity);
     }

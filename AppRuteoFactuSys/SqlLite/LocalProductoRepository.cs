@@ -19,13 +19,13 @@ namespace AppRuteoFactuSys.SqlLite
                 return response.FirstOrDefault();
             }
         }
-        public async Task<List<Producto>> GetProductos()
+        public async Task<List<Producto>> GetProductos(string? detalle = null)
         {
             using (var conn = SqlLiteConexion.GetConnection())
             {
-                string sql = @"SELECT * FROM Productos LIMIT 600";
+                string sql = @"SELECT * FROM Productos WHERE detalle LIKE '%' || COALESCE(@detalle, detalle) || '%' LIMIT 600";
                 await conn.OpenAsync();
-                var response = await conn.QueryAsync<Producto>(sql);
+                var response = await conn.QueryAsync<Producto>(sql, new { detalle });
                 return response.ToList();
             }
         }

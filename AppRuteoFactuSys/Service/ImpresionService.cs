@@ -11,10 +11,9 @@ namespace AppRuteoFactuSys.Service
 {
     public class ImpresionService
     {
-        public async void ImprimirTicket(Preventa preventa)
+        public static async void ImprimirTicket(Preventa preventa)
         {
             int catidadArticulos = 0;
-            List<Paragraph> Impuestos = new List<Paragraph>();
             //
             #region PARAMETROS PARA LA IMPRESION
             //todo esto es para guardar el pdf
@@ -48,6 +47,7 @@ namespace AppRuteoFactuSys.Service
             PdfFont boldFont = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
             #endregion
 
+            #region ENCABEZADO
             // TITULO
             document.Add(new Paragraph("Sistema de preventas")
                 .SetFont(boldFont)
@@ -92,7 +92,9 @@ namespace AppRuteoFactuSys.Service
             //LINEAS
             // Ordenar preventa.Lineas alfabéticamente por el detalle
             var lineasOrdenadas = preventa.Lineas.OrderBy(linea => linea.Detalle);
-           
+            #endregion
+
+            #region LINEAS
             // Iterar sobre las lineas ordenadas
             foreach (var item in lineasOrdenadas)
             {
@@ -192,6 +194,9 @@ namespace AppRuteoFactuSys.Service
                     catidadArticulos++;
                 }
             }
+            #endregion
+
+            #region PIE DE PAGINA
             //Cantiad articulos
             document.Add(
                  new Paragraph($"Cantidad Aritculos: {catidadArticulos}")
@@ -283,6 +288,8 @@ namespace AppRuteoFactuSys.Service
                .SetMarginLeft(45)
                .SetFontSize(10)
                .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));
+            #endregion
+
             // Cerrar el documento
             document.Close();
             // Abrir el archivo PDF con la aplicación predeterminada
