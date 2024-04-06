@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AppRuteoFactuSys.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    NavigationPage.HasNavigationBar="False">
+    <VerticalStackLayout NavigationPage.HasNavigationBar="False">
+        <Grid Margin="0,50,0,0" HorizontalOptions="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label
+                Grid.Row="0"
+                FontAttributes="Bold"
+                FontSize="20"
+                HorizontalOptions="CenterAndExpand"
+                Text="INICIO DE SESIÓN"
+                VerticalOptions="Start" />
+            <Image
+                Grid.Row="1"
+                Margin="0,20,0,0"
+                Source="@drawable/Login"
+                WidthRequest="120" />
+
+            <Entry
+                x:Name="txtUserName"
+                Grid.Row="2"
+                Margin="0,10,0,0"
+                HorizontalTextAlignment="Center"
+                Placeholder="Nombre de usuario"
+                WidthRequest="150" />
+            <Entry
+                x:Name="txtPass"
+                Grid.Row="3"
+                Margin="0,10,0,0"
+                HorizontalTextAlignment="Center"
+                IsPassword="True"
+                Placeholder="Contraseña"
+                WidthRequest="150" />
+            <Button
+                x:Name="btnIniciar"
+                Grid.Row="4"
+                Margin="0,20,0,0"
+                BackgroundColor="DarkCyan"
+                Clicked="btnIniciar_Clicked"
+                FontSize="12"
+                HeightRequest="40"
+                HorizontalOptions="Center"
+                Text="Iniciar"
+                VerticalOptions="Center"
+                WidthRequest="110" />
+
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>

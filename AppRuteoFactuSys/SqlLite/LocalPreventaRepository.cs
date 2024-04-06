@@ -57,7 +57,7 @@ namespace AppRuteoFactuSys.SqlLite
             using (var connection = SqlLiteConexion.GetConnection())
             {
                 string sql = @"SELECT * FROM proforma 
-                               WHERE entregado = COALESCE(@entregado, entregado) and estado != 'Facturado'                               
+                               WHERE entregado = COALESCE(@entregado, entregado) and estado != 'Facturado' 
                                ORDER BY fecha DESC;";
                 connection.Open();
 

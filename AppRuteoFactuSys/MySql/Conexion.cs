@@ -1,13 +1,8 @@
 ﻿using AppRuteoFactuSys.Models;
-using Microsoft.VisualBasic;
+using Dapper;
 using MySqlConnector;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppRuteoFactuSys.MySql
 {
@@ -26,7 +21,7 @@ namespace AppRuteoFactuSys.MySql
             string cadenaConexion = @"Database=" + DataBase + ";Port=" + Puerto + "; Data Source=" + IP + "; User Id=" + usuario + ";" +
                 " Password=" + password + "; AllowUserVariables=True;Connect Timeout=" + TimeOut + ";";
 
-            MySqlConnection connection = new MySqlConnection
+            MySqlConnection connection = new()
             {
                 ConnectionString = cadenaConexion,
             };
@@ -67,13 +62,25 @@ namespace AppRuteoFactuSys.MySql
             }
             return true;
         }
+        public static async Task<bool> IsSyncApp()
+        {
+            using (var conn = await GetConnection())
+            {
+                string sql = "SELECT COUNT(*) FROM info_data_base WHERE syncApp = true";
+                // Utilizamos el método ExecuteScalarAsync<T> de Dapper para obtener el recuento.
+                // Si es mayor que cero, significa que hay al menos un registro
+                // donde syncApp es 'true', entonces devolvemos true. 
+                // De lo contrario, devolvemos false.
+                return await conn.ExecuteScalarAsync<int>(sql) > 0;
+            }
+        }
         public static async Task<string> TestConexion()
         {
             var getConnFile = await GetConfig();
 
             if (getConnFile)
             {
-                var conn = GetConnection();
+                var conn = await GetConnection();
                 if (conn == null)
                 {
                     return "ERROR DE CONEXIÓN";

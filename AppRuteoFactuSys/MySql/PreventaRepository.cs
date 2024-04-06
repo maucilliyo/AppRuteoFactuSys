@@ -13,6 +13,9 @@ namespace AppRuteoFactuSys.MySql
     {
         public async Task<List<Preventa>> GetPreventasSinEntregar()
         {
+            //VALIDAR SI TIENE SYNC
+            if (!await Conexion.IsSyncApp()) return null;
+
             using (var conn = await Conexion.GetConnection())
             {
                 string query = @"SELECT * FROM proforma where entregado = false and estado = 'Pendiente';";

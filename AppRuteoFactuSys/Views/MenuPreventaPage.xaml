@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AppRuteoFactuSys.Views.MenuPreventaPage">
+
     <VerticalStackLayout Margin="0,30,0,0">
 
         <Button
@@ -14,7 +15,7 @@
             HeightRequest="40"
             HorizontalOptions="Center"
             Text="NUEVA PREVENTA"
-            WidthRequest="150" />
+            WidthRequest="150"/>
 
         <BoxView Color="Black"
                  HeightRequest="1"
@@ -51,12 +52,23 @@
                 HeightRequest="40"
                 HorizontalOptions="Center"
                 Text="CARGAR LISTA"
-                WidthRequest="120" />
+                WidthRequest="120"/>
         </StackLayout>
 
         <BoxView Color="Black"
                  HeightRequest="1"
                  HorizontalOptions="FillAndExpand"
                  Margin="0,20,0,0"/>
+        <Button
+            x:Name="btnVerTodos"
+            Margin="0,20,0,0"
+            BackgroundColor="#819830"
+            Clicked="btnVerTodos_Clicked"
+            FontSize="12"
+            HeightRequest="40"
+            HorizontalOptions="Center"
+            Text="VER TODOS"
+            WidthRequest="120"/>
+
     </VerticalStackLayout>
 </ContentPage>

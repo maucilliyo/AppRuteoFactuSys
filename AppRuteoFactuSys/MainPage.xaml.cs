@@ -9,7 +9,6 @@ namespace AppRuteoFactuSys
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
         private readonly IClienteService _clienteService;
         private readonly IPreventaService _preventaService;
         private readonly IProductoService _productoService;

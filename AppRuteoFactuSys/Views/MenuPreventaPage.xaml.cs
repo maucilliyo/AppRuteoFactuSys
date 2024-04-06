@@ -30,7 +30,7 @@ public partial class MenuPreventaPage : ContentPage
             cbDistritos.SelectedIndex = 0;
             isInitialPageLoad = false;
         }
-
+        btnVerClientes.Focus( );
     }
 
     private async void cbProvincias_SelectedIndexChanged(object sender, EventArgs e)
@@ -79,5 +79,10 @@ public partial class MenuPreventaPage : ContentPage
     private async void btnNueva_Clicked(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new PreventaPage(_clienteService, _preventaService, _productoService));
+    }
+
+    private async void btnVerTodos_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new ListaPreventaPage(_preventaService, _clienteService, _productoService,null, null, null));
     }
 }

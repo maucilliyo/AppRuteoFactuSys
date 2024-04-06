@@ -282,10 +282,10 @@ namespace AppRuteoFactuSys.Service
             document.Add(new Paragraph());
             document.Add(new Paragraph());
             //final de documento
-            document.Add(new Paragraph("Autorizado mediante resolución N⁰ DGT-R-033-2019 del 20 de junio del 2019")
+            document.Add(new Paragraph("Comprobante de entrega de mercancía")
                .SetFont(font)
                .SetWidth(250)
-               .SetMarginLeft(45)
+               .SetMarginLeft(40)
                .SetFontSize(10)
                .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));
             #endregion

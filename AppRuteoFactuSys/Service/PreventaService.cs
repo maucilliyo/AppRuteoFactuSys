@@ -135,9 +135,9 @@ namespace AppRuteoFactuSys.Service
         {
             return await _sqlLitePreventaRepository.GetPreventaByNProforma(nProforma);
         }
-        public async Task<List<Preventa>> Listar()
+        public async Task<List<Preventa>> Listar(bool? entregado = null)
         {
-            return await _sqlLitePreventaRepository.GetPreventas();
+            return await _sqlLitePreventaRepository.GetPreventas(entregado);
         }
         public async Task EliminarFacturadas()
         {
@@ -146,6 +146,10 @@ namespace AppRuteoFactuSys.Service
         public async Task<List<Preventa>> Listar(string provincia, string canton, string distrito, bool? entregado = null)
         {
            return await _sqlLitePreventaRepository.GetPreventas(provincia,canton, distrito, entregado);
+        }
+        public async Task<List<Preventa>> Listar()
+        {
+            return await _sqlLitePreventaRepository.GetPreventas();
         }
     }
 }

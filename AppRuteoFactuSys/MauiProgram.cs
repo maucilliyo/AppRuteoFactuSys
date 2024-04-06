@@ -28,6 +28,7 @@ namespace AppRuteoFactuSys
             builder.Services.AddTransient<PreventaPage>(); //VerFacturaPage
             builder.Services.AddTransient<VerFacturaPage>();
             builder.Services.AddTransient<MenuPreventaPage>();
+            builder.Services.AddTransient<LoginPage>();
 
             builder.Services.AddScoped<IClienteService, ClienteService>();
             builder.Services.AddSingleton<IPreventaService,PreventaService>();

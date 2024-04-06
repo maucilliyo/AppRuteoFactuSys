@@ -13,9 +13,9 @@ public partial class ListaPreventaPage : ContentPage
     public bool IsRefreshing { get; set; }
     public Command RefreshCommand { get; set; }
     public ICommand SendSelectedDataCommand { get; private set; }
-    private string _canton, _provincia, _distrito;
+    private string? _canton, _provincia, _distrito;
     public ListaPreventaPage(IPreventaService preventaService, IClienteService clienteService, IProductoService productoService,
-                             string provincia, string canton, string distrito)
+                             string provincia = null, string canton = null, string distrito = null)
     {
         RefreshCommand = new Command(async () =>
         {
@@ -33,7 +33,7 @@ public partial class ListaPreventaPage : ContentPage
         SendSelectedDataCommand = new Command<object>(ExecuteSendSelectedDataCommand);
         _canton = canton;
         _provincia = provincia;
-        _distrito=distrito;
+        _distrito = distrito;
     }
     private async void ExecuteSendSelectedDataCommand(object parameter)
     {
@@ -64,8 +64,16 @@ public partial class ListaPreventaPage : ContentPage
             await Navigation.PopAsync();
         }
         //VALIDAR SI LA BD SE CARGO BIEN
-        var products = await _preventaService.Listar( _provincia,_canton,_distrito, false);
-        dgPreventas.ItemsSource = products;
+        if (_provincia == null)
+        {
+            var lista = await _preventaService.Listar(false);
+            dgPreventas.ItemsSource = lista;
+        }
+        else
+        {
+            var lista = await _preventaService.Listar(_provincia, _canton, _distrito, false);
+            dgPreventas.ItemsSource = lista;
+        }
     }
     private async void btnNuevaProforma_Clicked(object sender, EventArgs e)
     {

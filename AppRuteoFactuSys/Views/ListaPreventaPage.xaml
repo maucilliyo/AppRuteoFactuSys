@@ -75,11 +75,6 @@
                     HorizontalContentAlignment="End"
                     PropertyName="TotalComprobante"
                     StringFormat="{}{0:#,0.00}"  />
-                <dg:DataGridColumn
-                    Title="fecha"
-                    Width="100"
-                    HorizontalContentAlignment="End"
-                    PropertyName="FechaUpdate" />
                 <dg:DataGridColumn Width="30">
                     <dg:DataGridColumn.CellTemplate>
                         <DataTemplate>
