@@ -2,6 +2,7 @@
 
 using AppRuteoFactuSys;
 using AppRuteoFactuSys.Service.Interfaces;
+using Controls.UserDialogs.Maui;
 
 namespace AppRuteoFactuSys.Views;
 
@@ -10,17 +11,19 @@ public partial class LoginPage : ContentPage
     private readonly IClienteService _clienteService;
     private readonly IPreventaService _preventaService;
     private readonly IProductoService _productoService;
-    public LoginPage(IClienteService clienteService, IPreventaService preventaService, IProductoService productoService)
+    private readonly IUserDialogs _userDialogs;
+    public LoginPage(IClienteService clienteService, IPreventaService preventaService, IProductoService productoService, IUserDialogs userDialogs)
 	{
 		InitializeComponent();
         NavigationPage.SetHasNavigationBar(this, false);
 
         txtUserName.Text = "Admin";
-        //txtPass.Text = "852";
+        txtPass.Text = "852";
 
         _clienteService = clienteService;
         _preventaService = preventaService;
         _productoService = productoService; 
+        _userDialogs = userDialogs;
     }
 
     private async void btnIniciar_Clicked(object sender, EventArgs e)
@@ -38,7 +41,7 @@ public partial class LoginPage : ContentPage
             if (Application.Current != null)
             {
                 await Navigation.PopAsync();
-                Application.Current.MainPage.Navigation.PushAsync(new MainPage(_clienteService, _preventaService, _productoService));
+                Application.Current.MainPage.Navigation.PushAsync(new MainPage(_clienteService, _preventaService, _productoService,_userDialogs));
             }
         }
         else

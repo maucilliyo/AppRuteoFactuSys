@@ -75,6 +75,7 @@
                     HorizontalContentAlignment="End"
                     PropertyName="TotalComprobante"
                     StringFormat="{}{0:#,0.00}"  />
+
                 <dg:DataGridColumn Width="30">
                     <dg:DataGridColumn.CellTemplate>
                         <DataTemplate>
@@ -85,6 +86,19 @@
                         </DataTemplate>
                     </dg:DataGridColumn.CellTemplate>
                 </dg:DataGridColumn>
+
+                <dg:DataGridColumn Width="30">
+                    <dg:DataGridColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Text="L"
+                                    BackgroundColor="Green"
+                                    Command="{Binding BindingContext.verPdfCommand,
+                                    Source={x:Reference dgPreventas}}"
+                                    CommandParameter="{Binding .}" />
+                        </DataTemplate>
+                    </dg:DataGridColumn.CellTemplate>
+                </dg:DataGridColumn>
+
             </dg:DataGrid.Columns>
         </dg:DataGrid>
     </Grid>

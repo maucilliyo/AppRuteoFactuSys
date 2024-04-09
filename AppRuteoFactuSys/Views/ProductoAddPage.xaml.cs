@@ -10,9 +10,18 @@ public partial class ProductoAddPage : ContentPage
 	private  readonly IProductoService _productoService;
     public event EventHandler<Producto>  SeleccionadoEvent;
     public ICommand SendSelectedDataCommand { get; private set; }
+    public bool IsRefreshing { get; set; }
+    public Command RefreshCommand { get; set; }
     public ProductoAddPage(IProductoService productoService )
 	{
-		InitializeComponent();
+        RefreshCommand = new Command(async () =>
+        {
+            await CargarProductos();
+
+            IsRefreshing = false;
+            OnPropertyChanged(nameof(IsRefreshing));
+        });
+        InitializeComponent();
 		_productoService = productoService;
         SendSelectedDataCommand = new Command(SendSelectedData);
         BindingContext = this;

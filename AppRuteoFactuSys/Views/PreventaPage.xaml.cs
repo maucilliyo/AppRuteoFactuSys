@@ -1,7 +1,9 @@
+using Android.Text;
 using AppRuteoFactuSys.Models;
 using AppRuteoFactuSys.MySql;
 using AppRuteoFactuSys.Service;
 using AppRuteoFactuSys.Service.Interfaces;
+using Inventario.Views;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -62,9 +64,23 @@ namespace AppRuteoFactuSys.Views
                     cliente = await _clienteService.GetByCedula("0");
                 }
                 await Cargarlineas();
-                
+
                 alreadyLoaded = true;
             }
+        }
+        //VALIDA EL BOTON CERRAR DEL TELEFONO
+        protected override bool OnBackButtonPressed()
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                var response = await DisplayAlert("AVISO", "¿Está seguro de salir sin guardar?", "Sí", "No");
+                if (response)
+                {
+                    await Navigation.PopAsync();
+                }
+            });
+            // Devuelve true para indicar que has manejado el evento y que no debe cerrarse la página automáticamente
+            return true;
         }
         private async Task Cargarlineas()
         {
@@ -114,8 +130,43 @@ namespace AppRuteoFactuSys.Views
             lblNombreCliente.Text = clienteSeleccionado.Nombre;
             lblTipoCliente.Text = clienteSeleccionado.TipoPrecio;
         }
-        private void ProductoAddPage_SeleccionadoEvent(object sender, Producto productoSeleccionado)
+        private async void ProductoAddPage_SeleccionadoEvent(object sender, Producto productoSeleccionado)
         {
+            bool isNumbre = false;
+            decimal cantidad = 1;
+            string result;
+            while (!isNumbre)
+            {
+                try
+                {
+                    result = await DisplayPromptAsync("Aviso", "Digite la cantidad", "Aceptar", "Cancelar", "Cantidad", keyboard: Keyboard.Numeric);
+                    if (result == "")
+                    {
+                        isNumbre = false;
+                    }
+                    else if (string.IsNullOrEmpty(result))
+                    {
+                        isNumbre = false;
+                    }
+                    else if (!int.TryParse(result, out int value) && value > 0)
+                    {
+                        // El valor es válido, haz algo con él
+                        isNumbre = false;
+                    }
+                    else
+                    {
+                        isNumbre = true;
+                        cantidad = Convert.ToInt16(result);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await DisplayAlert("Aviso", "error en cantidad "+ ex.Message, "Aceptar");
+                    isNumbre = false;
+                }
+
+            }
+
             //VALIDAR EL TIPO DE PRECIO DEL CLIENTE
             if (cliente.TipoPrecio == "A")
                 productoSeleccionado.PrecioVenta = productoSeleccionado.PrecioVentaA;
@@ -129,7 +180,7 @@ namespace AppRuteoFactuSys.Views
                 {
                     if (item.Codpro == productoSeleccionado.CodPro)
                     {
-                        item.Cantidad += 1;
+                        item.Cantidad += cantidad;
                     }
                 }
             }
@@ -138,7 +189,7 @@ namespace AppRuteoFactuSys.Views
                 // Si no existe, crea un nuevo elemento
                 PreventaLineas linea = new()
                 {
-                    Cantidad = 1,
+                    Cantidad = cantidad,
                     CodeCabys = productoSeleccionado.CodigoCabys,
                     CodigoImpuesto = productoSeleccionado.CodigoImpuesto,
                     CodigoTarifa = productoSeleccionado.CodigoTarifa,

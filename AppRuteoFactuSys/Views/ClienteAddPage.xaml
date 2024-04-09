@@ -52,6 +52,7 @@
             PageSize="100"
             IsClippedToBounds="False"
             IsRefreshing="{Binding IsRefreshing}"
+            PullToRefreshCommand="{Binding RefreshCommand}"
             SelectedItem="{Binding SelectedProducto}"
             SelectionEnabled="True">
             <dg:DataGrid.NoDataView>

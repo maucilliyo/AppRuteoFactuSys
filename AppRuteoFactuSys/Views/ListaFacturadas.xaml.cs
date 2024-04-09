@@ -2,6 +2,7 @@ using AppRuteoFactuSys.Models;
 using AppRuteoFactuSys.MySql;
 using AppRuteoFactuSys.Service;
 using AppRuteoFactuSys.Service.Interfaces;
+using Controls.UserDialogs.Maui;
 using System.Windows.Input;
 
 namespace AppRuteoFactuSys.Views;
@@ -44,7 +45,8 @@ public partial class ListaFacturadas : ContentPage
                                            // Hacer algo con rowData
         var preventa = await _preventaService.GetById(rowData.LocalID);
 
-        ImpresionService.ImprimirTicket(preventa);
+        await ImpresionService.ImprimirTicket(preventa);
+
     }
     private async Task CargarFacturadas()
     {
@@ -60,7 +62,6 @@ public partial class ListaFacturadas : ContentPage
             await Navigation.PopAsync();
         }
         //VALIDAR SI LA BD SE CARGO BIEN
-        //var products = await _clienteRepository.GetClientes();
         var products = await _preventaService.Listar(true);
         dgPreventas.ItemsSource = products;
     }

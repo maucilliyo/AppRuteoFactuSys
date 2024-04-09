@@ -3,6 +3,7 @@ using AppRuteoFactuSys.Service;
 using AppRuteoFactuSys.Service.Interfaces;
 using AppRuteoFactuSys.SqlLite;
 using AppRuteoFactuSys.Views;
+using Controls.UserDialogs.Maui;
 using Inventario.Views;
 
 namespace AppRuteoFactuSys
@@ -12,12 +13,14 @@ namespace AppRuteoFactuSys
         private readonly IClienteService _clienteService;
         private readonly IPreventaService _preventaService;
         private readonly IProductoService _productoService;
-        public MainPage(IClienteService clienteService, IPreventaService preventaService, IProductoService productoService)
+        private readonly IUserDialogs _userDialogs;
+        public MainPage(IClienteService clienteService, IPreventaService preventaService, IProductoService productoService, IUserDialogs userDialogs)
         {
             InitializeComponent();
             _clienteService = clienteService;
             _preventaService = preventaService;
             _productoService = productoService;
+            _userDialogs = userDialogs;
         }
         protected async override void OnAppearing()
         {
@@ -126,14 +129,18 @@ namespace AppRuteoFactuSys
 
         private async void btnFacturadas_Clicked(object sender, EventArgs e)
         {
+            _userDialogs.ShowLoading();
             ListaFacturadas listaFacturadas = new(_preventaService, _clienteService, _productoService);
 
             await Navigation.PushAsync(new NavigationPage(listaFacturadas));
+            _userDialogs.HideHud();
         }
 
         private async void btnPreventa_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new NavigationPage(new MenuPreventaPage( _preventaService, _clienteService, _productoService)));
+            _userDialogs.ShowLoading();
+            await Navigation.PushAsync(new NavigationPage(new MenuPreventaPage( _preventaService, _clienteService, _productoService, _userDialogs)));
+            _userDialogs.HideHud();
         }
     }
 

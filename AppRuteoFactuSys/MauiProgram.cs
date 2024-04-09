@@ -3,6 +3,7 @@ using AppRuteoFactuSys.Service;
 using AppRuteoFactuSys.Service.Interfaces;
 using AppRuteoFactuSys.SqlLite;
 using AppRuteoFactuSys.Views;
+using Controls.UserDialogs.Maui;
 using Microsoft.Extensions.Logging;
 
 namespace AppRuteoFactuSys
@@ -14,6 +15,22 @@ namespace AppRuteoFactuSys
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseUserDialogs(true, () =>
+                {
+#if ANDROID
+                    var fontFamily = "OpenSans-Regular.ttf";
+#else
+                    var fontFamily = "OpenSans-Regular";
+#endif
+                    AlertConfig.DefaultMessageFontFamily = fontFamily;
+                    AlertConfig.DefaultUserInterfaceStyle = UserInterfaceStyle.Dark;
+                    AlertConfig.DefaultPositiveButtonTextColor = Colors.Purple;
+                    ConfirmConfig.DefaultMessageFontFamily = fontFamily;
+                    ActionSheetConfig.DefaultMessageFontFamily = fontFamily;
+                    ToastConfig.DefaultMessageFontFamily = fontFamily;
+                    SnackbarConfig.DefaultMessageFontFamily = fontFamily;
+                    HudDialogConfig.DefaultMessageFontFamily = fontFamily;
+                })
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

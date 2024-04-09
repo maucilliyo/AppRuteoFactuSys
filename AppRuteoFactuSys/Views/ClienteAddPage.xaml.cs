@@ -14,10 +14,18 @@ namespace AppRuteoFactuSys.Views
 
         public event EventHandler<Cliente> ClienteSeleccionadoEvent;
         public bool IsRefreshing { get; set; }
+        public Command RefreshCommand { get; set; }
         public ICommand SendSelectedDataCommand { get; private set; }
 
         public ClienteAddPage(IClienteService clienteService)
         {
+            RefreshCommand = new Command(async () =>
+            {
+                await CargarClientes();
+
+                IsRefreshing = false;
+                OnPropertyChanged(nameof(IsRefreshing));
+            });
             InitializeComponent();
 
             _clienteService = clienteService;

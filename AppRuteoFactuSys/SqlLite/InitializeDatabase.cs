@@ -189,6 +189,7 @@
                         // Borrar la tabla proforma si existe
                         string dropProformaTable = @"DROP TABLE IF EXISTS lineasproforma;
                                                      DROP TABLE IF EXISTS clientes;
+                                                     DROP TABLE IF EXISTS productos;
                                                      DROP TABLE IF EXISTS proforma;";
                         using (var command = connection.CreateCommand())
                         {

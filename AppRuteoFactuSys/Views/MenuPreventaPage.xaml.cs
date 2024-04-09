@@ -1,5 +1,6 @@
 using AppRuteoFactuSys.Service.Interfaces;
 using AppRuteoFactuSys.SqlLite;
+using Controls.UserDialogs.Maui;
 
 namespace AppRuteoFactuSys.Views;
 
@@ -9,15 +10,17 @@ public partial class MenuPreventaPage : ContentPage
     private readonly IPreventaService _preventaService;
     private readonly IClienteService _clienteService;
     private readonly IProductoService _productoService;
+    private readonly IUserDialogs _userDialogs;
 
     private bool isInitialPageLoad = true;
 
-    public MenuPreventaPage(IPreventaService preventaService, IClienteService clienteService, IProductoService productoServic)
+    public MenuPreventaPage(IPreventaService preventaService, IClienteService clienteService, IProductoService productoServic, IUserDialogs userDialogs)
     {
         InitializeComponent();
         _preventaService = preventaService;
         _clienteService = clienteService;
         _productoService = productoServic;
+         _userDialogs= userDialogs;
     }
     protected async override void OnAppearing()
     {
@@ -72,17 +75,24 @@ public partial class MenuPreventaPage : ContentPage
             return;
         }
         //llamar a la lista
+        _userDialogs.ShowLoading();
+
         await Navigation.PushAsync(new ListaPreventaPage(_preventaService, _clienteService, _productoService,
                                    cbProvincias.SelectedItem.ToString(), cbCantones.SelectedItem.ToString(), cbDistritos.SelectedItem.ToString()));
+        _userDialogs.HideHud();
     }
 
     private async void btnNueva_Clicked(object sender, EventArgs e)
     {
+        _userDialogs.ShowLoading();
         await Navigation.PushAsync(new PreventaPage(_clienteService, _preventaService, _productoService));
+        _userDialogs.HideHud();
     }
 
     private async void btnVerTodos_Clicked(object sender, EventArgs e)
     {
+        _userDialogs.ShowLoading();
         await Navigation.PushAsync(new ListaPreventaPage(_preventaService, _clienteService, _productoService,null, null, null));
+        _userDialogs.HideHud();
     }
 }

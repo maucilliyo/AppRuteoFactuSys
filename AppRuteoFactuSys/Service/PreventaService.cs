@@ -135,13 +135,13 @@ namespace AppRuteoFactuSys.Service
         {
             return await _sqlLitePreventaRepository.GetPreventaByNProforma(nProforma);
         }
-        public async Task<List<Preventa>> Listar(bool? entregado = null)
-        {
-            return await _sqlLitePreventaRepository.GetPreventas(entregado);
-        }
         public async Task EliminarFacturadas()
         {
            await _sqlLitePreventaRepository.EliminarFacturadas();
+        }
+        public async Task<List<Preventa>> Listar(bool? entregado = null)
+        {
+            return await _sqlLitePreventaRepository.GetPreventas(entregado);
         }
         public async Task<List<Preventa>> Listar(string provincia, string canton, string distrito, bool? entregado = null)
         {
