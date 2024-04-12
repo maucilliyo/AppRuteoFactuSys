@@ -38,15 +38,33 @@ public partial class ListaFacturadas : ContentPage
         base.OnAppearing();
         await CargarFacturadas();
     }
+    private bool _isLoading = false; // Variable para controlar si la aplicación está cargando o no
+
     private async void ExecuteSendSelectedDataCommand(object parameter)
     {
-        // Aquí puedes manejar la lógica para procesar los datos de la fila seleccionada.
-        var rowData = (Preventa)parameter; // Asegúrate de cambiar YourDataType al tipo de objeto de tus datos
-                                           // Hacer algo con rowData
-        var preventa = await _preventaService.GetById(rowData.LocalID);
+        // Verifica si ya se está cargando para evitar iniciar múltiples instancias de la misma tarea
+        if (!_isLoading)
+        {
+            _isLoading = true; // Marca la aplicación como cargando
+          
+            // Muestra un indicador visual de carga, por ejemplo, mostrando una barra de progreso
+            // o un indicador de carga giratorio en la interfaz de usuario
 
-        await ImpresionService.ImprimirTicket(preventa);
+            try
+            {
+                var rowData = (Preventa)parameter;
+                var preventa = await _preventaService.GetById(rowData.LocalID);
+                var impresionExitosa = await ImpresionService.ImprimirTicket(preventa);
 
+            }
+            finally
+            {
+                _isLoading = false; // Marca la aplicación como ya no cargando
+                //UserDialogs.Instance.HideHud();
+                // Oculta el indicador visual de carga una vez que la tarea ha terminado
+                // Por ejemplo, ocultando la barra de progreso o el indicador de carga giratorio
+            }
+        }
     }
     private async Task CargarFacturadas()
     {

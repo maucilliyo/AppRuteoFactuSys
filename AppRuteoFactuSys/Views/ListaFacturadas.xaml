@@ -32,6 +32,8 @@
         </Grid>
         <!--  PANEL PRINCIPAL  -->
         <!--  DataGrid Cuenta  -->
+        <!-- Indicador de carga -->
+        <ActivityIndicator x:Name="indicador" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
         <dg:DataGrid
             x:Name="dgPreventas"
             Grid.Row="2"

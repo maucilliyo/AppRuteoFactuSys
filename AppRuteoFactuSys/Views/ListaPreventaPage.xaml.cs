@@ -63,7 +63,7 @@ public partial class ListaPreventaPage : ContentPage
 
         //IMPRIMIR
         var preventa = await _preventaService.GetById(rowData.LocalID);
-        ImpresionService.ImprimirTicket(preventa);
+        await ImpresionService.ImprimirTicket(preventa);
 
         UserDialogs.Instance.HideHud();
     }

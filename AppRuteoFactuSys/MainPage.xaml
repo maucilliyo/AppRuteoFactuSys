@@ -44,6 +44,7 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Button
                     x:Name="btnPreventa"
@@ -101,7 +102,14 @@
                 <!--  IMAGEN  -->
                 <Image Grid.Row="6" Source="fondo_menu.png" />
 
-
+                <Label
+                    Grid.Row="7"
+                    FontAttributes="Bold, Italic"
+                    HorizontalOptions="Center"
+                    FontSize="20"
+                    Text=" Distribuidora La Familia E R "
+                    TextColor="Black"
+                    VerticalOptions="Center" />
             </Grid>
 
         </VerticalStackLayout>

@@ -18,7 +18,7 @@ public partial class LoginPage : ContentPage
         NavigationPage.SetHasNavigationBar(this, false);
 
         txtUserName.Text = "Admin";
-        txtPass.Text = "852";
+        //txtPass.Text = "852";
 
         _clienteService = clienteService;
         _preventaService = preventaService;
