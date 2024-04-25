@@ -1,4 +1,5 @@
 using AppRuteoFactuSys.Models;
+using CommunityToolkit.Maui.Core.Platform;
 
 namespace AppRuteoFactuSys.Views;
 
@@ -15,6 +16,7 @@ public partial class EditarLineaPage : ContentPage
 	{
 		lblProducto.Text = _linea.Detalle; 
         txtCantidad.Text = _linea.Cantidad.ToString();
+        lblPrecio.Text = (_linea.PrecioUnidad * (1 + _linea.Porimpuesto)).ToString("N2");
 	}
 
     private void txtCantidad_Unfocused(object sender, FocusEventArgs e)
@@ -55,6 +57,11 @@ public partial class EditarLineaPage : ContentPage
     {
         _linea.Cantidad = Convert.ToDecimal(txtCantidad.Text);
         PreventaPage.load.ModificarLinea(_linea,"mod");
+
+        if (KeyboardExtensions.IsSoftKeyboardShowing(txtCantidad))
+        {
+            await KeyboardExtensions.HideKeyboardAsync(txtCantidad, default);
+        }
         await Navigation.PopAsync();
     }
 

@@ -132,7 +132,7 @@
                                    HorizontalContentAlignment="End"
                                    PropertyName="TotalLinea" />
 
-                <dg:DataGridColumn Width="20">
+                <dg:DataGridColumn Width="35">
                     <dg:DataGridColumn.CellTemplate>
                         <DataTemplate>
                             <Button Text="E"

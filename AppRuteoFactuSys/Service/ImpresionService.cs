@@ -74,7 +74,7 @@ namespace AppRuteoFactuSys.Service
                  .SetFontSize(12)
                  .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));
                 //telefonos
-                document.Add(new Paragraph("Tel:3733-4394")
+                document.Add(new Paragraph("Tel:8733-4394")
                  .SetFont(boldFont)
                  .SetFixedLeading(10)
                  .SetFontSize(12)

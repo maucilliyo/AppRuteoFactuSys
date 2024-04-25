@@ -72,5 +72,10 @@ namespace AppRuteoFactuSys.Views
             var clientes = await _clienteService.Listar(txtBuscar.Text);
             dgClientes.ItemsSource = clientes;
         }
+
+        private void txtBuscar_Completed(object sender, EventArgs e)
+        {
+            btnBuscar_Clicked(sender, e);
+        }
     }
 }

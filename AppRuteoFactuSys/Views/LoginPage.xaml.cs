@@ -2,6 +2,7 @@
 
 using AppRuteoFactuSys;
 using AppRuteoFactuSys.Service.Interfaces;
+using CommunityToolkit.Maui.Core.Platform;
 using Controls.UserDialogs.Maui;
 
 namespace AppRuteoFactuSys.Views;
@@ -30,7 +31,10 @@ public partial class LoginPage : ContentPage
     {
         string user = txtUserName.Text;
         string pass = txtPass.Text;
-        
+        if (KeyboardExtensions.IsSoftKeyboardShowing(txtPass))
+        {
+            await KeyboardExtensions.HideKeyboardAsync(txtPass, default);
+        }
         if (user == string.Empty || pass == string.Empty || user == null || pass == null)
         {
             await DisplayAlert("Aviso", "Debe ingresar usuario y contraseña", "Aceptar");

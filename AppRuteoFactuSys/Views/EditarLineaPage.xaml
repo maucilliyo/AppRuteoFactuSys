@@ -15,6 +15,15 @@
             VerticalOptions="Center"
             HorizontalOptions="Center" />
 
+        <StackLayout Margin="0,20,0,0"
+                     VerticalOptions="Center"
+                     HorizontalOptions="Center"
+                     Orientation="Horizontal">
+
+            <Label Text="Precio Unidad:"/>
+
+            <Label Margin="10,0,0,0" x:Name="lblPrecio" />
+        </StackLayout>
 
         <Entry
             x:Name="txtCantidad"

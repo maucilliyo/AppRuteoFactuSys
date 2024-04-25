@@ -1,4 +1,7 @@
+using Android.Content;
+using Android.InputMethodServices;
 using Android.Text;
+using Android.Views.InputMethods;
 using AppRuteoFactuSys.Models;
 using AppRuteoFactuSys.MySql;
 using AppRuteoFactuSys.Service;
@@ -132,41 +135,7 @@ namespace AppRuteoFactuSys.Views
         }
         private async void ProductoAddPage_SeleccionadoEvent(object sender, Producto productoSeleccionado)
         {
-            bool isNumbre = false;
             decimal cantidad = 1;
-            string result;
-            while (!isNumbre)
-            {
-                try
-                {
-                    result = await DisplayPromptAsync("Aviso", "Digite la cantidad", "Aceptar", "Cancelar", "Cantidad", keyboard: Keyboard.Numeric);
-                    if (result == "")
-                    {
-                        isNumbre = false;
-                    }
-                    else if (string.IsNullOrEmpty(result))
-                    {
-                        isNumbre = false;
-                    }
-                    else if (!int.TryParse(result, out int value) && value > 0)
-                    {
-                        // El valor es válido, haz algo con él
-                        isNumbre = false;
-                    }
-                    else
-                    {
-                        isNumbre = true;
-                        cantidad = Convert.ToInt16(result);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    await DisplayAlert("Aviso", "error en cantidad "+ ex.Message, "Aceptar");
-                    isNumbre = false;
-                }
-
-            }
-
             //VALIDAR EL TIPO DE PRECIO DEL CLIENTE
             if (cliente.TipoPrecio == "A")
                 productoSeleccionado.PrecioVenta = productoSeleccionado.PrecioVentaA;
@@ -205,6 +174,8 @@ namespace AppRuteoFactuSys.Views
                 };
 
                 // Agrega el nuevo elemento a la lista Lineas
+                await Navigation.PopAsync();
+                OpenModifyLine(linea);
                 Lineas.Add(linea);
             }
 
@@ -371,5 +342,7 @@ namespace AppRuteoFactuSys.Views
             var preventa = await _preventaService.GetById(idPreventa);
             ImpresionService.ImprimirTicket(preventa);
         }
+ 
+
     }
 }

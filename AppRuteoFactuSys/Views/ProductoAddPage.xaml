@@ -6,11 +6,11 @@
              Title="ProductoAddPage">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
+            <RowDefinition Height="50" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <!-- BUSCAR -->
-        <Grid Grid.Row="0">
+        <Grid Margin="0,20,0,0" Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="90" />
@@ -23,10 +23,12 @@
                 x:Name="txtBuscar"
                 Grid.Column="0"
                 Margin="5,0,0,0"
+                FontSize="18"
                 CursorPosition="1"
                 HorizontalOptions="Start"
                 Placeholder="Nombre a buscar"
-                WidthRequest="300" />
+                WidthRequest="300"
+                Completed="txtBuscar_Completed"/>
             <Button
                 x:Name="btnBuscar"
                 Clicked="btnBuscar_Clicked"
@@ -44,7 +46,7 @@
         <dg:DataGrid
             x:Name="dgProductos"
             Grid.Row="1"
-            Margin="3,10,3,0"
+            Margin="3,30,3,0"
             BackgroundColor="#E8EED4"
             BorderColor="#fff"
             HeaderBackground="#E8EED4"
@@ -74,7 +76,7 @@
                     HorizontalContentAlignment="Start"
                     PropertyName="Detalle" />
 
-                <dg:DataGridColumn Width="30">
+                <dg:DataGridColumn Width="35">
                     <dg:DataGridColumn.CellTemplate>
                         <DataTemplate>
                             <Button Text="*"

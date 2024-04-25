@@ -76,10 +76,11 @@
                     PropertyName="TotalComprobante"
                     StringFormat="{}{0:#,0.00}"  />
 
-                <dg:DataGridColumn Width="30">
+                <dg:DataGridColumn Width="35">
                     <dg:DataGridColumn.CellTemplate>
                         <DataTemplate>
                             <Button Text="M"
+                                    FontSize="10"
                                     Command="{Binding BindingContext.SendSelectedDataCommand,
                                     Source={x:Reference dgPreventas}}"
                                     CommandParameter="{Binding .}" />
@@ -87,10 +88,11 @@
                     </dg:DataGridColumn.CellTemplate>
                 </dg:DataGridColumn>
 
-                <dg:DataGridColumn Width="30">
+                <dg:DataGridColumn Width="35">
                     <dg:DataGridColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Text="L"
+                            <Button Text="I"
+                                    FontSize="12"
                                     BackgroundColor="Green"
                                     Command="{Binding BindingContext.verPdfCommand,
                                     Source={x:Reference dgPreventas}}"

@@ -28,13 +28,13 @@ public partial class ProductoAddPage : ContentPage
 
         CargarProductos();
     }
-    private void SendSelectedData(object parameter)
+    private async void SendSelectedData(object parameter)
     {
         Producto Seleccionado = (Producto)parameter;
         // Disparar el evento y pasar el cliente seleccionado como argumento
         SeleccionadoEvent?.Invoke(this, Seleccionado);
         // Volver a la página anterior (PreventaPage)
-        Navigation.PopAsync();
+        await Navigation.PopAsync();
     }
     private async Task CargarProductos()
     {
@@ -62,5 +62,10 @@ public partial class ProductoAddPage : ContentPage
     {
         var products = await _productoService.Listar(txtBuscar.Text);
         dgProductos.ItemsSource = products;
+    }
+
+    private void txtBuscar_Completed(object sender, EventArgs e)
+    {
+        btnBuscar_Clicked(sender, e);
     }
 }
