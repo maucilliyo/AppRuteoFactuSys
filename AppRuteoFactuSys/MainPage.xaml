@@ -26,6 +26,7 @@
                                Color="Green"
                                WidthRequest="60"
                                HeightRequest="60" />
+
             <Label x:Name="lblActivityIndicatorText"
                    Text="Sincronizando..."
                    IsVisible="False"

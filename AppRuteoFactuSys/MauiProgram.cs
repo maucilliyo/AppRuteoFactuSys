@@ -48,8 +48,8 @@ namespace AppRuteoFactuSys
             builder.Services.AddTransient<LoginPage>();
 
             builder.Services.AddScoped<IClienteService, ClienteService>();
-            builder.Services.AddSingleton<IPreventaService,PreventaService>();
-            builder.Services.AddSingleton<IProductoService,ProductoService>();
+            builder.Services.AddSingleton<IPreventaService, PreventaService>();
+            builder.Services.AddSingleton<IProductoService, ProductoService>();
             //MySql
             builder.Services.AddSingleton<PreventaRepository>();
             builder.Services.AddSingleton<ClienteRepository>();
