@@ -1,0 +1,23 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+    <NoWarn>$(NoWarn);NU1507</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="akgul.Maui.DataGrid" Version="3.0.0" />
+    <PackageVersion Include="CommunityToolkit.Maui.Core" Version="8.0.1" />
+    <PackageVersion Include="Controls.UserDialogs.Maui" Version="1.5.4" />
+    <PackageVersion Include="Dapper" Version="2.1.35" />
+    <PackageVersion Include="itext7" Version="8.0.3" />
+    <PackageVersion Include="itext7.bouncy-castle-adapter" Version="8.0.3" />
+    <PackageVersion Include="Microsoft.Data.Sqlite.Core" Version="9.0.4" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.4" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="9.0.4" />
+    <PackageVersion Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.20" />
+    <PackageVersion Include="MySqlConnector" Version="2.3.6" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageVersion Include="UraniumUI" Version="2.12.1" />
+    <PackageVersion Include="UraniumUI.Material" Version="2.12.1" />
+  </ItemGroup>
+</Project>
