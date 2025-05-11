@@ -107,7 +107,6 @@
         <!--  Encabezados fijos  -->
         <Grid
             Grid.Row="1"
-            Margin="3,0,3,0"
             RowDefinitions="Auto,*">
             <!--  Header  -->
             <Grid
@@ -165,7 +164,7 @@
                             <Label
                                 Grid.Column="2"
                                 HorizontalTextAlignment="End"
-                                Text="{Binding TotalLinea, StringFormat='{}{0:#,0.00}'}"
+                                Text="{Binding TotalLinea, StringFormat='{}{0:#,0}'}"
                                 VerticalTextAlignment="Center" />
 
                             <Button
