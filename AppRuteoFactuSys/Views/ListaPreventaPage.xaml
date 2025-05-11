@@ -4,11 +4,11 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
-    Padding="2,10,5,2">
+    Padding="2,0,5,2">
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
+            <RowDefinition Height="10" />
             <RowDefinition Height="40" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -107,11 +107,11 @@
 
                             <Button
                                 Grid.Column="3"
-                              BackgroundColor="Transparent"
+                                BackgroundColor="Transparent"
                                 Command="{Binding BindingContext.verPdfCommand, Source={x:Reference cvPreventas}}"
                                 CommandParameter="{Binding .}"
                                 FontSize="12"
-                                Text="📄" />
+                                Text="🖨" />
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
