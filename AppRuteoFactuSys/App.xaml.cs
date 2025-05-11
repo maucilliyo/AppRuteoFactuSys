@@ -1,5 +1,6 @@
 ﻿using Android.Content.PM;
 using AppRuteoFactuSys.SqlLite;
+using Microsoft.Maui.Devices;
 
 namespace AppRuteoFactuSys
 {

@@ -89,12 +89,12 @@ public partial class ListaPreventaPage : ContentPage
         if (_provincia == null)
         {
             var lista = await _preventaService.Listar(false);
-            dgPreventas.ItemsSource = lista;
+            cvPreventas.ItemsSource = lista;
         }
         else
         {
             var lista = await _preventaService.Listar(_provincia, _canton, _distrito, false);
-            dgPreventas.ItemsSource = lista;
+            cvPreventas.ItemsSource = lista;
         }
     }
     private async void btnNuevaProforma_Clicked(object sender, EventArgs e)

@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
-             x:Class="AppRuteoFactuSys.Views.ProductoAddPage"
-             Title="ProductoAddPage">
+<ContentPage
+    x:Class="AppRuteoFactuSys.Views.ProductoAddPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
+    Title="ProductoAddPage">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
+            <RowDefinition Height="55" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <!-- BUSCAR -->
-        <Grid Margin="0,20,0,0" Grid.Row="0">
+        <!--  BUSCAR  -->
+        <Grid Grid.Row="0" Margin="0,5,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="90" />
@@ -23,16 +24,16 @@
                 x:Name="txtBuscar"
                 Grid.Column="0"
                 Margin="5,0,0,0"
-                FontSize="18"
+                Completed="txtBuscar_Completed"
                 CursorPosition="1"
+                FontSize="18"
                 HorizontalOptions="Start"
                 Placeholder="Nombre a buscar"
-                WidthRequest="300"
-                Completed="txtBuscar_Completed"/>
+                WidthRequest="300" />
             <Button
                 x:Name="btnBuscar"
-                Clicked="btnBuscar_Clicked"
                 Grid.Column="1"
+                Clicked="btnBuscar_Clicked"
                 FontSize="10"
                 HeightRequest="30"
                 HorizontalOptions="Center"
@@ -41,52 +42,85 @@
                 WidthRequest="45" />
 
         </Grid>
-        <!-- PANEL PRINCIPAL -->
-        <!-- DataGrid Cuenta -->
-        <dg:DataGrid
-            x:Name="dgProductos"
-            Grid.Row="1"
-            Margin="3,30,3,0"
-            BackgroundColor="#E8EED4"
-            BorderColor="#fff"
-            HeaderBackground="#E8EED4"
-            HeaderHeight="25"
-            PaginationEnabled="True"
-            PageSize="100"
-            IsClippedToBounds="False"
-            IsRefreshing="{Binding IsRefreshing}"
-            PullToRefreshCommand="{Binding RefreshCommand}"
-            SelectedItem="{Binding SelectedProducto}"
-            SelectionEnabled="True">
-            <dg:DataGrid.NoDataView>
-                <Label
-                    BackgroundColor="White"
-                    HorizontalOptions="Center"
-                    Text="NO HAY DATOS"
-                    VerticalOptions="Center" />
-            </dg:DataGrid.NoDataView>
-            <dg:DataGrid.Columns>
-                <dg:DataGridColumn
-                    Title="codigo"
-                    Width="80"
-                    HorizontalContentAlignment="Start"
-                    PropertyName="CodPro" />
-                <dg:DataGridColumn
-                    Title="Detalle"
-                    HorizontalContentAlignment="Start"
-                    PropertyName="Detalle" />
+        <!--  PANEL PRINCIPAL  -->
+        <!--  LISTA DE PRODUCTOS  -->
+        <RefreshView
+            Grid.Row="2"
+            Command="{Binding RefreshCommand}"
+            IsRefreshing="{Binding IsRefreshing}">
 
-                <dg:DataGridColumn Width="35">
-                    <dg:DataGridColumn.CellTemplate>
+            <!--  Contenedor general con encabezado fijo  -->
+            <Grid>
+                <!--  Encabezado fijo  -->
+                <Grid
+                    Padding="5"
+                    BackgroundColor="#E8EED4"
+                    ColumnDefinitions="80,*,35"
+                    RowDefinitions="Auto, *">
+
+                    <Label
+                        Grid.Column="0"
+                        FontAttributes="Bold"
+                        Text="Código"
+                        VerticalTextAlignment="Center" />
+                    <Label
+                        Grid.Column="1"
+                        FontAttributes="Bold"
+                        Text="Detalle"
+                        VerticalTextAlignment="Center" />
+                    <Label Grid.Column="2" Text=" " />
+                </Grid>
+                <!--  Lista de productos  -->
+                <CollectionView
+                    x:Name="dgProductos"
+                    Grid.Row="1"
+                    Margin="0,30,0,0"
+                    BackgroundColor="White"
+                    ItemsSource="{Binding Productos}"
+                    SelectedItem="{Binding SelectedProducto}"
+                    SelectionMode="Single">
+
+                    <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Button Text="*"
-                                    Command="{Binding BindingContext.SendSelectedDataCommand,
-                                    Source={x:Reference dgProductos}}"
-                                    CommandParameter="{Binding .}" />
+                            <Grid
+                                Padding="3"
+                                BackgroundColor="White"
+                                ColumnDefinitions="80, *, 35"
+                                RowSpacing="0">
+                                <Label
+                                    Grid.Column="0"
+                                    Text="{Binding CodPro}"
+                                    VerticalTextAlignment="Center" />
+
+                                <Label
+                                    Grid.Column="1"
+                                    Text="{Binding Detalle}"
+                                    VerticalTextAlignment="Center" />
+
+                                <Button
+                                    Grid.Column="2"
+                                    Padding="0"
+                                    BackgroundColor="Transparent"
+                                    Command="{Binding BindingContext.SendSelectedDataCommand, Source={x:Reference dgProductos}}"
+                                    CommandParameter="{Binding .}"
+                                    Text="➕" />
+
+                            </Grid>
                         </DataTemplate>
-                    </dg:DataGridColumn.CellTemplate>
-                </dg:DataGridColumn>
-            </dg:DataGrid.Columns>
-        </dg:DataGrid>
+                    </CollectionView.ItemTemplate>
+
+                    <!--  Sin datos  -->
+                    <CollectionView.EmptyView>
+                        <Label
+                            BackgroundColor="White"
+                            HorizontalOptions="Center"
+                            Text="NO HAY DATOS"
+                            VerticalOptions="Center" />
+                    </CollectionView.EmptyView>
+                </CollectionView>
+            </Grid>
+
+        </RefreshView>
+
     </Grid>
 </ContentPage>

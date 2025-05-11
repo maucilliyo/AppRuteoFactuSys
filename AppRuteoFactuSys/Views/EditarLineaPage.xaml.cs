@@ -1,5 +1,6 @@
 using AppRuteoFactuSys.Models;
 using CommunityToolkit.Maui.Core.Platform;
+using Microsoft.Maui.ApplicationModel;
 
 namespace AppRuteoFactuSys.Views;
 

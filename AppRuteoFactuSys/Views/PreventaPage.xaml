@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AppRuteoFactuSys.Views.PreventaPage"
-             xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
-             Padding="10,15,5,10">
+<ContentPage
+    x:Class="AppRuteoFactuSys.Views.PreventaPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
+    Padding="10,15,5,10">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -14,186 +15,236 @@
         </Grid.RowDefinitions>
 
         <StackLayout VerticalOptions="FillAndExpand">
-            <!-- Datos del Cliente -->
-            <Label Text="Datos del Cliente"
-                   FontSize="16"
-                   TextColor="Black"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center" />
+            <!--  Datos del Cliente  -->
+            <Label
+                FontAttributes="Bold"
+                FontSize="16"
+                HorizontalOptions="Center"
+                Text="Datos del Cliente"
+                TextColor="Black"
+                VerticalOptions="Center" />
 
-            <BoxView Margin="0,0,0,0"
-                     Color="Black"
-                     HeightRequest="0.5"
-                     HorizontalOptions="FillAndExpand" />
+            <BoxView
+                Margin="0,0,0,0"
+                HeightRequest="0.5"
+                HorizontalOptions="FillAndExpand"
+                Color="Black" />
 
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition  Width="*"/>
-                    <ColumnDefinition  Width="20"/>
-                    <ColumnDefinition  Width="45"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="45" />
                 </Grid.ColumnDefinitions>
 
                 <Editor
-                    Grid.Column="0"
-                    HeightRequest="60"
                     x:Name="lblNombreCliente"
-                    Text="Contado"
+                    Grid.Column="0"
                     FontSize="Small"
-                    TextColor="Black"/>
+                    HeightRequest="60"
+                    Text="Contado"
+                    TextColor="Black" />
 
-                <Label x:Name="lblTipoCliente"
-                       Grid.Column="1"
-                       Text="C"
-                       FontAttributes="Bold"
-                       FontSize="18"
-                       TextColor="Red"
-                       Padding="0,0,10,0"
-                       HorizontalOptions="Start"
-                       VerticalOptions="Center" />
+                <Label
+                    x:Name="lblTipoCliente"
+                    Grid.Column="1"
+                    Padding="0,0,10,0"
+                    FontAttributes="Bold"
+                    FontSize="18"
+                    HorizontalOptions="Start"
+                    Text="C"
+                    TextColor="Red"
+                    VerticalOptions="Center" />
 
-                <Button x:Name="btnListaCliente"
-                        HorizontalOptions="End"
-                        Grid.Column="2"
-                        Clicked="btnListaCliente_Clicked"
-                        FontSize="10"
-                        HeightRequest="30"
-                        BackgroundColor="#33C481"
-                        TextColor="Black"
-                        FontAttributes="Bold"
-                        Text="|||" />
+                <Button
+                    x:Name="btnListaCliente"
+                    Grid.Column="2"
+                    BackgroundColor="#33C481"
+                    Clicked="btnListaCliente_Clicked"
+                    FontAttributes="Bold"
+                    FontSize="10"
+                    HeightRequest="30"
+                    HorizontalOptions="End"
+                    Text="|||"
+                    TextColor="Black" />
 
             </Grid>
 
 
 
 
-            <BoxView Margin="0,0,0,0"
-                     Color="Black"
-                     HeightRequest="0.5"
-                     HorizontalOptions="FillAndExpand" />
+            <BoxView
+                Margin="0,0,0,0"
+                HeightRequest="0.5"
+                HorizontalOptions="FillAndExpand"
+                Color="Black" />
 
-            <!-- Actividad -->
-            <ActivityIndicator x:Name="activityIndicator"
-                               IsRunning="False"
-                               IsVisible="False"
-                               Color="Green"
-                               WidthRequest="60"
-                               HeightRequest="60" />
+            <!--  Actividad  -->
+            <ActivityIndicator
+                x:Name="activityIndicator"
+                HeightRequest="60"
+                IsRunning="False"
+                IsVisible="False"
+                WidthRequest="60"
+                Color="Green" />
 
-            <!-- Agregar producto -->
-            <Button x:Name="btnListaProductos"
-                    Clicked="btnListaProductos_Clicked"
-                    FontSize="10"
-                    HeightRequest="35"
-                    Margin="0,5,0,0"
-                    BackgroundColor="#1BA1E2"
-                    TextColor="Black"
-                    FontAttributes="Bold"
-                    Text="Agregar producto"
-                    WidthRequest="120" />
+            <!--  Agregar producto  -->
+            <Button
+                x:Name="btnListaProductos"
+                Margin="0,5,0,0"
+                BackgroundColor="#1BA1E2"
+                Clicked="btnListaProductos_Clicked"
+                FontAttributes="Bold"
+                FontSize="10"
+                HeightRequest="35"
+                Text="Agregar producto"
+                TextColor="Black"
+                WidthRequest="120" />
         </StackLayout>
 
 
-        <!-- DataGrid -->
-        <dg:DataGrid x:Name="dgLineas"
-                     Grid.Row="1"
-                     Margin="3,0,3,0"
-                     BackgroundColor="#E8EED4"
-                     BorderColor="#fff"
-                     HeaderBackground="#E8EED4"
-                     HeaderHeight="25"
-                     IsClippedToBounds="False"
-                     IsRefreshing="{Binding IsRefreshing}"
-                     SelectedItem="{Binding SelectedProducto}"
-                     PullToRefreshCommand="{Binding RefreshCommand}"
-                     ItemsSource="{Binding Lineas}"
-                     SelectionEnabled="True">
-            <dg:DataGrid.NoDataView>
-                <Label BackgroundColor="White"
-                       HorizontalOptions="Center"
-                       Text="NO HAY PRODUCTOS"
-                       VerticalOptions="Center" />
-            </dg:DataGrid.NoDataView>
+        <!--  DataGrid  -->
+        <!--  Encabezados fijos  -->
+        <Grid
+            Grid.Row="1"
+            Margin="3,0,3,0"
+            RowDefinitions="Auto,*">
+            <!--  Header  -->
+            <Grid
+                Padding="5"
+                BackgroundColor="#E8EED4"
+                ColumnDefinitions="*,50,65,35">
+                <Label
+                    Grid.Column="0"
+                    FontAttributes="Bold"
+                    Text="Detalle"
+                    VerticalTextAlignment="Center" />
+                <Label
+                    Grid.Column="1"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center"
+                    Text="Cant"
+                    VerticalTextAlignment="Center" />
+                <Label
+                    Grid.Column="2"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="End"
+                    Text="Total"
+                    VerticalTextAlignment="Center" />
+                <Label Grid.Column="3" Text=" " />
+            </Grid>
 
-            <dg:DataGrid.Columns>
-                <dg:DataGridColumn Title="Detalle"
-                                   HorizontalContentAlignment="Start"
-                                   PropertyName="Detalle" />
+            <!--  CollectionView  -->
+            <CollectionView
+                x:Name="dgLineas"
+                Grid.Row="1"
+                Margin="0"
+                IsEnabled="True"
+                ItemsSource="{Binding Lineas}"
+                SelectedItem="{Binding SelectedProducto}"
+                SelectionMode="Single">
 
-                <dg:DataGridColumn Title="Cant"
-                                   Width="50"
-                                   HorizontalContentAlignment="Center"
-                                   PropertyName="Cantidad" />
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid
+                            Padding="5"
+                            BackgroundColor="White"
+                            ColumnDefinitions="*,50,65,35"
+                            RowSpacing="0">
+                            <Label
+                                Grid.Column="0"
+                                Text="{Binding Detalle}"
+                                VerticalTextAlignment="Center" />
 
-                <dg:DataGridColumn Title="Total"
-                                   Width="65"
-                                   StringFormat="{}{0:#,0.00}"
-                                   HorizontalContentAlignment="End"
-                                   PropertyName="TotalLinea" />
+                            <Label
+                                Grid.Column="1"
+                                HorizontalTextAlignment="Center"
+                                Text="{Binding Cantidad}"
+                                VerticalTextAlignment="Center" />
 
-                <dg:DataGridColumn Width="35">
-                    <dg:DataGridColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Text="E"
-                                    Command="{Binding BindingContext.ModificarLineaCommand,
-                                    Source={x:Reference dgLineas}}"
-                                    CommandParameter="{Binding .}" />
-                        </DataTemplate>
-                    </dg:DataGridColumn.CellTemplate>
-                </dg:DataGridColumn>
-            </dg:DataGrid.Columns>
-        </dg:DataGrid>
+                            <Label
+                                Grid.Column="2"
+                                HorizontalTextAlignment="End"
+                                Text="{Binding TotalLinea, StringFormat='{}{0:#,0.00}'}"
+                                VerticalTextAlignment="Center" />
 
-        <!-- Totales -->
-        <StackLayout Orientation="Horizontal"
-                     VerticalOptions="Center"
-                     HorizontalOptions="Center"
-                     Grid.Row="2">
+                            <Button
+                                Grid.Column="3"
+                                Padding="0"
+                                BackgroundColor="Transparent"
+                                Command="{Binding BindingContext.ModificarLineaCommand, Source={x:Reference dgLineas}}"
+                                CommandParameter="{Binding .}"
+                                Text="✏️" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <!--  Empty view  -->
+                <CollectionView.EmptyView>
+                    <Label
+                        BackgroundColor="White"
+                        HorizontalOptions="Center"
+                        Text="NO HAY PRODUCTOS"
+                        VerticalOptions="Center" />
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </Grid>
+
+        <!--  Totales  -->
+        <StackLayout
+            Grid.Row="2"
+            HorizontalOptions="Center"
+            Orientation="Horizontal"
+            VerticalOptions="Center">
 
 
-            <Label Text="TOTAL:"
-                   FontAttributes="Bold"
-                   FontSize="20"
-                   TextColor="Black"
-                   HorizontalOptions="End"
-                   VerticalOptions="Center" />
-            <Label x:Name="lblTotal"
-                   Text="0.00"
-                   Margin="10,0,0,0"
-                   FontSize="20"
-                   TextColor="Black"
-                   HorizontalOptions="End"
-                   VerticalOptions="Center" />
+            <Label
+                FontAttributes="Bold"
+                FontSize="20"
+                HorizontalOptions="End"
+                Text="TOTAL:"
+                TextColor="Black"
+                VerticalOptions="Center" />
+            <Label
+                x:Name="lblTotal"
+                Margin="10,0,0,0"
+                FontSize="20"
+                HorizontalOptions="End"
+                Text="0.00"
+                TextColor="Black"
+                VerticalOptions="Center" />
         </StackLayout>
 
-        <StackLayout Orientation="Horizontal"
-                     HorizontalOptions="Center"
-                     Grid.Row="3">
-            <Button x:Name="btnGuardar"
-                    Clicked="btnGuardar_Clicked"
-                    Margin="0,20,0,0"
-                    HorizontalOptions="Center"
-                    FontSize="10"
-                    HeightRequest="40"
-                    BackgroundColor="#33C481"
-                    TextColor="Black"
-                    FontAttributes="Bold"
-                    Text="Guardar"
-                    WidthRequest="80" />
+        <StackLayout
+            Grid.Row="3"
+            HorizontalOptions="Center"
+            Orientation="Horizontal">
+            <Button
+                x:Name="btnGuardar"
+                Margin="0,20,0,0"
+                BackgroundColor="#33C481"
+                Clicked="btnGuardar_Clicked"
+                FontAttributes="Bold"
+                FontSize="10"
+                HeightRequest="40"
+                HorizontalOptions="Center"
+                Text="Guardar"
+                TextColor="Black"
+                WidthRequest="80" />
 
-            <Button x:Name="btnFacturar"
-                    Margin="20,20,0,0"
-                    IsEnabled="False"
-                    Clicked="btnFacturar_Clicked"
-                    HorizontalOptions="Center"
-                    FontSize="10"
-                    HeightRequest="40"
-                    BackgroundColor="Gray"
-                    TextColor="Black"
-                    FontAttributes="Bold"
-                    Text="Facturar"
-                    WidthRequest="80" />
+            <Button
+                x:Name="btnFacturar"
+                Margin="20,20,0,0"
+                BackgroundColor="Gray"
+                Clicked="btnFacturar_Clicked"
+                FontAttributes="Bold"
+                FontSize="10"
+                HeightRequest="40"
+                HorizontalOptions="Center"
+                IsEnabled="False"
+                Text="Facturar"
+                TextColor="Black"
+                WidthRequest="80" />
         </StackLayout>
 
     </Grid>

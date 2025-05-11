@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AppRuteoFactuSys.Views.ListaPreventaPage"
-             xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
-             Padding="2,10,5,2">
+<ContentPage
+    x:Class="AppRuteoFactuSys.Views.ListaPreventaPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
+    Padding="2,10,5,2">
 
-    <Grid >
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
             <RowDefinition Height="40" />
@@ -42,67 +43,91 @@
         </Grid>
         <!--  PANEL PRINCIPAL  -->
         <!--  DataGrid Cuenta  -->
-        <dg:DataGrid
-            x:Name="dgPreventas"
+
+        <!--  Header fijo  -->
+        <Grid
             Grid.Row="2"
             Margin="3,10,3,0"
-            BackgroundColor="#E8EED4"
-            BorderColor="#fff"
-            HeaderBackground="#E8EED4"
-            HeaderHeight="25"
-            PaginationEnabled="True"
-            PageSize="100"
-            IsClippedToBounds="False"
-            IsRefreshing="{Binding IsRefreshing}"
-            PullToRefreshCommand="{Binding RefreshCommand}"
-            SelectedItem="{Binding SelectedPreventa}"
-            SelectionEnabled="True" >
-            <dg:DataGrid.NoDataView>
+            RowDefinitions="Auto,*">
+
+            <!--  Encabezado manual  -->
+            <Grid
+                Padding="5"
+                BackgroundColor="#E8EED4"
+                ColumnDefinitions="*,100,35,35">
                 <Label
-                    BackgroundColor="White"
-                    HorizontalOptions="Center"
-                    Text="NO HAY DATOS"
-                    VerticalOptions="Center" />
-            </dg:DataGrid.NoDataView>
-            <dg:DataGrid.Columns>
-                <dg:DataGridColumn
-                    Title="Nombre"
-                    HorizontalContentAlignment="Start"
-                    PropertyName="Nombre_Cliente" />
-                <dg:DataGridColumn
-                    Title="Total"
-                    Width="100"
-                    HorizontalContentAlignment="End"
-                    PropertyName="TotalComprobante"
-                    StringFormat="{}{0:#,0.00}"  />
+                    Grid.Column="0"
+                    FontAttributes="Bold"
+                    Text="Nombre"
+                    VerticalTextAlignment="Center" />
+                <Label
+                    Grid.Column="1"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="End"
+                    Text="Total"
+                    VerticalTextAlignment="Center" />
 
-                <dg:DataGridColumn Width="35">
-                    <dg:DataGridColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Text="M"
-                                    FontSize="10"
-                                    Command="{Binding BindingContext.SendSelectedDataCommand,
-                                    Source={x:Reference dgPreventas}}"
-                                    CommandParameter="{Binding .}" />
-                        </DataTemplate>
-                    </dg:DataGridColumn.CellTemplate>
-                </dg:DataGridColumn>
+            </Grid>
 
-                <dg:DataGridColumn Width="35">
-                    <dg:DataGridColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Text="I"
-                                    FontSize="12"
-                                    BackgroundColor="Green"
-                                    Command="{Binding BindingContext.verPdfCommand,
-                                    Source={x:Reference dgPreventas}}"
-                                    CommandParameter="{Binding .}" />
-                        </DataTemplate>
-                    </dg:DataGridColumn.CellTemplate>
-                </dg:DataGridColumn>
+            <!--  Lista de preventas  -->
+            <CollectionView
+                x:Name="cvPreventas"
+                Grid.Row="1"
+                Margin="0"
+                ItemsSource="{Binding Preventas}"
+                SelectedItem="{Binding SelectedPreventa}"
+                SelectionMode="Single">
 
-            </dg:DataGrid.Columns>
-        </dg:DataGrid>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid
+                            Padding="2"
+                            BackgroundColor="White"
+                            ColumnDefinitions="*,100,40,40"
+                            RowSpacing="0">
+
+                            <Label
+                                Grid.Column="0"
+                                Text="{Binding Nombre_Cliente}"
+                                VerticalTextAlignment="Center" />
+
+                            <Label
+                                Grid.Column="1"
+                                HorizontalTextAlignment="End"
+                                Text="{Binding TotalComprobante, StringFormat='{}{0:#,0}'}"
+                                VerticalTextAlignment="Center" />
+
+                            <Button
+                                Grid.Column="2"
+                                BackgroundColor="Transparent"
+                                Command="{Binding BindingContext.SendSelectedDataCommand, Source={x:Reference cvPreventas}}"
+                                CommandParameter="{Binding .}"
+                                FontSize="10"
+                                Text="✏️" />
+
+                            <Button
+                                Grid.Column="3"
+                              BackgroundColor="Transparent"
+                                Command="{Binding BindingContext.verPdfCommand, Source={x:Reference cvPreventas}}"
+                                CommandParameter="{Binding .}"
+                                FontSize="12"
+                                Text="📄" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <!--  Mensaje si no hay datos  -->
+                <CollectionView.EmptyView>
+                    <Label
+                        BackgroundColor="White"
+                        HorizontalOptions="Center"
+                        Text="NO HAY DATOS"
+                        VerticalOptions="Center" />
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </Grid>
+
+
     </Grid>
 
 </ContentPage>

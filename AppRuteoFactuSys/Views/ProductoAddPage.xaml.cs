@@ -26,7 +26,7 @@ public partial class ProductoAddPage : ContentPage
         SendSelectedDataCommand = new Command(SendSelectedData);
         BindingContext = this;
 
-        CargarProductos();
+       _=  CargarProductos();
     }
     private async void SendSelectedData(object parameter)
     {
@@ -55,7 +55,7 @@ public partial class ProductoAddPage : ContentPage
 
         //VALIDAR SI LA BD SE CARGO BIEN
         var products = await _productoService.Listar();
-        dgProductos.ItemsSource = products;
+        dgProductos.ItemsSource = products ?? new List<Producto>();
     }
 
     private async void btnBuscar_Clicked(object sender, EventArgs e)
