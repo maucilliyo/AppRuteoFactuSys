@@ -55,7 +55,7 @@ namespace AppRuteoFactuSys.Views
 
             //VALIDAR SI LA BD SE CARGO BIEN
             var clientes = await _clienteService.Listar();
-            dgClientes.ItemsSource = clientes;
+            cvClientes.ItemsSource = clientes;
         }
 
         private void SendSelectedData(object parameter)
@@ -70,7 +70,7 @@ namespace AppRuteoFactuSys.Views
         private async void btnBuscar_Clicked(object sender, EventArgs e)
         {
             var clientes = await _clienteService.Listar(txtBuscar.Text);
-            dgClientes.ItemsSource = clientes;
+            cvClientes.ItemsSource = clientes;
         }
 
         private void txtBuscar_Completed(object sender, EventArgs e)

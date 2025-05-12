@@ -32,16 +32,20 @@
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
     <AndroidPackageFormat>apk</AndroidPackageFormat>
     <Debugger>Xamarin</Debugger>
+    <ApplicationDisplayVersion>1.3</ApplicationDisplayVersion>
+    <ApplicationVersion>3</ApplicationVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
     <Debugger>Xamarin</Debugger>
+    <ApplicationDisplayVersion>1.3</ApplicationDisplayVersion>
+    <ApplicationVersion>3</ApplicationVersion>
   </PropertyGroup>
   <ItemGroup>
     <!-- App Icon -->
     <MauiIcon Include="Resources\AppIcon\icono.png" Color="White" ForegroundScale="0.50" />
     <!-- Splash Screen -->
-    <MauiSplashScreen Include="Resources\Splash\dotnet_bot.png" Color="#512BD4" BaseSize="128,128" />
-    <!-- Images -->
+	  <MauiSplashScreen Include="Resources\Splash\logo_espacios.png" Color="#f2f3f4" BaseSize="128,128" />
+	  <!-- Images -->
     <MauiImage Include="Resources\Images\*" />
     <!-- Custom Fonts -->
     <MauiFont Include="Resources\Fonts\*" />
@@ -56,6 +60,9 @@
     <None Remove="Resources\AppIcon\icono.png" />
     <None Remove="Resources\Images\fondo_menu.png" />
     <None Remove="Resources\Images\login.png" />
+    <None Remove="Resources\Splash\Logo.png" />
+    <None Remove="Resources\Splash\Logo_espacios.png" />
+    <None Remove="Resources\Splash\splash.svg" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="akgul.Maui.DataGrid" Version="3.0.0" />
@@ -121,6 +128,17 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helpers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Splash\logo.png" Color="#ccd1d1 " BaseSize="32,32">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Splash\logo_espacios.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Splash\splash.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="Microsoft.Maui.Controls" Version="8.0.20" />

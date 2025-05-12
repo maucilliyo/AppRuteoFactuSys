@@ -5,9 +5,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:AppRuteoFactuSys"
     xmlns:local2="clr-namespace:AppRuteoFactuSys.Views"
-    Shell.NavBarIsVisible="false"
+    Title="AppRuteoFactuSys"
     Shell.FlyoutBehavior="Disabled"
-    Title="AppRuteoFactuSys">
+    Shell.NavBarIsVisible="false">
 
     <ShellContent
         Title="Home"
