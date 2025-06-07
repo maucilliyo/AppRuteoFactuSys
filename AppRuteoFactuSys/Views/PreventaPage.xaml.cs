@@ -202,6 +202,8 @@ namespace AppRuteoFactuSys.Views
             {
                 total += item.TotalLinea;
             }
+
+
             lblTotal.Text = total.ToString("N0");
         }
         public async void ModificarLinea(PreventaLineas linea, string accion)
@@ -286,6 +288,8 @@ namespace AppRuteoFactuSys.Views
                 {
                     preventa.TotalMercanciasExentas += item.Subtotal;
                 }
+                //esto es para los descuentos
+                preventa.TotalDescuento += item.Descuento;
             }
 
             preventa.TotalGrabado = preventa.TotalServGravados + preventa.TotalMercanciasGravadas;

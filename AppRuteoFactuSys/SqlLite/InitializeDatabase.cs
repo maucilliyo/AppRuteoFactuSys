@@ -67,6 +67,7 @@
                             cantidad REAL,
                             subtotal REAL,
                             descuento REAL,
+                            por_descuento REAL,
                             impuesto REAL,
                             totallinea REAL,
                             montoexonerado REAL,

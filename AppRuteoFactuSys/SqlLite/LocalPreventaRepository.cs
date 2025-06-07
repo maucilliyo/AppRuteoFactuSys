@@ -313,10 +313,10 @@ namespace AppRuteoFactuSys.SqlLite
             // Insertar las líneas de la proforma
             string sqlInsertLinea = @"INSERT INTO lineasproforma 
                   (Local_ID, n_proforma, linea, codpro, unidadmedida, detalle, preciounidad, cantidad, subtotal, descuento, impuesto, totallinea, montoexonerado, 
-                    porimpuesto, subtotaldescuento, impuestoneto, porexonerado, codigo_impuesto, codigo_tarifa, codecabys) 
+                    porimpuesto, subtotaldescuento, impuestoneto, porexonerado, codigo_impuesto, codigo_tarifa, codecabys,por_descuento) 
               VALUES 
                   (@LocalID, @NProforma, @Linea, @Codpro, @UnidadMedida, @Detalle, @PrecioUnidad, @Cantidad, @Subtotal, @Descuento, @Impuesto, @TotalLinea,
-                  @Montoexonerado, @Porimpuesto, @Subtotaldescuento, @Impuestoneto, @Porexonerado, @CodigoImpuesto, @CodigoTarifa, @CodeCabys);";
+                  @Montoexonerado, @Porimpuesto, @Subtotaldescuento, @Impuestoneto, @Porexonerado, @CodigoImpuesto, @CodigoTarifa, @CodeCabys ,@PorDescuento);";
             //insertanto la linea
             await connection.ExecuteAsync(sqlInsertLinea, new
             {
@@ -329,6 +329,7 @@ namespace AppRuteoFactuSys.SqlLite
                 linea.PrecioUnidad,
                 linea.Cantidad,
                 linea.Subtotal,
+                linea.PorDescuento,
                 linea.Descuento,
                 linea.Impuesto,
                 linea.TotalLinea,
