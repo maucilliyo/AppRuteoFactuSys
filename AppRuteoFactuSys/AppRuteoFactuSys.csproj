@@ -44,7 +44,6 @@
     <!-- App Icon -->
     <MauiIcon Include="Resources\AppIcon\icono.png" Color="White" ForegroundScale="0.50" />
     <!-- Splash Screen -->
-	  <MauiSplashScreen Include="Resources\Splash\logo_espacios.png" Color="#f2f3f4" BaseSize="128,128" />
 	  <!-- Images -->
     <MauiImage Include="Resources\Images\*" />
     <!-- Custom Fonts -->
@@ -133,9 +132,9 @@
     <Resource Include="Resources\Splash\logo.png" Color="#ccd1d1 " BaseSize="32,32">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Splash\logo_espacios.png">
+    <MauiSplashScreen Include="Resources\Splash\logo_espacios.png" Color="#f2f3f4" BaseSize="128,128">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    </MauiSplashScreen>
     <Resource Include="Resources\Splash\splash.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
