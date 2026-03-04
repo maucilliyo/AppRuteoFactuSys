@@ -29,6 +29,16 @@ namespace AppRuteoFactuSys.SqlLite
                 return response.ToList();
             }
         }
+        public async Task<List<Producto>> GetAllProductos(string? detalle = null)
+        {
+            using (var conn = SqlLiteConexion.GetConnection())
+            {
+                string sql = @"SELECT * FROM Productos";
+                await conn.OpenAsync();
+                var response = await conn.QueryAsync<Producto>(sql, new { detalle });
+                return response.ToList();
+            }
+        }
         public async Task Agregar(Producto producto)
         {
             // Consulta SQL para la inserción

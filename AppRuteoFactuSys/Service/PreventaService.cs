@@ -151,5 +151,10 @@ namespace AppRuteoFactuSys.Service
         {
             return await _sqlLitePreventaRepository.GetPreventas();
         }
+
+        public async Task EliminarPreventas()
+        {
+            await _sqlLitePreventaRepository.EliminarPreventas();
+        }
     }
 }

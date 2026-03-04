@@ -42,7 +42,7 @@ namespace AppRuteoFactuSys.Service
         public async Task Sincronizar()
         {
             var clientesSistema = await _clienteRepository.GetClientes();
-            var clientesApp = await _sqlLiteClientesRepository.GetClientes();
+            var clientesApp = await _sqlLiteClientesRepository.GetAllClientes();
 
             foreach (var cliente in clientesSistema)
             {

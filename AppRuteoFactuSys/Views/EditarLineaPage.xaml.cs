@@ -56,6 +56,13 @@ public partial class EditarLineaPage : ContentPage
 
     private async void btnGuardar_Clicked(object sender, EventArgs e)
     {
+        if(string.IsNullOrEmpty(txtCantidad.Text))
+        {
+            await DisplayAlert("Aviso", "La cantidad no puede estar vacía", "Aceptar");
+            txtCantidad.Text = _linea.Cantidad.ToString(); // Revertir al valor anterior
+            return;
+        }
+
         _linea.Cantidad = Convert.ToDecimal(txtCantidad.Text);
         PreventaPage.load.ModificarLinea(_linea,"mod");
 

@@ -10,6 +10,7 @@ namespace AppRuteoFactuSys.Service.Interfaces
     public interface IPreventaService:IBaseService<Preventa>
     {
         Task EliminarFacturadas();
+        Task EliminarPreventas();
         Task<List<Preventa>> Listar(bool? entregado = null);
         Task<List<Preventa>> Listar(string provincia, string canton, string distrito, bool? entregado = null);
         Task<Preventa> GetPreventaByNProforma(int nProforma);

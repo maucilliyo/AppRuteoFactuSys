@@ -111,5 +111,15 @@ namespace AppRuteoFactuSys.Views
                 await _preventaService.EliminarFacturadas();
             }
         }
+
+        private async void btnEliminarPreventas_Clicked(object sender, EventArgs e)
+        {
+            var response = await DisplayAlert("AVISO", "Esta seguro de eliminar las preventas?", "Sí", "No");
+
+            if (response)
+            {
+                await _preventaService.EliminarPreventas();
+            }
+        }
     }
 }

@@ -34,6 +34,16 @@ namespace AppRuteoFactuSys.SqlLite
                 return response.ToList();
             }
         }
+        public async Task<List<Cliente>> GetAllClientes( )
+        {
+            using (var conn = SqlLiteConexion.GetConnection())
+            {
+                string sql = @"SELECT * FROM clientes";
+                await conn.OpenAsync();
+                var response = await conn.QueryAsync<Cliente>(sql);
+                return response.ToList();
+            }
+        }
         public async Task Agregar(Cliente cliente)
         {
             using (var conn = SqlLiteConexion.GetConnection())

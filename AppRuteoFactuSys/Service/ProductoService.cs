@@ -43,7 +43,7 @@ namespace AppRuteoFactuSys.Service
             //traemos la lista de productos del sistema
             var productosSistema = await _productoRepository.GetProductos();
             //lista de productos de la app
-            var productosApp = await _sqlLiteProductoRepository.GetProductos();
+            var productosApp = await _sqlLiteProductoRepository.GetAllProductos();
             //recorremos la lista de productos del sistema a ver si hay cambios para actualizar los de la app
             foreach (var producto in productosSistema)
             {

@@ -143,6 +143,20 @@ namespace AppRuteoFactuSys.SqlLite
                 await conn.ExecuteAsync(sqlEliminar);
             }
         }
+        public async Task EliminarPreventas()
+        {
+            using (var conn = SqlLiteConexion.GetConnection())
+            {
+                string sqlEliminar = @"-- Paso 1: Eliminar los registros relacionados en la tabla lineasproforma
+                                        DELETE FROM lineasproforma 
+                                        WHERE Local_ID IN (SELECT LocalID FROM proforma);
+
+                                        -- Paso 2: Eliminar los registros de la tabla proforma
+                                        DELETE FROM proforma;";
+
+                await conn.ExecuteAsync(sqlEliminar);
+            }
+        }
         public async Task ActualizarPreventaSync(Preventa preventa)
         {
             using (var connection = SqlLiteConexion.GetConnection())

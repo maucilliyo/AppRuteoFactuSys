@@ -71,6 +71,16 @@
                 HeightRequest="50"
                 Text="ELIMINAR FACTURADAS"
                 WidthRequest="150" />
+            <Button
+             x:Name="btnEliminarPreventas"
+             BackgroundColor="#E4521E"
+             Margin="10,0,0,0"
+             Clicked="btnEliminarPreventas_Clicked"
+             FontSize="9"
+             HeightRequest="50"
+             Text="ELIMINAR PREVENTAS"
+             WidthRequest="150" />
+
         </StackLayout>
         <!--#endregion-->
 

@@ -97,7 +97,7 @@
                     FontSize="12"
                     HeightRequest="40"
                     HorizontalOptions="Center"
-                    Text="Resetear BD"
+                    Text="Resetear BD local"
                     WidthRequest="150" />
 
                 <!--  IMAGEN  -->
