@@ -24,6 +24,7 @@ namespace AppRuteoFactuSys.Models
         public decimal Cantidad { get; set; }
         public decimal Subtotal { get => Math.Round(PrecioUnidad * Cantidad, 2); }
         public decimal PorDescuento { get; set; }
+        public string CodDescuento { get; set; }
         public decimal Descuento { get => Math.Round(Subtotal * PorDescuento, 2); set { } }
         public decimal Subtotaldescuento { get => Math.Round(Subtotal - Descuento, 2); }
         public decimal Porimpuesto { get; set; }

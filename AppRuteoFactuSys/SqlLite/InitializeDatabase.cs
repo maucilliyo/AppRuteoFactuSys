@@ -5,16 +5,14 @@
 
         public static void InitializeDatabase()
         {
-            using (var connection = SqlLiteConexion.GetConnection())
-            {
-                connection.Open();
+            using var connection = SqlLiteConexion.GetConnection();
+            connection.Open();
 
-                using (var transaction = connection.BeginTransaction())
-                {
-                    try
-                    {
-                        // Crear la tabla proforma
-                        string createProformaTable = @"
+            using var transaction = connection.BeginTransaction();
+            try
+            {
+                // Crear la tabla proforma
+                string createProformaTable = @"
                         CREATE TABLE IF NOT EXISTS proforma (
                             LocalID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                             Nproforma,
@@ -47,14 +45,14 @@
                             fecha_update TEXT,
                             entregado INTEGER
                         );";
-                        using (var command = connection.CreateCommand())
-                        {
-                            command.CommandText = createProformaTable;
-                            command.ExecuteNonQuery();
-                        }
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = createProformaTable;
+                    command.ExecuteNonQuery();
+                }
 
-                        // Crear la tabla lineasproforma
-                        string createLineasProformaTable = @"
+                // Crear la tabla lineasproforma
+                string createLineasProformaTable = @"
                         CREATE TABLE IF NOT EXISTS lineasproforma (
                             id_linea INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                             Local_ID INTEGER,
@@ -68,6 +66,7 @@
                             subtotal REAL,
                             descuento REAL,
                             por_descuento REAL,
+                            cod_descuento TEXT,
                             impuesto REAL,
                             totallinea REAL,
                             montoexonerado REAL,
@@ -80,14 +79,14 @@
                             codecabys TEXT,
                             FOREIGN KEY (Local_ID) REFERENCES proforma (LocalID)
                         );";
-                        using (var command = connection.CreateCommand())
-                        {
-                            command.CommandText = createLineasProformaTable;
-                            command.ExecuteNonQuery();
-                        }
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = createLineasProformaTable;
+                    command.ExecuteNonQuery();
+                }
 
-                        //Crear la tabla Clientes
-                        string createClientesTable = @"
+                //Crear la tabla Clientes
+                string createClientesTable = @"
                                 CREATE TABLE IF NOT EXISTS clientes (
                                   cedula TEXT PRIMARY KEY,
                                   tipocedula INTEGER,
@@ -109,14 +108,14 @@
                                   tipo_precio TEXT DEFAULT 'C',
                                   fecha_update DATETIME DEFAULT CURRENT_TIMESTAMP
                                 );";
-                        using (var command = connection.CreateCommand())
-                        {
-                            command.CommandText = createClientesTable;
-                            command.ExecuteNonQuery();
-                        }
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = createClientesTable;
+                    command.ExecuteNonQuery();
+                }
 
-                        //crear la tabla producto
-                        string createProductoTable = @"
+                //crear la tabla producto
+                string createProductoTable = @"
                         CREATE TABLE IF NOT EXISTS productos (
                             Nombre TEXT,
                             CodPro TEXT PRIMARY KEY,
@@ -157,23 +156,21 @@
                             FechaUpdate TEXT,
                             FechaUltimaVenta TEXT
                         );";
-                        using (var command = connection.CreateCommand())
-                        {
-                            command.CommandText = createProductoTable;
-                            command.ExecuteNonQuery();
-                        }
-
-                        // Commit de la transacción
-
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        // Rollback en caso de error
-                        transaction.Rollback();
-                        throw ex;
-                    }
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = createProductoTable;
+                    command.ExecuteNonQuery();
                 }
+
+                // Commit de la transacción
+
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                // Rollback en caso de error
+                transaction.Rollback();
+                throw ex;
             }
 
         }

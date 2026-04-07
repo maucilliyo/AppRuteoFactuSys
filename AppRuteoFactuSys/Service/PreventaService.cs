@@ -121,7 +121,7 @@ namespace AppRuteoFactuSys.Service
                         try
                         {
 
-                            await _preventaRepository.Actuazar(preventaApp);
+                            await _preventaRepository.Actualizar(preventaApp);
                         }
                         catch (Exception ex)
                         {
@@ -151,7 +151,6 @@ namespace AppRuteoFactuSys.Service
         {
             return await _sqlLitePreventaRepository.GetPreventas();
         }
-
         public async Task EliminarPreventas()
         {
             await _sqlLitePreventaRepository.EliminarPreventas();

@@ -94,7 +94,7 @@ namespace AppRuteoFactuSys.MySql
                 }
             }
         }
-        public async Task Actuazar(Preventa preventa)
+        public async Task Actualizar(Preventa preventa)
         {
             using (var conn = await Conexion.GetConnection())
             {
@@ -137,10 +137,10 @@ namespace AppRuteoFactuSys.MySql
 
                     // SQL para insertar las nuevas líneas de la proforma
                     string insertLineas = @"INSERT INTO lineasproforma
-                                (n_proforma,linea,codpro,unidadmedida,detalle,preciounidad,cantidad,subtotal,descuento,impuesto,totallinea,montoexonerado,porimpuesto,
-                                subtotaldescuento, impuestoneto,porexonerado,codigo_impuesto,codigo_tarifa,codecabys)
-                                VALUES(@Nproforma,@linea,@codpro,@unidadmedida,@detalle,@preciounidad,@cantidad,@subtotal,@descuento,@impuesto,@totallinea,@montoexonerado,
-                                @porimpuesto, @subtotaldescuento,@impuestoneto,@porexonerado,@CodigoImpuesto,@CodigoTarifa,@codecabys);";
+                                (n_proforma,linea,codpro,unidadmedida,detalle,preciounidad,cantidad,subtotal,descuento,cod_descuento,impuesto,totallinea,montoexonerado,
+                                porimpuesto, subtotaldescuento, impuestoneto,porexonerado,codigo_impuesto,codigo_tarifa,codecabys)
+                                VALUES(@Nproforma,@linea,@codpro,@unidadmedida,@detalle,@preciounidad,@cantidad,@subtotal,@descuento,@codDescuento,@impuesto,@totallinea,
+                                @montoexonerado, @porimpuesto, @subtotaldescuento,@impuestoneto,@porexonerado,@CodigoImpuesto,@CodigoTarifa,@codecabys);";
 
                     try
                     {
