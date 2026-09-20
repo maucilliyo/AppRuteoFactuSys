@@ -76,9 +76,9 @@
                     x:Name="btnDevoluciones"
                     Grid.Row="3"
                     BackgroundColor="#424242"
+                    Clicked="btnDevoluciones_Clicked"
                     FontSize="12"
                     HeightRequest="40"
-                    Clicked="btnDevoluciones_Clicked"
                     HorizontalOptions="Center"
                     Text="DEVOLUCIONES"
                     WidthRequest="150" />
