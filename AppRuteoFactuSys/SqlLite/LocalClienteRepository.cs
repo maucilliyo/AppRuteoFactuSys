@@ -1,10 +1,6 @@
 ﻿using AppRuteoFactuSys.Models;
-using Dapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AppRuteoFactuSys.MySql;
+using static Android.Telecom.Call;
 
 namespace AppRuteoFactuSys.SqlLite
 {
@@ -12,92 +8,68 @@ namespace AppRuteoFactuSys.SqlLite
     {
         public async Task<Cliente> GetClienteByCedula(string cedula)
         {
-            SQLiteInitialization.InitializeDatabase();
 
-            using (var conn = SqlLiteConexion.GetConnection())
-            {
-                string sql = @"SELECT * FROM Clientes WHERE cedula = @cedula";
+            var conn = await SqlLiteDatabase.GetConnection();
 
-                await conn.OpenAsync();
-                var response = await conn.QueryAsync<Cliente>(sql, new { cedula });
-
-                return response.FirstOrDefault();
-            }
+            var cliente = await conn.Table<Cliente>()
+                                    .Where(x => x.Cedula == cedula)
+                                    .FirstOrDefaultAsync();
+            return cliente;
         }
-        public async Task<List<Cliente>> GetClientes(string nombre = null)
+        public async Task<List<Cliente>> GetClientes(string? nombre = null)
         {
-            using (var conn = SqlLiteConexion.GetConnection())
+            var conn = await SqlLiteDatabase.GetConnection();
+
+            if (string.IsNullOrWhiteSpace(nombre))
             {
-                string sql = @"SELECT * FROM clientes WHERE nombre LIKE '%' || COALESCE(@nombre, nombre) || '%'";
-                await conn.OpenAsync();
-                var response = await conn.QueryAsync<Cliente>(sql, new { nombre });
-                return response.ToList();
+                return await conn.QueryAsync<Cliente>(
+                    "SELECT * FROM cliente");
             }
+
+            return await conn.QueryAsync<Cliente>(
+                """
+                    SELECT *
+                    FROM cliente
+                    WHERE nombre LIKE ?
+                    """,
+                $"%{nombre}%");
         }
-        public async Task<List<Cliente>> GetAllClientes( )
+        public async Task<List<Cliente>> GetAllClientes()
         {
-            using (var conn = SqlLiteConexion.GetConnection())
-            {
-                string sql = @"SELECT * FROM clientes";
-                await conn.OpenAsync();
-                var response = await conn.QueryAsync<Cliente>(sql);
-                return response.ToList();
-            }
+            var conn = await SqlLiteDatabase.GetConnection();
+
+            var clientes = await conn.Table<Cliente>()
+                                    .ToListAsync();
+            return clientes;
+
+ 
         }
         public async Task Agregar(Cliente cliente)
         {
-            using (var conn = SqlLiteConexion.GetConnection())
+            try
             {
-                // Consulta SQL para la inserción
-                string sqlInsert = @"
-                INSERT INTO clientes (
-                    cedula, tipocedula, nombre, apellido, tel, email, provincia,
-                    canton, distrito, otrassenas, contacto, credito, tipocliente,
-                    pordescuento, diascredito, tipo_cliente_impuesto, tipodocpreferido, tipo_precio,
-                    fecha_update
-                )
-                VALUES (
-                    @Cedula, @TipoCedula, @Nombre, @Apellido, @Tel, @Email, @Provincia,
-                    @Canton, @Distrito, @OtrasSenas, @Contacto, @Credito, @TipoCliente,
-                    @PorDescuento, @DiasCredito, @TipoClienteImpuesto, @TipoDocPreferido, @TipoPrecio,
-                    @FechaUpdate
-                )";
-                await conn.OpenAsync();
+                var conn = await SqlLiteDatabase.GetConnection();
+                // Insertar el producto principal
+                await conn.InsertOrReplaceAsync(cliente);
+            }
+            catch (Exception)
+            {
 
-                await conn.ExecuteAsync(sqlInsert, cliente);
+                throw;
             }
         }
         public async Task Actualizar(Cliente cliente)
         {
-            // Consulta SQL para la actualización
-            string sqlUpdate = @"
-            UPDATE clientes 
-            SET 
-                tipocedula = @TipoCedula,
-                nombre = @Nombre,
-                apellido = @Apellido,
-                tel = @Tel,
-                email = @Email,
-                provincia = @Provincia,
-                canton = @Canton,
-                distrito = @Distrito,
-                otrassenas = @OtrasSenas,
-                contacto = @Contacto,
-                credito = @Credito,
-                tipocliente = @TipoCliente,
-                pordescuento = @PorDescuento,
-                diascredito = @DiasCredito,
-                tipo_cliente_impuesto = @TipoClienteImpuesto,
-                tipodocpreferido = @TipoDocPreferido,
-                tipo_precio = @TipoPrecio,
-                fecha_update = @FechaUpdate
-            WHERE cedula = @Cedula";
-
-            // Crear una conexión a la base de datos SQLite
-            using (var connection = SqlLiteConexion.GetConnection())
+            try
             {
-                // Ejecutar la consulta SQL utilizando Dapper
-                await connection.ExecuteAsync(sqlUpdate, cliente);
+                var conn = await SqlLiteDatabase.GetConnection();
+                // Insertar el producto principal
+                await conn.UpdateAsync(cliente);
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
         public async Task<IEnumerable<string>> FiltroByCedula()

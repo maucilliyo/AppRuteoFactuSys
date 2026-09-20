@@ -1,5 +1,6 @@
 using AppRuteoFactuSys.Service;
 using AppRuteoFactuSys.Service.Interfaces;
+using AppRuteoFactuSys.SqlLite;
 
 namespace AppRuteoFactuSys.Views
 {
@@ -8,19 +9,25 @@ namespace AppRuteoFactuSys.Views
         private readonly IClienteService _clienteService;
         private readonly IPreventaService _preventaService;
         private readonly IProductoService _productoService;
+        private readonly LocalDevolucionRepository _devolucionRepository;
+        private readonly DevolucionService _devolucionService;
 
-        public SincronizarPage(IClienteService clienteService, IPreventaService preventaService, IProductoService productoService)
+        public SincronizarPage(IClienteService clienteService, IPreventaService preventaService, IProductoService productoService,
+                               LocalDevolucionRepository devolucionRepository, DevolucionService devolucionService)
         {
             InitializeComponent();
             _clienteService = clienteService;
             _preventaService = preventaService;
             _productoService = productoService;
+            _devolucionRepository = devolucionRepository;
+            _devolucionService = devolucionService;
         }
 
         private async Task Sincronizar(string service)
         {
             try
             {
+                this.IsEnabled = false;
                 // Mostrar el ActivityIndicator y el texto
                 MostrarIndicadorEspera(true);
 
@@ -51,6 +58,7 @@ namespace AppRuteoFactuSys.Views
                 // Ocultar el ActivityIndicator y habilitar los botones de sincronización
                 MostrarIndicadorEspera(false);
                 HabilitarBotonesSincronizacion();
+                this.IsEnabled = true;
             }
         }
 
@@ -119,6 +127,24 @@ namespace AppRuteoFactuSys.Views
             if (response)
             {
                 await _preventaService.EliminarPreventas();
+            }
+        }
+
+        private async void btnEliminarDevoluciones_Clicked(object sender, EventArgs e)
+        {
+            await _devolucionRepository.EliminarTodas();
+        }
+
+        private async void btnSincronizarDevoluciones_Clicked(object sender, EventArgs e)
+        {
+            try
+            {
+                await _devolucionService.Sincronizar();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
             }
         }
     }

@@ -105,9 +105,7 @@
 
         <!--  DataGrid  -->
         <!--  Encabezados fijos  -->
-        <Grid
-            Grid.Row="1"
-            RowDefinitions="Auto,*">
+        <Grid Grid.Row="1" RowDefinitions="Auto,*">
             <!--  Header  -->
             <Grid
                 Padding="5"

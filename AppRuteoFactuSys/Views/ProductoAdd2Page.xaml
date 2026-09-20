@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AppRuteoFactuSys.Views.ProductoAdd2Page"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
+    Title="Productos"
+    Padding="12,15,12,10"
+    BackgroundColor="#F5F6FA">
+
+    <Grid RowDefinitions="Auto,*" RowSpacing="10">
+
+        <!--  ============ Buscador ============  -->
+        <Border
+            Grid.Row="0"
+            Padding="10"
+            BackgroundColor="White"
+            StrokeShape="RoundRectangle 14"
+            StrokeThickness="0">
+            <Border.Shadow>
+                <Shadow
+                    Brush="Black"
+                    Opacity="0.08"
+                    Radius="10"
+                    Offset="0,3" />
+            </Border.Shadow>
+
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                <Border
+                    Grid.Column="0"
+                    Padding="12,0"
+                    BackgroundColor="#F5F6FA"
+                    StrokeShape="RoundRectangle 10"
+                    StrokeThickness="0"
+                    VerticalOptions="Center">
+                    <Entry
+                        x:Name="txtBuscar"
+                        BackgroundColor="Transparent"
+                        Completed="txtBuscar_Completed"
+                        FontSize="15"
+                        HeightRequest="42"
+                        Placeholder="Buscar producto"
+                        PlaceholderColor="#9A9BA6"
+                        TextColor="#2B2D42" />
+                </Border>
+
+                <Button
+                    Grid.Column="1"
+                    Padding="0"
+                    BackgroundColor="#1BA1E2"
+                    Clicked="btnBuscar_Clicked"
+                    CornerRadius="10"
+                    FontAttributes="Bold"
+                    FontSize="15"
+                    HeightRequest="42"
+                    Text="🔍"
+                    TextColor="White"
+                    WidthRequest="48" />
+            </Grid>
+        </Border>
+
+        <!--  ============ Lista de productos ============  -->
+        <Border
+            Grid.Row="1"
+            Padding="0"
+            BackgroundColor="White"
+            StrokeShape="RoundRectangle 14"
+            StrokeThickness="0">
+            <Border.Shadow>
+                <Shadow
+                    Brush="Black"
+                    Opacity="0.08"
+                    Radius="10"
+                    Offset="0,3" />
+            </Border.Shadow>
+
+            <Grid RowDefinitions="Auto,*">
+
+                <!--  Header  -->
+                <Grid
+                    Grid.Row="0"
+                    Padding="14,10"
+                    BackgroundColor="#EDEFF7"
+                    ColumnDefinitions="80,*,40">
+                    <Label
+                        Grid.Column="0"
+                        FontAttributes="Bold"
+                        FontSize="13"
+                        Text="Código"
+                        TextColor="#4A4E69"
+                        VerticalTextAlignment="Center" />
+                    <Label
+                        Grid.Column="1"
+                        FontAttributes="Bold"
+                        FontSize="13"
+                        Text="Detalle"
+                        TextColor="#4A4E69"
+                        VerticalTextAlignment="Center" />
+                    <Label Grid.Column="2" Text=" " />
+                </Grid>
+
+                <RefreshView
+                    Grid.Row="1"
+                    Command="{Binding RefreshCommand}"
+                    IsRefreshing="{Binding IsRefreshing}">
+
+                    <CollectionView
+                        x:Name="dgProductos"
+                        BackgroundColor="Transparent"
+                        ItemsSource="{Binding Productos}"
+                        SelectedItem="{Binding SelectedProducto}"
+                        SelectionMode="Single">
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="14,10" ColumnDefinitions="80,*,40">
+                                    <BoxView
+                                        Grid.ColumnSpan="3"
+                                        HeightRequest="1"
+                                        VerticalOptions="End"
+                                        Color="#F0F0F5" />
+
+                                    <Label
+                                        Grid.Column="0"
+                                        FontSize="14"
+                                        Text="{Binding CodPro}"
+                                        TextColor="#6C6F80"
+                                        VerticalTextAlignment="Center" />
+
+                                    <Label
+                                        Grid.Column="1"
+                                        FontSize="14"
+                                        Text="{Binding Detalle}"
+                                        TextColor="#2B2D42"
+                                        VerticalTextAlignment="Center" />
+
+                                    <Button
+                                        Grid.Column="2"
+                                        Padding="0"
+                                        BackgroundColor="Transparent"
+                                        Command="{Binding BindingContext.SendSelectedDataCommand, Source={x:Reference dgProductos}}"
+                                        CommandParameter="{Binding .}"
+                                        FontSize="16"
+                                        Text="➕"
+                                        TextColor="#33C481" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+
+                        <!--  Sin datos  -->
+                        <CollectionView.EmptyView>
+                            <VerticalStackLayout
+                                Padding="20"
+                                HorizontalOptions="Center"
+                                Spacing="4"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontSize="28"
+                                    HorizontalOptions="Center"
+                                    Text="📦" />
+                                <Label
+                                    FontSize="14"
+                                    HorizontalOptions="Center"
+                                    Text="No hay productos para mostrar"
+                                    TextColor="#9A9BA6" />
+                            </VerticalStackLayout>
+                        </CollectionView.EmptyView>
+                    </CollectionView>
+                </RefreshView>
+            </Grid>
+        </Border>
+
+    </Grid>
+</ContentPage>

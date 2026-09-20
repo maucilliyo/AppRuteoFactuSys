@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AppRuteoFactuSys.Views.SincronizarPage">
-    <VerticalStackLayout VerticalOptions="FillAndExpand" Margin="1">
+<ContentPage
+    x:Class="AppRuteoFactuSys.Views.SincronizarPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <VerticalStackLayout Margin="1" VerticalOptions="FillAndExpand">
         <Label
-            Text="Sincronización de Datos"
-            FontSize="16"
-            FontAttributes="Bold"
             Margin="0,0,0,15"
-            VerticalOptions="Center"
-            HorizontalOptions="Center" />
+            FontAttributes="Bold"
+            FontSize="16"
+            HorizontalOptions="Center"
+            Text="Sincronización de Datos"
+            VerticalOptions="Center" />
 
         <!--#region  BOTONES-->
-        <StackLayout Grid.Row="3" Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+        <StackLayout
+            Grid.Row="3"
+            HorizontalOptions="CenterAndExpand"
+            Orientation="Horizontal">
             <Button
                 x:Name="btnSincronizarClientes1"
                 BackgroundColor="#4887A7"
@@ -23,81 +27,113 @@
                 WidthRequest="150" />
             <Button
                 x:Name="btnSincronizarPreventa"
-                BackgroundColor="#415A25"
                 Margin="10,0,0,0"
+                BackgroundColor="#415A25"
                 Clicked="btnSincronizarPreventa_Clicked"
                 FontSize="10"
                 HeightRequest="50"
                 Text="SINCRONIZAR PREVENTAS"
                 WidthRequest="150" />
         </StackLayout>
-        <StackLayout Grid.Row="3"
-                     Orientation="Horizontal"
-                     Margin="-15,10,0,0"
-                     HorizontalOptions="CenterAndExpand">
+        <StackLayout
+            Grid.Row="3"
+            Margin="-15,10,0,0"
+            HorizontalOptions="CenterAndExpand"
+            Orientation="Horizontal">
 
             <Button
                 x:Name="btnSincronizarProducto"
-                BackgroundColor="#2B8AE0"
                 Margin="10,0,0,0"
+                BackgroundColor="#2B8AE0"
                 Clicked="btnSincronizarProducto_Clicked"
                 FontSize="9"
                 HeightRequest="50"
                 Text="SINCRONIZAR PRODUCTOS"
                 WidthRequest="150" />
-            <Button
-                x:Name="btnSincronizarTodos"
-                BackgroundColor="#E4C977"
-                Margin="10,0,0,0"
-                Clicked="btnSincronizarTodos_Clicked"
-                FontSize="10"
-                TextColor="Black"
-                FontAttributes="Bold"
-                HeightRequest="50"
-                Text="SINCRONIZAR TODO"
-                WidthRequest="150" />
-        </StackLayout>
-        <StackLayout Grid.Row="3"
-                     Orientation="Horizontal"
-                     Margin="-15,10,0,0"
-                     HorizontalOptions="CenterAndExpand">
 
             <Button
-                x:Name="btnEliminarFacturadas"
-                BackgroundColor="#D1255F"
+                x:Name="btnSincronizarDevoluciones"
                 Margin="10,0,0,0"
+                BackgroundColor="#8F3CA7"
+                Clicked="btnSincronizarDevoluciones_Clicked"
+                FontSize="9"
+                HeightRequest="50"
+                LineBreakMode="WordWrap"
+                Text="SINCRONIZAR&#10;DEVOLUCIONES"
+                WidthRequest="150" />
+
+        </StackLayout>
+        <StackLayout
+            Grid.Row="3"
+            Margin="-15,10,0,0"
+            HorizontalOptions="CenterAndExpand"
+            Orientation="Horizontal">
+            <Button
+                x:Name="btnSincronizarTodos"
+                Margin="10,0,0,0"
+                BackgroundColor="#E4C977"
+                Clicked="btnSincronizarTodos_Clicked"
+                FontAttributes="Bold"
+                FontSize="10"
+                HeightRequest="50"
+                Text="SINCRONIZAR TODO"
+                TextColor="Black"
+                WidthRequest="150" />
+            <Button
+                x:Name="btnEliminarFacturadas"
+                Margin="10,0,0,0"
+                BackgroundColor="#D1255F"
                 Clicked="btnEliminarFacturadas_Clicked"
                 FontSize="9"
                 HeightRequest="50"
                 Text="ELIMINAR FACTURADAS"
                 WidthRequest="150" />
-            <Button
-             x:Name="btnEliminarPreventas"
-             BackgroundColor="#E4521E"
-             Margin="10,0,0,0"
-             Clicked="btnEliminarPreventas_Clicked"
-             FontSize="9"
-             HeightRequest="50"
-             Text="ELIMINAR PREVENTAS"
-             WidthRequest="150" />
 
+
+        </StackLayout>
+        <StackLayout
+            Grid.Row="3"
+            Margin="-15,10,0,0"
+            HorizontalOptions="CenterAndExpand"
+            Orientation="Horizontal">
+
+            <Button
+                x:Name="btnEliminarPreventas"
+                Margin="10,0,0,0"
+                BackgroundColor="#E4521E"
+                Clicked="btnEliminarPreventas_Clicked"
+                FontSize="9"
+                HeightRequest="50"
+                Text="ELIMINAR PREVENTAS"
+                WidthRequest="150" />
+            <Button
+                x:Name="btnEliminarDevoluciones"
+                Margin="10,0,0,0"
+                BackgroundColor="#2E61B1"
+                Clicked="btnEliminarDevoluciones_Clicked"
+                FontSize="9"
+                HeightRequest="50"
+                Text="ELIMINAR DEVOLUCIONES"
+                WidthRequest="150" />
         </StackLayout>
         <!--#endregion-->
 
         <!--#region Activity-->
-        <ActivityIndicator x:Name="activityIndicator"
-                           IsRunning="False"
-                           IsVisible="False"
-                           Color="Green"
-                           WidthRequest="60"
-                           HeightRequest="60" />
-        <Label x:Name="lblActivityIndicatorText"
-               Text="Sincronizando..."
-               IsVisible="False"
-               FontSize="Small"
-               TextColor="Black"
-               HorizontalOptions="Center"
-               VerticalOptions="Center" />
+        <ActivityIndicator
+            x:Name="activityIndicator"
+            HeightRequest="60"
+            IsRunning="False"
+            IsVisible="False"
+            WidthRequest="60"
+            Color="Green" />
+        <Label
+            x:Name="lblActivityIndicatorText"
+            FontSize="Small"
+            HorizontalOptions="Center"
+            IsVisible="False"
+            Text="Sincronizando..."
+            TextColor="Black"
+            VerticalOptions="Center" />
         <!--#endregion-->
 
     </VerticalStackLayout>

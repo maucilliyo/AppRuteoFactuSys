@@ -43,6 +43,7 @@ namespace AppRuteoFactuSys.Service
         private async Task SincronizarDBApp()
         {
             var preventasServer = await _preventaRepository.GetPreventasSinEntregar();
+            var lol = await _sqlLitePreventaRepository.GetPreventas( );
             //lista de preventas en la app
             //var preventasApp = await Listar();
             //recorer las prventas en el sistema para evaluar cambios u otras

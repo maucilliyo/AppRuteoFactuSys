@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SQLite;
 
 namespace AppRuteoFactuSys.Models
 {
     public class Producto
     {
-        public string Nombre { get; set; }
+        [PrimaryKey]
         public string CodPro { get; set; }
+        public string Nombre { get; set; }
         public string CodProveedor { get; set; }
         public string Detalle { get; set; }
         public string CodBarras { get; set; }

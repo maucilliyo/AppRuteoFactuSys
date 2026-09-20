@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AppRuteoFactuSys.Views.CantidadEditPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Modificar cantidad"
+    Padding="12,15,12,10"
+    BackgroundColor="#F5F6FA">
+
+    <Grid RowDefinitions="Auto,*" RowSpacing="10">
+
+        <Border
+            Grid.Row="0"
+            Padding="16"
+            BackgroundColor="White"
+            StrokeShape="RoundRectangle 14"
+            StrokeThickness="0">
+            <Border.Shadow>
+                <Shadow
+                    Brush="Black"
+                    Opacity="0.08"
+                    Radius="10"
+                    Offset="0,3" />
+            </Border.Shadow>
+
+            <VerticalStackLayout Spacing="14">
+
+                <!--  Descripción de la línea  -->
+                <Label
+                    x:Name="lblDescripcion"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    HorizontalTextAlignment="Center"
+                    TextColor="#2B2D42" />
+
+                <Label
+                    FontSize="13"
+                    HorizontalTextAlignment="Center"
+                    Text="Cantidad"
+                    TextColor="#6C6F80" />
+
+                <!--  Stepper  -->
+                <Grid ColumnDefinitions="56,*,56" ColumnSpacing="8">
+                    <Button
+                        Grid.Column="0"
+                        BackgroundColor="#EDEFF7"
+                        Clicked="btnMenos_Clicked"
+                        CornerRadius="10"
+                        FontSize="18"
+                        HeightRequest="52"
+                        Text="➖"
+                        TextColor="#4A4E69" />
+
+                    <Border
+                        Grid.Column="1"
+                        Padding="12,0"
+                        BackgroundColor="#F5F6FA"
+                        StrokeShape="RoundRectangle 10"
+                        StrokeThickness="0">
+                        <Entry
+                            x:Name="txtCantidad"
+                            BackgroundColor="Transparent"
+                            Completed="txtCantidad_Completed"
+                            FontAttributes="Bold"
+                            FontSize="24"
+                            HeightRequest="52"
+                            HorizontalTextAlignment="Center"
+                            Keyboard="Numeric"
+                            TextColor="#2B2D42" />
+                    </Border>
+
+                    <Button
+                        Grid.Column="2"
+                        BackgroundColor="#EDEFF7"
+                        Clicked="btnMas_Clicked"
+                        CornerRadius="10"
+                        FontSize="18"
+                        HeightRequest="52"
+                        Text="➕"
+                        TextColor="#33C481" />
+                </Grid>
+
+                <!--  Acciones  -->
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                    <Button
+                        Grid.Column="0"
+                        BackgroundColor="#EDEFF7"
+                        Clicked="btnCancelar_Clicked"
+                        CornerRadius="10"
+                        FontAttributes="Bold"
+                        HeightRequest="46"
+                        Text="Cancelar"
+                        TextColor="#4A4E69" />
+                    <!--  Eliminar  -->
+                    <Button
+                        Grid.Column="1"
+                        BackgroundColor="#FDECEC"
+                        Clicked="Button_Clicked"
+                        CornerRadius="10"
+                        FontAttributes="Bold"
+                        HeightRequest="46"
+                        Text="🗑 Eliminar línea"
+                        TextColor="#E5484D" />
+                    <Button
+                        Grid.Column="2"
+                        BackgroundColor="#1BA1E2"
+                        Clicked="btnAceptar_Clicked"
+                        CornerRadius="10"
+                        FontAttributes="Bold"
+                        HeightRequest="46"
+                        Text="Aceptar"
+                        TextColor="White" />
+
+
+                </Grid>
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
+</ContentPage>

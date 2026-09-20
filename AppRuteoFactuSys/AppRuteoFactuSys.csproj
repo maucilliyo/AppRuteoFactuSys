@@ -1,141 +1,170 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFrameworks>net9.0-android;</TargetFrameworks>
-    <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
-    <!-- <TargetFrameworks>$(TargetFrameworks);net9.0-tizen</TargetFrameworks> -->
-    <!-- Note for MacCatalyst:
+	<PropertyGroup>
+		<TargetFrameworks>net10.0-android;</TargetFrameworks>
+		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
+		<!-- <TargetFrameworks>$(TargetFrameworks);net9.0-tizen</TargetFrameworks> -->
+		<!-- Note for MacCatalyst:
 		The default runtime is maccatalyst-x64, except in Release config, in which case the default is maccatalyst-x64;maccatalyst-arm64.
 		When specifying both architectures, use the plural <RuntimeIdentifiers> instead of the singular <RuntimeIdentifier>.
 		The Mac App Store will NOT accept apps with ONLY maccatalyst-arm64 indicated;
 		either BOTH runtimes must be indicated or ONLY macatalyst-x64. -->
-    <!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
-    <OutputType>Exe</OutputType>
-    <RootNamespace>AppRuteoFactuSys</RootNamespace>
-    <UseMaui>true</UseMaui>
-    <SingleProject>true</SingleProject>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <!-- Display name -->
-    <ApplicationTitle>AppRuteoFactuSys</ApplicationTitle>
-    <!-- App Identifier -->
-    <ApplicationId>com.companyname.appruteofactusys</ApplicationId>
-    <!-- Versions -->
-    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-    <ApplicationVersion>1</ApplicationVersion>
-    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
+		<OutputType>Exe</OutputType>
+		<RootNamespace>AppRuteoFactuSys</RootNamespace>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<!-- Display name -->
+		<ApplicationTitle>AppRuteoFactuSys</ApplicationTitle>
+		<!-- App Identifier -->
+		<ApplicationId>com.companyname.appruteofactusys</ApplicationId>
+		<!-- Versions -->
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1</ApplicationVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
 
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-    <AndroidPackageFormat>apk</AndroidPackageFormat>
-    <Debugger>Xamarin</Debugger>
-    <ApplicationDisplayVersion>1.3</ApplicationDisplayVersion>
-    <ApplicationVersion>3</ApplicationVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
-    <Debugger>Xamarin</Debugger>
-    <ApplicationDisplayVersion>1.3</ApplicationDisplayVersion>
-    <ApplicationVersion>3</ApplicationVersion>
-  </PropertyGroup>
-  <ItemGroup>
-    <!-- App Icon -->
-    <MauiIcon Include="Resources\AppIcon\icono.png" Color="White" ForegroundScale="0.50" />
-    <!-- Splash Screen -->
-	  <!-- Images -->
-    <MauiImage Include="Resources\Images\*" />
-    <!-- Custom Fonts -->
-    <MauiFont Include="Resources\Fonts\*" />
-    <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
-    <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
-  </ItemGroup>
-  <ItemGroup>
-    <MauiImage Remove="Resources\Images\dotnet_bot.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Resources\AppIcon\appiconfg.svg" />
-    <None Remove="Resources\AppIcon\icono.png" />
-    <None Remove="Resources\Images\fondo_menu.png" />
-    <None Remove="Resources\Images\login.png" />
-    <None Remove="Resources\Splash\Logo.png" />
-    <None Remove="Resources\Splash\Logo_espacios.png" />
-    <None Remove="Resources\Splash\splash.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="akgul.Maui.DataGrid" Version="3.0.0" />
-    <PackageReference Include="CommunityToolkit.Maui.Core" Version="8.0.1" />
-    <PackageReference Include="Controls.UserDialogs.Maui" Version="1.5.4" />
-    <PackageReference Include="Dapper" Version="2.1.35" />
-    <PackageReference Include="itext7" Version="8.0.3" />
-    <PackageReference Include="itext7.bouncy-castle-adapter" Version="8.0.3" />
-    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.4" />
-    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.20" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.4" />
-    <PackageReference Include="MySqlConnector" Version="2.3.6" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Maui.DataGrid">
-      <HintPath>..\..\Maui.DataGrid.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Views\ListaClientesPage.xaml.cs">
-      <DependentUpon>ListaClientesPage.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <MauiXaml Update="Views\EditarLineaPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </MauiXaml>
-    <MauiXaml Update="Views\ListaClientesPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </MauiXaml>
-    <MauiXaml Update="Views\ListaFacturadas.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </MauiXaml>
-    <MauiXaml Update="Views\ListaPreventaPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </MauiXaml>
-    <MauiXaml Update="Views\LoginPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </MauiXaml>
-    <MauiXaml Update="Views\MenuPreventaPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </MauiXaml>
-    <MauiXaml Update="Views\PopConfServidor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </MauiXaml>
-    <MauiXaml Update="Views\ClienteAddPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </MauiXaml>
-    <MauiXaml Update="Views\PreventaPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </MauiXaml>
-    <MauiXaml Update="Views\ProductoAddPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </MauiXaml>
-    <MauiXaml Update="Views\SincronizarPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </MauiXaml>
-    <MauiXaml Update="Views\VerFacturaPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </MauiXaml>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Helpers\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Splash\logo.png" Color="#ccd1d1 " BaseSize="32,32">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <MauiSplashScreen Include="Resources\Splash\logo_espacios.png" Color="#f2f3f4" BaseSize="128,128">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </MauiSplashScreen>
-    <Resource Include="Resources\Splash\splash.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Update="Microsoft.Maui.Controls" Version="8.0.20" />
-  </ItemGroup>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net10.0-android|AnyCPU'">
+		<AndroidPackageFormat>apk</AndroidPackageFormat>
+		<Debugger>Xamarin</Debugger>
+		<ApplicationDisplayVersion>1.3</ApplicationDisplayVersion>
+		<ApplicationVersion>3</ApplicationVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net10.0-android|AnyCPU'">
+		<Debugger>Xamarin</Debugger>
+		<ApplicationDisplayVersion>1.3</ApplicationDisplayVersion>
+		<ApplicationVersion>3</ApplicationVersion>
+	</PropertyGroup>
+	<ItemGroup>
+		<!-- App Icon -->
+		<MauiIcon Include="Resources\AppIcon\icono.png" Color="White" ForegroundScale="0.50" />
+		<!-- Splash Screen -->
+		<!-- Images -->
+		<MauiImage Include="Resources\Images\*" />
+		<!-- Custom Fonts -->
+		<MauiFont Include="Resources\Fonts\*" />
+		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+	<ItemGroup>
+		<MauiImage Remove="Resources\Images\dotnet_bot.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="Resources\AppIcon\appiconfg.svg" />
+		<None Remove="Resources\AppIcon\icono.png" />
+		<None Remove="Resources\Images\fondo_menu.png" />
+		<None Remove="Resources\Images\login.png" />
+		<None Remove="Resources\Splash\Logo.png" />
+		<None Remove="Resources\Splash\Logo_espacios.png" />
+		<None Remove="Resources\Splash\splash.svg" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="akgul.Maui.DataGrid" Version="3.0.0" />
+		<PackageReference Include="CommunityToolkit.Maui.Core" Version="15.0.1" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+		<PackageReference Include="Controls.UserDialogs.Maui" Version="1.12.0" />
+		<PackageReference Include="Dapper" Version="2.1.86" />
+		<PackageReference Include="itext7" Version="9.7.0" />
+		<PackageReference Include="itext7.bouncy-castle-adapter" Version="9.7.0" />
+		<PackageReference Include="Microsoft.Data.Sqlite.Core" Version="10.0.12" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.12" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.101" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.12" />
+		<PackageReference Include="MySqlConnector" Version="2.6.2" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.11.285" />
+	</ItemGroup>
+	<ItemGroup>
+		<Reference Include="Dommel">
+			<HintPath>C:\Users\MauLaptop\Desktop\SistemaPOS\SistemaPOS\SistemaPOS\bin\Debug\net10.0-windows7.0\Dommel.dll</HintPath>
+		</Reference>
+		<Reference Include="Maui.DataGrid">
+			<HintPath>..\..\Maui.DataGrid.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="Views\ListaClientesPage.xaml.cs">
+			<DependentUpon>ListaClientesPage.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\Devoluciones\ListaDevolucionesPage.xaml.cs">
+			<DependentUpon>ListaDevolucionesPage.xaml</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<MauiXaml Update="Views\CantidadEditPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\ClienteAdd2Page.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\Devoluciones\DevolucionPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\EditarLineaPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\ListaClientesPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\ListaFacturadas.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\Preventas\ListaPreventaPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\LoginPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\MenuPreventaPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\Devoluciones\ListaDevolucionesPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\PopConfServidor.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\ClienteAddPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\Preventas\PreventaPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\ProductoAdd2Page.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\ProductoAddPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\SincronizarPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\VerFacturaPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="Helpers\" />
+	</ItemGroup>
+	<ItemGroup>
+		<Resource Include="Resources\Splash\logo.png" Color="#ccd1d1 " BaseSize="32,32">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Resource>
+		<MauiSplashScreen Include="Resources\Splash\logo_espacios.png" Color="#f2f3f4" BaseSize="128,128">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</MauiSplashScreen>
+		<Resource Include="Resources\Splash\splash.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Resource>
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="Views\CantidadEditPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Update="Microsoft.Maui.Controls" Version="10.0.101" />
+	</ItemGroup>
 </Project>

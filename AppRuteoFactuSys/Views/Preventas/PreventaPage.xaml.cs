@@ -1,12 +1,7 @@
-using Android.Content;
-using Android.InputMethodServices;
-using Android.Text;
-using Android.Views.InputMethods;
 using AppRuteoFactuSys.Models;
 using AppRuteoFactuSys.MySql;
 using AppRuteoFactuSys.Service;
 using AppRuteoFactuSys.Service.Interfaces;
-using Inventario.Views;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -25,6 +20,7 @@ namespace AppRuteoFactuSys.Views
         private bool alreadyLoaded { get; set; }
         public Command RefreshCommand { get; set; }
         public ICommand ModificarLineaCommand { get; }
+        private Preventa _preventa;
         public static PreventaPage load;
 
         public PreventaPage(IClienteService clienteService, IPreventaService preventaService, IProductoService productoService, bool modificar = false)
@@ -251,6 +247,8 @@ namespace AppRuteoFactuSys.Views
             }
             Preventa preventa = new()
             {
+                Nproforma = _preventa.Nproforma,
+                LocalID =_preventa.LocalID,
                 Cedcliente = cliente.Cedula,
                 Nombre_Cliente = lblNombreCliente.Text,
                 CodigoMoneda = "CRC",
@@ -317,6 +315,7 @@ namespace AppRuteoFactuSys.Views
         {
             //obtenemos la preventa
             var preventa = await _preventaService.GetById(idPreventa);
+            _preventa = preventa;
             //cargamos el cliente
             cliente = await _clienteService.GetByCedula(preventa.Cedcliente);
             //cargamos los datos de la preventa en la pagina

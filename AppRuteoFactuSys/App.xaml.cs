@@ -19,7 +19,7 @@ namespace AppRuteoFactuSys
             base.OnStart();
  
             // Inicializar el proveedor de base de datos
-            SQLiteInitialization.InitializeDatabase();
+         //   SQLiteInitialization.InitializeDatabase();
         }
         protected override Window CreateWindow(IActivationState activationState)
         {

@@ -1,4 +1,6 @@
-﻿namespace AppRuteoFactuSys.Models
+﻿using SQLite;
+
+namespace AppRuteoFactuSys.Models
 {
     public class Preventa
     {
@@ -7,6 +9,7 @@
         {
             this.Lineas = [];
         }
+        [PrimaryKey, AutoIncrement]
         public int LocalID { get; set; } 
         public int Nproforma { get; set; }
         public bool Modificar { get; set; }
@@ -38,6 +41,7 @@
         public string Notas { get; set; }
         public DateTime FechaUpdate { get; set; }
         public bool Entregado { get; set; }
+        [Ignore]
         public List<PreventaLineas> Lineas { get; set; }
 
     }
