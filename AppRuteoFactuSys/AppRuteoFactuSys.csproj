@@ -23,6 +23,8 @@
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     <ApplicationVersion>1</ApplicationVersion>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+    <PublishTrimmed>True</PublishTrimmed>
+    <AnalysisLevel>latest</AnalysisLevel>
 
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
@@ -48,6 +50,14 @@
     <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Remove="Helpers\**" />
+    <Compile Remove="Helpers\**" />
+    <EmbeddedResource Remove="Helpers\**" />
+    <MauiCss Remove="Helpers\**" />
+    <MauiXaml Remove="Helpers\**" />
+    <None Remove="Helpers\**" />
+  </ItemGroup>
+  <ItemGroup>
     <MauiImage Remove="Resources\Images\dotnet_bot.png" />
   </ItemGroup>
   <ItemGroup>
@@ -62,6 +72,7 @@
   <ItemGroup>
     <PackageReference Include="akgul.Maui.DataGrid" Version="3.0.0" />
     <PackageReference Include="CommunityToolkit.Maui.Core" Version="8.0.1" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageReference Include="Controls.UserDialogs.Maui" Version="1.5.4" />
     <PackageReference Include="Dapper" Version="2.1.35" />
     <PackageReference Include="itext7" Version="8.0.3" />
@@ -72,6 +83,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.4" />
     <PackageReference Include="MySqlConnector" Version="2.3.6" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.11.285" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Maui.DataGrid">
@@ -84,6 +96,21 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <MauiXaml Update="Views\CantidadEditPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\Devoluciones\ClienteAdd2Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\Devoluciones\DevolucionPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\Devoluciones\ListaDevolucionesPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\Devoluciones\ProductoAdd2Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
     <MauiXaml Update="Views\EditarLineaPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
@@ -93,13 +120,13 @@
     <MauiXaml Update="Views\ListaFacturadas.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
-    <MauiXaml Update="Views\ListaPreventaPage.xaml">
+    <MauiXaml Update="Views\Preventas\ListaPreventaPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
     <MauiXaml Update="Views\LoginPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
-    <MauiXaml Update="Views\MenuPreventaPage.xaml">
+    <MauiXaml Update="Views\Preventas\MenuPreventaPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
     <MauiXaml Update="Views\PopConfServidor.xaml">
@@ -108,7 +135,7 @@
     <MauiXaml Update="Views\ClienteAddPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
-    <MauiXaml Update="Views\PreventaPage.xaml">
+    <MauiXaml Update="Views\Preventas\PreventaPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
     <MauiXaml Update="Views\ProductoAddPage.xaml">
@@ -120,9 +147,6 @@
     <MauiXaml Update="Views\VerFacturaPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Splash\logo.png" Color="#ccd1d1 " BaseSize="32,32">

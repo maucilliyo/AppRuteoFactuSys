@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AppRuteoFactuSys.Views.Devoluciones.DevolucionPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:devoluciones="clr-namespace:AppRuteoFactuSys.Views.Devoluciones"
+    Title="DevolucionPage">
+    <Grid RowDefinitions="Auto,*,Auto,Auto" RowSpacing="10">
+
+
+
+        <!--  ============ Datos del Cliente ============  -->
+        <Border
+            Grid.Row="0"
+            Padding="14,3"
+            BackgroundColor="White"
+            StrokeShape="RoundRectangle 14"
+            StrokeThickness="0">
+            <Border.Shadow>
+                <Shadow
+                    Brush="Black"
+                    Opacity="0.08"
+                    Radius="10"
+                    Offset="0,3" />
+            </Border.Shadow>
+
+            <VerticalStackLayout Spacing="2">
+
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="18"
+                    HorizontalTextAlignment="Center"
+                    Text="DEVOLUCIÓN"
+                    TextColor="#2B2D42" />
+
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="14"
+                    Text="Datos del Cliente"
+                    TextColor="#2B2D42" />
+
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+
+                    <Border
+                        Grid.Column="0"
+                        Padding="8,2"
+                        BackgroundColor="#FFE3E3"
+                        StrokeShape="RoundRectangle 8"
+                        StrokeThickness="0"
+                        VerticalOptions="Center">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            HorizontalOptions="Center"
+                            Text="{Binding ClienteModel.TipoPrecio}"
+                            TextColor="#E63946" />
+                    </Border>
+
+                    <Editor
+                        Grid.Column="1"
+                        AutoSize="TextChanges"
+                        BackgroundColor="Transparent"
+                        FontSize="14"
+                        Text="{Binding ClienteModel.Nombre}"
+                        TextColor="#2B2D42"
+                        VerticalOptions="Center" />
+
+                    <Button
+                        Grid.Column="2"
+                        Padding="14,0"
+                        BackgroundColor="#33C481"
+                        Command="{Binding SeleccionarClienteCommand}"
+                        CornerRadius="10"
+                        FontAttributes="Bold"
+                        FontSize="14"
+                        HeightRequest="36"
+                        Text="⋮"
+                        TextColor="White" />
+                </Grid>
+            </VerticalStackLayout>
+        </Border>
+
+        <!--  ============ Lista de productos a devolver ============  -->
+        <Border
+            Grid.Row="1"
+            Padding="0"
+            BackgroundColor="White"
+            StrokeShape="RoundRectangle 14"
+            StrokeThickness="0">
+            <Border.Shadow>
+                <Shadow
+                    Brush="Black"
+                    Opacity="0.08"
+                    Radius="10"
+                    Offset="0,3" />
+            </Border.Shadow>
+
+            <Grid RowDefinitions="Auto,*,Auto">
+
+                <!--  Header  -->
+                <Grid
+                    Grid.Row="0"
+                    Padding="14,10"
+                    BackgroundColor="#EDEFF7"
+                    ColumnDefinitions="*,50,70,35">
+                    <Label
+                        Grid.Column="0"
+                        FontAttributes="Bold"
+                        FontSize="13"
+                        Text="Detalle"
+                        TextColor="#4A4E69"
+                        VerticalTextAlignment="Center" />
+                    <Label
+                        Grid.Column="1"
+                        FontAttributes="Bold"
+                        FontSize="13"
+                        HorizontalTextAlignment="Center"
+                        Text="Cant"
+                        TextColor="#4A4E69"
+                        VerticalTextAlignment="Center" />
+                    <Label
+                        Grid.Column="2"
+                        FontAttributes="Bold"
+                        FontSize="13"
+                        HorizontalTextAlignment="End"
+                        Text="Total"
+                        TextColor="#4A4E69"
+                        VerticalTextAlignment="Center" />
+                    <Label Grid.Column="3" Text=" " />
+                </Grid>
+
+                <!--  CollectionView  -->
+                <CollectionView
+                    x:Name="dgLineas"
+                    Grid.Row="1"
+                    Margin="0"
+                    ItemsSource="{Binding DevolucionLineas}"
+                    SelectionMode="Single">
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="10,2" ColumnDefinitions="*,50,70,35">
+                                <BoxView
+                                    Grid.ColumnSpan="4"
+                                    HeightRequest="1"
+                                    VerticalOptions="End"
+                                    Color="#F0F0F5" />
+
+                                <Label
+                                    Grid.Column="0"
+                                    FontSize="14"
+                                    Text="{Binding Detalle}"
+                                    TextColor="#2B2D42"
+                                    VerticalTextAlignment="Center" />
+
+                                <Label
+                                    Grid.Column="1"
+                                    FontSize="14"
+                                    HorizontalTextAlignment="Center"
+                                    Text="{Binding Cantidad}"
+                                    TextColor="#2B2D42"
+                                    VerticalTextAlignment="Center" />
+
+                                <Label
+                                    Grid.Column="2"
+                                    FontSize="14"
+                                    HorizontalTextAlignment="End"
+                                    Text="{Binding Totallinea, StringFormat='{}{0:#,0}'}"
+                                    TextColor="#2B2D42"
+                                    VerticalTextAlignment="Center" />
+
+                                <Button
+                                    Grid.Column="3"
+                                    Padding="0"
+                                    BackgroundColor="Transparent"
+                                    Command="{Binding BindingContext.EditarLineaCommand, Source={x:Reference dgLineas}}"
+                                    CommandParameter="{Binding .}"
+                                    FontSize="15"
+                                    Text="✏️"
+                                    TextColor="#4A4E69" />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                    <!--  Empty view  -->
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout
+                            Padding="20"
+                            HorizontalOptions="Center"
+                            Spacing="4"
+                            VerticalOptions="Center">
+                            <Label
+                                FontSize="28"
+                                HorizontalOptions="Center"
+                                Text="↩️" />
+                            <Label
+                                FontSize="14"
+                                HorizontalOptions="Center"
+                                Text="No hay productos en la devolución"
+                                TextColor="#9A9BA6" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+                </CollectionView>
+
+                <!--  Agregar producto  -->
+                <Button
+                    Grid.Row="2"
+                    Margin="14,8,14,12"
+                    BackgroundColor="#1BA1E2"
+                    Command="{Binding AgregarProductoCommand}"
+                    CornerRadius="10"
+                    FontAttributes="Bold"
+                    FontSize="14"
+                    HeightRequest="42"
+                    HorizontalOptions="Fill"
+                    Text="+  Agregar producto"
+                    TextColor="White" />
+
+                <ActivityIndicator
+                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    HeightRequest="50"
+                    IsRunning="{Binding IsBusy}"
+                    IsVisible="{Binding IsBusy}"
+                    WidthRequest="50"
+                    Color="#33C481" />
+            </Grid>
+        </Border>
+
+        <!--  ============ Total ============  -->
+        <Border
+            Grid.Row="2"
+            Padding="16,5"
+            BackgroundColor="White"
+            StrokeShape="RoundRectangle 14"
+            StrokeThickness="0">
+            <Border.Shadow>
+                <Shadow
+                    Brush="Black"
+                    Opacity="0.08"
+                    Radius="10"
+                    Offset="0,3" />
+            </Border.Shadow>
+
+            <Grid ColumnDefinitions="*,Auto">
+                <Label
+                    Grid.Column="0"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    Text="TOTAL:"
+                    TextColor="#4A4E69"
+                    VerticalOptions="Center" />
+                <Label
+                    Grid.Column="1"
+                    FontAttributes="Bold"
+                    FontSize="30"
+                    Text="{Binding DevolucionModel.TotalComprobante, StringFormat='{}{0:#,0}'}"
+                    TextColor="#E63946"
+                    VerticalOptions="Center" />
+            </Grid>
+        </Border>
+
+        <!--  ============ Acciones ============  -->
+        <Grid Grid.Row="3" Margin="10">
+
+            <Button
+                Grid.Column="0"
+                BackgroundColor="#33C481"
+                Command="{Binding GuardarCommand}"
+                CornerRadius="12"
+                FontAttributes="Bold"
+                FontSize="14"
+                HeightRequest="46"
+                Text="Guardar"
+                TextColor="White"
+                WidthRequest="250" />
+
+        </Grid>
+
+    </Grid>
+</ContentPage>

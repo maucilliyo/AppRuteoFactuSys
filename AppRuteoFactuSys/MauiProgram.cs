@@ -3,6 +3,7 @@ using AppRuteoFactuSys.Service;
 using AppRuteoFactuSys.Service.Interfaces;
 using AppRuteoFactuSys.SqlLite;
 using AppRuteoFactuSys.Views;
+using AppRuteoFactuSys.Views.Devoluciones;
 using Controls.UserDialogs.Maui;
 using Microsoft.Extensions.Logging;
 
@@ -38,6 +39,8 @@ namespace AppRuteoFactuSys
                 });
             Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
             //dependencias
+            builder.Services.AddTransient<ViewFactoryServices>();
+
             // builder.Services.AddDbContext<ConexionDb>();
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<SincronizarPage>();
@@ -46,18 +49,27 @@ namespace AppRuteoFactuSys
             builder.Services.AddTransient<VerFacturaPage>();
             builder.Services.AddTransient<MenuPreventaPage>();
             builder.Services.AddTransient<LoginPage>();
-
+            builder.Services.AddTransient<ListaDevolucionesPage>();
+            builder.Services.AddTransient<DevolucionPage>();
+            builder.Services.AddTransient<ClienteAdd2Page>();
+            builder.Services.AddTransient<ProductoAdd2Page>();
+            builder.Services.AddTransient<CantidadEditPage>();
+            //VIEWMODEL
+            builder.Services.AddTransient<DevolucionViewModel>();
+            //
             builder.Services.AddScoped<IClienteService, ClienteService>();
             builder.Services.AddSingleton<IPreventaService, PreventaService>();
             builder.Services.AddSingleton<IProductoService, ProductoService>();
+            builder.Services.AddSingleton<IDialogService, DialogService>(); 
             //MySql
             builder.Services.AddSingleton<PreventaRepository>();
             builder.Services.AddSingleton<ClienteRepository>();
-            builder.Services.AddSingleton<ProductoRepository>();
+            builder.Services.AddSingleton<ProductoRepository>(); 
             //SQL LITE
             builder.Services.AddSingleton<LocalPreventaRepository>();
             builder.Services.AddSingleton<LocalClienteRepository>();
             builder.Services.AddSingleton<LocalProductoRepository>();
+            builder.Services.AddSingleton<LocalDevolucionRepository>();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

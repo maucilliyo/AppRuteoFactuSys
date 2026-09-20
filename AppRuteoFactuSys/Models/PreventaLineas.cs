@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SQLite;
 
 namespace AppRuteoFactuSys.Models
 {
-    [Table("lineasproforma")]
+
     public class PreventaLineas
     {
+        [PrimaryKey, AutoIncrement]
         public int id_linea { get; set; }
         public int LocalID { get; set; }
-
         private decimal _Porexonerado;
         public int NProforma { get; set; }
         public int Linea { get; set; }

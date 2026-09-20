@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AppRuteoFactuSys.Views.Devoluciones.ListaDevolucionesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
+    Padding="2,0,5,2">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <!--  // BUSCAR  -->
+
+        <Button
+            x:Name="btnNuevaNota"
+            Clicked="btnNuevaNota_Clicked"
+            HeightRequest="40"
+            Text="NUEVA"
+            WidthRequest="150" />
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="90" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+
+
+            <Entry
+                x:Name="txtBuscar"
+                Grid.Column="0"
+                Margin="5,0,0,0"
+                CursorPosition="1"
+                HorizontalOptions="Start"
+                Placeholder="Nombre  a buscar"
+                WidthRequest="300" />
+            <Button
+                Grid.Column="1"
+                FontSize="10"
+                HeightRequest="30"
+                HorizontalOptions="Center"
+                Text="|||"
+                VerticalOptions="Center"
+                WidthRequest="45" />
+
+        </Grid>
+        <!--  PANEL PRINCIPAL  -->
+        <!--  DataGrid Cuenta  -->
+
+        <!--  Header fijo  -->
+        <Grid
+            Grid.Row="2"
+            Margin="3,10,3,0"
+            RowDefinitions="Auto,*">
+
+            <!--  Encabezado manual  -->
+            <Grid
+                Padding="5"
+                BackgroundColor="#E8EED4"
+                ColumnDefinitions="*,100,35,35">
+                <Label
+                    Grid.Column="0"
+                    FontAttributes="Bold"
+                    Text="Nombre"
+                    VerticalTextAlignment="Center" />
+                <Label
+                    Grid.Column="1"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="End"
+                    Text="Total"
+                    VerticalTextAlignment="Center" />
+
+            </Grid>
+
+            <!--  Lista de preventas  -->
+            <CollectionView
+                x:Name="cvPreventas"
+                Grid.Row="1"
+                Margin="0"
+                ItemsSource="{Binding Preventas}"
+                SelectedItem="{Binding SelectedPreventa}"
+                SelectionMode="Single">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid
+                            Padding="2"
+                            BackgroundColor="White"
+                            ColumnDefinitions="*,100,40,40"
+                            RowSpacing="0">
+
+                            <Label
+                                Grid.Column="0"
+                                Text="{Binding Nombre}"
+                                VerticalTextAlignment="Center" />
+
+                            <Label
+                                Grid.Column="1"
+                                HorizontalTextAlignment="End"
+                                Text="{Binding TotalComprobante, StringFormat='{}{0:#,0}'}"
+                                VerticalTextAlignment="Center" />
+
+                            <Button
+                                Grid.Column="2"
+                                BackgroundColor="Transparent"
+                                Command="{Binding BindingContext.SendSelectedDataCommand, Source={x:Reference cvPreventas}}"
+                                CommandParameter="{Binding .}"
+                                FontSize="10"
+                                Text="✏️" />
+
+                            <Button
+                                Grid.Column="3"
+                                BackgroundColor="Transparent"
+                                Command="{Binding BindingContext.verPdfCommand, Source={x:Reference cvPreventas}}"
+                                CommandParameter="{Binding .}"
+                                FontSize="12"
+                                Text="🖨" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <!--  Mensaje si no hay datos  -->
+                <CollectionView.EmptyView>
+                    <Label
+                        BackgroundColor="White"
+                        HorizontalOptions="Center"
+                        Text="NO HAY DATOS"
+                        VerticalOptions="Center" />
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </Grid>
+
+
+    </Grid>
+
+</ContentPage>

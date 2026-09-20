@@ -1,6 +1,4 @@
 ﻿using Android.Bluetooth;
-using Android.Graphics.Fonts;
-using Android.PrintServices;
 using AppRuteoFactuSys.Models;
 using Controls.UserDialogs.Maui;
 using iText.IO.Font.Constants;
@@ -12,8 +10,6 @@ using iText.Layout.Element;
 using iText.Layout.Properties;
 using Java.Util;
 using System.Text;
-using Microsoft.Maui.Storage;
-using Microsoft.Maui.ApplicationModel;
 
 namespace AppRuteoFactuSys.Service
 {

@@ -3,6 +3,7 @@ using AppRuteoFactuSys.Service;
 using AppRuteoFactuSys.Service.Interfaces;
 using AppRuteoFactuSys.SqlLite;
 using AppRuteoFactuSys.Views;
+using AppRuteoFactuSys.Views.Devoluciones;
 using Controls.UserDialogs.Maui;
 using Inventario.Views;
 
@@ -14,13 +15,15 @@ namespace AppRuteoFactuSys
         private readonly IPreventaService _preventaService;
         private readonly IProductoService _productoService;
         private readonly IUserDialogs _userDialogs;
-        public MainPage(IClienteService clienteService, IPreventaService preventaService, IProductoService productoService, IUserDialogs userDialogs)
+        private readonly ViewFactoryServices _factory;
+        public MainPage(IClienteService clienteService, IPreventaService preventaService, IProductoService productoService, IUserDialogs userDialogs, ViewFactoryServices viewFactoryServices)
         {
             InitializeComponent();
             _clienteService = clienteService;
             _preventaService = preventaService;
             _productoService = productoService;
             _userDialogs = userDialogs;
+            _factory = viewFactoryServices;
         }
         protected async override void OnAppearing()
         {
@@ -110,13 +113,13 @@ namespace AppRuteoFactuSys
         private async void btnEliminarDB_Clicked(object sender, EventArgs e)
         {
             string result = await DisplayPromptAsync("Aviso", "Digite la clave para RESETEAR la base de datos", "Aceptar", "Cancelar", "Clave maestra",
-                                                        keyboard: Keyboard.Numeric); //keyboard: Keyboard.Numeric es para que solo acepta numeros
+                                                            keyboard: Keyboard.Numeric); //keyboard: Keyboard.Numeric es para que solo acepta numeros
             if (result != null)
             {
                 if (result == "246")
                 {
-                    SQLiteInitialization.DeleteDataBase();
-                    SQLiteInitialization.InitializeDatabase();
+
+                    await SqlLiteDatabase.ClearDatabase();
                     await DisplayAlert("Aviso", $"Base de datos RESETEADA", "Aceptar");
                 }
                 else
@@ -141,6 +144,13 @@ namespace AppRuteoFactuSys
             _userDialogs.ShowLoading();
             await Navigation.PushAsync(new NavigationPage(new MenuPreventaPage( _preventaService, _clienteService, _productoService, _userDialogs)));
             _userDialogs.HideHud();
+        }
+
+        private async void btnDevoluciones_Clicked(object sender, EventArgs e)
+        {
+            var page = _factory.Create<ListaDevolucionesPage>();
+
+            await Navigation.PushAsync(page);
         }
     }
 

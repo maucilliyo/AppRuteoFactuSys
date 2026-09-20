@@ -1,7 +1,9 @@
 
 
 using AppRuteoFactuSys;
+using AppRuteoFactuSys.Service;
 using AppRuteoFactuSys.Service.Interfaces;
+using AppRuteoFactuSys.SqlLite;
 using CommunityToolkit.Maui.Core.Platform;
 using Controls.UserDialogs.Maui;
 using Microsoft.Maui.ApplicationModel;
@@ -14,18 +16,22 @@ public partial class LoginPage : ContentPage
     private readonly IPreventaService _preventaService;
     private readonly IProductoService _productoService;
     private readonly IUserDialogs _userDialogs;
-    public LoginPage(IClienteService clienteService, IPreventaService preventaService, IProductoService productoService, IUserDialogs userDialogs)
-	{
-		InitializeComponent();
+    private readonly ViewFactoryServices _factory;
+    public LoginPage(IClienteService clienteService, IPreventaService preventaService, IProductoService productoService, IUserDialogs userDialogs, ViewFactoryServices viewFactory)
+    {
+        InitializeComponent();
         NavigationPage.SetHasNavigationBar(this, false);
 
+
+
         txtUserName.Text = "Admin";
-        //txtPass.Text = "852";
+        txtPass.Text = "852";
 
         _clienteService = clienteService;
         _preventaService = preventaService;
-        _productoService = productoService; 
+        _productoService = productoService;
         _userDialogs = userDialogs;
+        _factory = viewFactory;
     }
 
     private async void btnIniciar_Clicked(object sender, EventArgs e)
@@ -43,10 +49,16 @@ public partial class LoginPage : ContentPage
         }
         if (txtUserName.Text == "Admin" && txtPass.Text == "852")
         {
+            //OBTENER CONECION SQL LITE LOCAL
+            await SqlLiteDatabase.GetConnection();
+            //
             if (Application.Current != null)
             {
                 await Navigation.PopAsync();
-                Application.Current.MainPage.Navigation.PushAsync(new MainPage(_clienteService, _preventaService, _productoService,_userDialogs));
+
+                var page = _factory.Create<MainPage>();
+
+                await Application.Current.MainPage.Navigation.PushAsync(page);
             }
         }
         else

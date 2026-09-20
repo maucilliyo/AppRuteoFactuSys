@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AppRuteoFactuSys.MainPage">
+<ContentPage
+    x:Class="AppRuteoFactuSys.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <ScrollView VerticalOptions="Start">
 
@@ -20,24 +21,27 @@
                     VerticalOptions="Center" />
             </Grid>
             <!--#region Activity-->
-            <ActivityIndicator x:Name="activityIndicator"
-                               IsRunning="False"
-                               IsVisible="False"
-                               Color="Green"
-                               WidthRequest="60"
-                               HeightRequest="60" />
+            <ActivityIndicator
+                x:Name="activityIndicator"
+                HeightRequest="60"
+                IsRunning="False"
+                IsVisible="False"
+                WidthRequest="60"
+                Color="Green" />
 
-            <Label x:Name="lblActivityIndicatorText"
-                   Text="Sincronizando..."
-                   IsVisible="False"
-                   FontSize="Small"
-                   TextColor="Black"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center" />
+            <Label
+                x:Name="lblActivityIndicatorText"
+                FontSize="Small"
+                HorizontalOptions="Center"
+                IsVisible="False"
+                Text="Sincronizando..."
+                TextColor="Black"
+                VerticalOptions="Center" />
             <!--#endregion-->
             <!--  PANEL PRINCIPAL  -->
             <Grid Padding="10" RowSpacing="5">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
@@ -69,8 +73,19 @@
                     WidthRequest="150" />
 
                 <Button
-                    x:Name="btnSincronizar"
+                    x:Name="btnDevoluciones"
                     Grid.Row="3"
+                    BackgroundColor="#424242"
+                    FontSize="12"
+                    HeightRequest="40"
+                    Clicked="btnDevoluciones_Clicked"
+                    HorizontalOptions="Center"
+                    Text="DEVOLUCIONES"
+                    WidthRequest="150" />
+
+                <Button
+                    x:Name="btnSincronizar"
+                    Grid.Row="4"
                     BackgroundColor="#4887A7"
                     Clicked="btnSincronizar_Clicked"
                     FontSize="12"
@@ -80,7 +95,7 @@
                     WidthRequest="150" />
                 <Button
                     x:Name="btnConexion"
-                    Grid.Row="4"
+                    Grid.Row="5"
                     BackgroundColor="Chocolate"
                     Clicked="btnConexion_Clicked"
                     FontSize="12"
@@ -91,7 +106,7 @@
 
                 <Button
                     x:Name="btnResetDB"
-                    Grid.Row="5"
+                    Grid.Row="6"
                     BackgroundColor="#CA5100"
                     Clicked="btnEliminarDB_Clicked"
                     FontSize="12"
@@ -101,13 +116,13 @@
                     WidthRequest="150" />
 
                 <!--  IMAGEN  -->
-                <Image Grid.Row="6" Source="fondo_menu.png" />
+                <Image Grid.Row="7" Source="fondo_menu.png" />
 
                 <Label
-                    Grid.Row="7"
+                    Grid.Row="8"
                     FontAttributes="Bold, Italic"
-                    HorizontalOptions="Center"
                     FontSize="20"
+                    HorizontalOptions="Center"
                     Text=" Distribuidora La Familia E R "
                     TextColor="Black"
                     VerticalOptions="Center" />

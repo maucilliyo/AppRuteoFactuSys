@@ -344,9 +344,9 @@ namespace AppRuteoFactuSys.Views
             await GuardarPreventa(true);
             //IMPRIMIR
             var preventa = await _preventaService.GetById(idPreventa);
-            ImpresionService.ImprimirTicket(preventa);
+            await ImpresionService.ImprimirTicket(preventa);
         }
- 
+
 
     }
 }

@@ -1,10 +1,4 @@
-﻿using AppRuteoFactuSys.Models;
-using Dapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SQLite;
 
 namespace AppRuteoFactuSys.SqlLite
 {
@@ -12,33 +6,74 @@ namespace AppRuteoFactuSys.SqlLite
     {
         public async Task<List<string>> GetProvincias()
         {
-            using (var conn = SqlLiteConexion.GetConnection())
-            {
-                string sql = @"SELECT DISTINCT provincia FROM clientes;";
-                await conn.OpenAsync();
-                var response = await conn.QueryAsync<string>(sql);
-                return response.ToList();
-            }
+            var conn = await SqlLiteDatabase.GetConnection();
+
+            var response = await conn.QueryAsync<Localizacion>(
+                """
+                SELECT DISTINCT provincia AS Valor
+                FROM cliente
+                WHERE provincia IS NOT NULL
+                  AND provincia <> ''
+                ORDER BY provincia
+                """);
+
+            var lista = new List<string>();
+
+            foreach (var item in response)
+                lista.Add(item.Valor);
+
+            return lista;
         }
+
         public async Task<List<string>> GetCantones(string provincia)
         {
-            using (var conn = SqlLiteConexion.GetConnection())
-            {
-                string sql = @"SELECT DISTINCT canton FROM clientes where provincia =@provincia;";
-                await conn.OpenAsync();
-                var response = await conn.QueryAsync<string>(sql, new { provincia });
-                return response.ToList();
-            }
+            var conn = await SqlLiteDatabase.GetConnection();
+
+            var response = await conn.QueryAsync<Localizacion>(
+                """
+                SELECT DISTINCT canton AS Valor
+                FROM cliente
+                WHERE provincia = ?
+                  AND canton IS NOT NULL
+                  AND canton <> ''
+                ORDER BY canton
+                """,
+                provincia);
+
+            var lista = new List<string>();
+
+            foreach (var item in response)
+                lista.Add(item.Valor);
+
+            return lista;
         }
+
         public async Task<List<string>> GetDistritos(string canton)
         {
-            using (var conn = SqlLiteConexion.GetConnection())
-            {
-                string sql = @"SELECT DISTINCT distrito FROM clientes where canton=@canton;";
-                await conn.OpenAsync();
-                var response = await conn.QueryAsync<string>(sql, new { canton });
-                return response.ToList();
-            }
+            var conn = await SqlLiteDatabase.GetConnection();
+
+            var response = await conn.QueryAsync<Localizacion>(
+                """
+                        SELECT DISTINCT distrito AS Valor
+                        FROM cliente
+                        WHERE canton = ?
+                          AND distrito IS NOT NULL
+                          AND distrito <> ''
+                        ORDER BY distrito
+                        """,
+                canton);
+
+            var lista = new List<string>();
+
+            foreach (var item in response)
+                lista.Add(item.Valor);
+
+            return lista;
         }
+    }
+
+    public class Localizacion
+    {
+        public string Valor { get; set; } = string.Empty;
     }
 }

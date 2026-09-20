@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AppRuteoFactuSys.Views.MenuPreventaPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <VerticalStackLayout Margin="0,30,0,0">
+
+        <Button
+            x:Name="btnNueva"
+            BackgroundColor="#CA95F7"
+            Clicked="btnNueva_Clicked"
+            FontAttributes="Bold"
+            FontSize="12"
+            HeightRequest="40"
+            HorizontalOptions="Center"
+            Text="NUEVA PREVENTA"
+            TextColor="Black"
+            WidthRequest="150" />
+
+        <BoxView
+            Margin="0,20,0,10"
+            HeightRequest="1"
+            HorizontalOptions="FillAndExpand"
+            Color="Black" />
+        <Label
+            HorizontalOptions="Center"
+            Text="FILTRO PARA LISTA DE PREVENTAS POR UBICACIÓN"
+            VerticalOptions="Center" />
+
+        <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+
+            <Picker
+                x:Name="cbProvincias"
+                Title="Seleccione una provincia"
+                HorizontalTextAlignment="Center"
+                SelectedIndexChanged="cbProvincias_SelectedIndexChanged" />
+
+            <Picker
+                x:Name="cbCantones"
+                Title="Seleccione un cantón"
+                HorizontalTextAlignment="Center"
+                SelectedIndexChanged="cbCantones_SelectedIndexChanged" />
+
+            <Picker
+                x:Name="cbDistritos"
+                Title="Seleccione un distrito"
+                HorizontalTextAlignment="Center"
+                SelectedIndexChanged="cbDistritos_SelectedIndexChanged" />
+
+            <Button
+                x:Name="btnVerClientes"
+                Margin="0,20,0,0"
+                BackgroundColor="Chocolate"
+                Clicked="btnVerClientes_Clicked"
+                FontSize="12"
+                HeightRequest="40"
+                HorizontalOptions="Center"
+                Text="CARGAR LISTA"
+                WidthRequest="120" />
+        </StackLayout>
+
+        <BoxView
+            Margin="0,20,0,0"
+            HeightRequest="1"
+            HorizontalOptions="FillAndExpand"
+            Color="Black" />
+        <Button
+            x:Name="btnVerTodos"
+            Margin="0,20,0,0"
+            BackgroundColor="#819830"
+            Clicked="btnVerTodos_Clicked"
+            FontSize="12"
+            HeightRequest="40"
+            HorizontalOptions="Center"
+            Text="VER TODOS"
+            WidthRequest="120" />
+
+    </VerticalStackLayout>
+</ContentPage>
