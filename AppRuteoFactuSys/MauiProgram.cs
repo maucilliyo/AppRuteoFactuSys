@@ -20,6 +20,10 @@ namespace AppRuteoFactuSys
                 {
 #if ANDROID
                     var fontFamily = "OpenSans-Regular.ttf";
+                    Microsoft.Maui.Handlers.WindowHandler.Mapper.AppendToMapping("CustomWindow", (handler, view) =>
+                    {
+                        handler.PlatformView.Window?.SetDecorFitsSystemWindows(true);
+                    });
 #else
                     var fontFamily = "OpenSans-Regular";
 #endif

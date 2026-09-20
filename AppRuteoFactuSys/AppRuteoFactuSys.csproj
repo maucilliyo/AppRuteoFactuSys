@@ -49,6 +49,14 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 	<ItemGroup>
+	  <AndroidResource Remove="Helpers\**" />
+	  <Compile Remove="Helpers\**" />
+	  <EmbeddedResource Remove="Helpers\**" />
+	  <MauiCss Remove="Helpers\**" />
+	  <MauiXaml Remove="Helpers\**" />
+	  <None Remove="Helpers\**" />
+	</ItemGroup>
+	<ItemGroup>
 		<MauiImage Remove="Resources\Images\dotnet_bot.png" />
 	</ItemGroup>
 	<ItemGroup>
@@ -144,9 +152,6 @@
 		<MauiXaml Update="Views\VerFacturaPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-	</ItemGroup>
-	<ItemGroup>
-		<Folder Include="Helpers\" />
 	</ItemGroup>
 	<ItemGroup>
 		<Resource Include="Resources\Splash\logo.png" Color="#ccd1d1 " BaseSize="32,32">
