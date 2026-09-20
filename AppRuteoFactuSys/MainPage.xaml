@@ -80,7 +80,7 @@
                     FontSize="12"
                     HeightRequest="40"
                     HorizontalOptions="Center"
-                    Text="NOTA CREDITO"
+                    Text="DEVOLUCIONES"
                     WidthRequest="150" />
 
                 <Button
