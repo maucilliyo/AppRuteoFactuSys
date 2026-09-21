@@ -139,12 +139,19 @@ namespace AppRuteoFactuSys.Views
         {
             try
             {
+                MostrarIndicadorEspera(true);
+                this.IsEnabled = false;
                 await _devolucionService.Sincronizar();
             }
             catch (Exception ex)
             {
 
                 throw;
+            }
+            finally
+            {
+                this.IsEnabled = true;
+                MostrarIndicadorEspera(false);
             }
         }
     }

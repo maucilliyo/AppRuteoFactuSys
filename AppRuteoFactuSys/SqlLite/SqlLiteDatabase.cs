@@ -26,23 +26,32 @@ namespace AppRuteoFactuSys.SqlLite
         }
         public static async Task ClearDatabase()
         {
-            var conexion = await SqlLiteDatabase.GetConnection();
-
-            await conexion.RunInTransactionAsync(tran =>
+            try
             {
-                // Primero las tablas hijas, luego las padres
-                tran.Execute("DELETE FROM PreventaLineas");
-                tran.Execute("DELETE FROM Preventa");
-                tran.Execute("DELETE FROM DevolucionLinea");
-                tran.Execute("DELETE FROM Devolucion");
-                tran.Execute("DELETE FROM cliente");
-                tran.Execute("DELETE FROM producto");
-                //  reinicia los autoincrement
-                tran.Execute("DELETE FROM sqlite_sequence");
-            });
+                var conexion = await SqlLiteDatabase.GetConnection();
 
-            // Fuera de la transacción
-            await conexion.ExecuteAsync("VACUUM");
+                await conexion.RunInTransactionAsync(tran =>
+                {
+                    // Primero las tablas hijas, luego las padres
+                    //tran.Execute("DELETE FROM PreventaLineas");
+                    //tran.Execute("DELETE FROM Preventa");
+                    //tran.Execute("DELETE FROM cliente");
+                    //tran.Execute("DELETE FROM producto");
+                    tran.Execute("DELETE FROM Devolucion");
+                    tran.Execute("DELETE FROM DevolucionLinea");
+                    //  reinicia los autoincrement
+                    tran.Execute("DELETE FROM sqlite_sequence");
+                });
+
+                // Fuera de la transacción
+                await conexion.ExecuteAsync("VACUUM");
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
         }
     }
 }

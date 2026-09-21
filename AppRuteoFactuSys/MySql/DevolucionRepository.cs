@@ -19,18 +19,18 @@ namespace AppRuteoFactuSys.MySql
         public async Task InsertarAsync(Devolucion devolucion)
         {
             using var conn = await Conexion.GetConnection();
-            await conn.OpenAsync();
+    
             using var transaction = conn.BeginTransaction();
             try
             {
-                var id = await conn.InsertAsync(devolucion);
+                var id = await conn.InsertAsync(devolucion,transaction);
                 devolucion.IdDevolucion = Convert.ToInt32(id);
 
                 foreach (var linea in devolucion.Lineas)
                 {
                     linea.IdDevolucion = devolucion.IdDevolucion;
 
-                    await conn.InsertAsync(linea);
+                    await conn.InsertAsync(linea,transaction);
                 }
 
                 await transaction.CommitAsync();
@@ -42,6 +42,21 @@ namespace AppRuteoFactuSys.MySql
             }
         }
 
+
+        //public async Task<Devolucion> GetDevolucionById(int idDevolucion)
+        //{
+        //    using var conn = await Conexion.GetConnection();
+
+        //    var devolucion = await conn.From<Devolucion>()
+        //                                 .Where(x => x.IdDevolucion == idDevolucion)
+        //                                 .FirstOrDefaultAsync();
+        //    if (devolucion != null)
+        //        devolucion.Lineas = await conn.From<DevolucionLinea>()
+        //                                      .Where(x => x.IdDevolucion == idDevolucion)
+        //                                      .OrderByDescending(x=> x.IdDevolucionLinea)
+        //                                      .ToListAsync();
+        //    return devolucion;
+        //}
 
     }
 }

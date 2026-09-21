@@ -1,4 +1,5 @@
 ﻿using SQLite;
+using System.ComponentModel.DataAnnotations;
 
 namespace AppRuteoFactuSys.Models
 {
@@ -9,7 +10,7 @@ namespace AppRuteoFactuSys.Models
         {
             this.Lineas = [];
         }
-        [PrimaryKey, AutoIncrement]
+        [Key,PrimaryKey, AutoIncrement]
         public int LocalID { get; set; } 
         public int Nproforma { get; set; }
         public bool Modificar { get; set; }

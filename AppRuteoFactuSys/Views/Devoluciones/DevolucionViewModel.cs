@@ -68,7 +68,7 @@ namespace AppRuteoFactuSys.Views.Devoluciones
                             item.SubtotalDescuento = producto.PrecioVenta * item.Cantidad;
                             item.Impuesto = (producto.PrecioVenta * item.Cantidad) * producto.PorcientoImpuesto;
                             item.ImpuestoNeto = (producto.PrecioVenta * item.Cantidad) * producto.PorcientoImpuesto;
-                            item.Totallinea *= item.Cantidad;
+                            item.TotalLinea *= item.Cantidad;
                         }
                     }
                 }
@@ -84,7 +84,7 @@ namespace AppRuteoFactuSys.Views.Devoluciones
                         Codpro = producto.CodPro,
                         Descuento = 0,
                         Detalle = producto.Detalle,
-                        Preciounidad = producto.PrecioVenta,
+                        PrecioUnidad = producto.PrecioVenta,
                         PorExonerado = 0,
                         PorImpuesto = producto.PorcientoImpuesto,
                         Subtotal = producto.PrecioVenta * cantidad,
@@ -93,7 +93,7 @@ namespace AppRuteoFactuSys.Views.Devoluciones
                         ImpuestoNeto = (producto.PrecioVenta * cantidad) * producto.PorcientoImpuesto,
                         UnidadMedida = producto.UnidadMedida,
                         UsaInventario = producto.UsaInventario,
-                        Totallinea = ((producto.PrecioVenta * cantidad) * (1 + producto.PorcientoImpuesto))
+                        TotalLinea = ((producto.PrecioVenta * cantidad) * (1 + producto.PorcientoImpuesto))
                     };
 
 
@@ -142,7 +142,7 @@ namespace AppRuteoFactuSys.Views.Devoluciones
             try
             {
                 DevolucionModel.Nombre = ClienteModel.Nombre;
-                DevolucionModel.Cedcliente = ClienteModel.Cedula;
+                DevolucionModel.CedCliente = ClienteModel.Cedula;
                 await _devolucionRepository.Nueva(DevolucionModel);
 
                 await Shell.Current.Navigation.PopModalAsync();
@@ -171,11 +171,11 @@ namespace AppRuteoFactuSys.Views.Devoluciones
                 if (nuevaCantidad != devolucionLinea.Cantidad && nuevaCantidad > 0)
                 {
                     devolucionLinea.Cantidad = nuevaCantidad.Value;
-                    devolucionLinea.Subtotal = devolucionLinea.Preciounidad * devolucionLinea.Cantidad;
-                    devolucionLinea.SubtotalDescuento = devolucionLinea.Preciounidad * nuevaCantidad.Value;
-                    devolucionLinea.Impuesto = (devolucionLinea.Preciounidad * nuevaCantidad.Value) * devolucionLinea.PorImpuesto;
-                    devolucionLinea.ImpuestoNeto = (devolucionLinea.Preciounidad * nuevaCantidad.Value) * devolucionLinea.PorImpuesto;
-                    devolucionLinea.Totallinea *= nuevaCantidad.Value;
+                    devolucionLinea.Subtotal = devolucionLinea.PrecioUnidad * devolucionLinea.Cantidad;
+                    devolucionLinea.SubtotalDescuento = devolucionLinea.PrecioUnidad * nuevaCantidad.Value;
+                    devolucionLinea.Impuesto = (devolucionLinea.PrecioUnidad * nuevaCantidad.Value) * devolucionLinea.PorImpuesto;
+                    devolucionLinea.ImpuestoNeto = (devolucionLinea.PrecioUnidad * nuevaCantidad.Value) * devolucionLinea.PorImpuesto;
+                    devolucionLinea.TotalLinea *= nuevaCantidad.Value;
                 }
                 else if (nuevaCantidad == 0)//PARA ELIMINAR
                 {
@@ -191,7 +191,7 @@ namespace AppRuteoFactuSys.Views.Devoluciones
             DevolucionLineas = [.. DevolucionModel.Lineas];
 
             DevolucionModel.TotalComprobante = 0;
-            DevolucionModel.TotalComprobante = DevolucionModel.Lineas.Sum(x => x.Totallinea);
+            DevolucionModel.TotalComprobante = DevolucionModel.Lineas.Sum(x => x.TotalLinea);
 
 
             OnPropertyChanged(nameof(DevolucionModel));

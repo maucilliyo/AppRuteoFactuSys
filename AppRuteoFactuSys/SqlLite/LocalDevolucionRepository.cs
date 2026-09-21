@@ -4,19 +4,21 @@ namespace AppRuteoFactuSys.SqlLite
 {
     public class LocalDevolucionRepository
     {
-        public async Task Nueva(Devolucion notaCredito)
+        public async Task  Nueva(Devolucion notaCredito)
         {
             var conn = await SqlLiteDatabase.GetConnection();
+
             await conn.RunInTransactionAsync(tran =>
             {
-                var id = tran.Insert(notaCredito);
+                tran.Insert(notaCredito);              // aquí sqlite-net llena notaCredito.Id
 
                 foreach (var linea in notaCredito.Lineas)
                 {
-                    linea.IdDevolucion = id;
+                    linea.IdDevolucion = notaCredito.IdDevolucion;
                     tran.Insert(linea);
                 }
             });
+ 
         }
         public async Task<List<Devolucion>> GetLista()
         {
@@ -30,9 +32,14 @@ namespace AppRuteoFactuSys.SqlLite
         {
             var conn = await SqlLiteDatabase.GetConnection();
 
-            var notas = await conn.Table<Devolucion>().Where(x => x.IdDevolucion == idNota).FirstOrDefaultAsync();
-
-            return notas;
+            var devolucion = await  conn.Table<Devolucion>()
+                                        .Where(x => x.IdDevolucion == idNota)
+                                        .FirstOrDefaultAsync();
+            if (devolucion != null)
+                devolucion.Lineas = await conn.Table<DevolucionLinea>()
+                                              .Where(x => x.IdDevolucion == idNota)
+                                              .ToListAsync();
+            return devolucion;
         }
         public async Task Eliminar(Devolucion devolucion)
         {

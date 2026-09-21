@@ -5,6 +5,7 @@ using AppRuteoFactuSys.SqlLite;
 using AppRuteoFactuSys.Views;
 using AppRuteoFactuSys.Views.Devoluciones;
 using Controls.UserDialogs.Maui;
+using Dommel;
 using Microsoft.Extensions.Logging;
 
 namespace AppRuteoFactuSys
@@ -41,6 +42,8 @@ namespace AppRuteoFactuSys
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+            // 1. Configurar el convertidor automático de PascalCase (C#) a snake_case (MariaDB)
+            DommelMapper.SetColumnNameResolver(new SnakeCaseColumnNameResolverImpl());
             Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
             //dependencias
             builder.Services.AddTransient<ViewFactoryServices>();
@@ -79,6 +82,7 @@ namespace AppRuteoFactuSys
             builder.Services.AddSingleton<LocalClienteRepository>();
             builder.Services.AddSingleton<LocalProductoRepository>();
             builder.Services.AddSingleton<LocalDevolucionRepository>();
+            builder.Services.AddSingleton<DevolucionRepository>();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

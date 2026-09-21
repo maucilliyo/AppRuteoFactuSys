@@ -165,7 +165,7 @@
                                     Grid.Column="2"
                                     FontSize="14"
                                     HorizontalTextAlignment="End"
-                                    Text="{Binding Totallinea, StringFormat='{}{0:#,0}'}"
+                                    Text="{Binding TotalLinea, StringFormat='{}{0:#,0}'}"
                                     TextColor="#2B2D42"
                                     VerticalTextAlignment="Center" />
 
