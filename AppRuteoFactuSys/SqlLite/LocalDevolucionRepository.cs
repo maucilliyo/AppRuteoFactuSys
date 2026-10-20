@@ -4,7 +4,7 @@ namespace AppRuteoFactuSys.SqlLite
 {
     public class LocalDevolucionRepository
     {
-        public async Task  Nueva(Devolucion notaCredito)
+        public async Task Nueva(Devolucion notaCredito)
         {
             var conn = await SqlLiteDatabase.GetConnection();
 
@@ -18,7 +18,7 @@ namespace AppRuteoFactuSys.SqlLite
                     tran.Insert(linea);
                 }
             });
- 
+
         }
         public async Task<List<Devolucion>> GetLista()
         {
@@ -32,13 +32,13 @@ namespace AppRuteoFactuSys.SqlLite
         {
             var conn = await SqlLiteDatabase.GetConnection();
 
-            var devolucion = await  conn.Table<Devolucion>()
+            var devolucion = await conn.Table<Devolucion>()
                                         .Where(x => x.IdDevolucion == idNota)
                                         .FirstOrDefaultAsync();
-            if (devolucion != null)
-                devolucion.Lineas = await conn.Table<DevolucionLinea>()
-                                              .Where(x => x.IdDevolucion == idNota)
-                                              .ToListAsync();
+
+            devolucion?.Lineas = await conn.Table<DevolucionLinea>()
+                                           .Where(x => x.IdDevolucion == idNota)
+                                           .ToListAsync();
             return devolucion;
         }
         public async Task Eliminar(Devolucion devolucion)
@@ -57,6 +57,15 @@ namespace AppRuteoFactuSys.SqlLite
             var conn = await SqlLiteDatabase.GetConnection();
             await conn.DeleteAllAsync<Devolucion>();
             await conn.DeleteAllAsync<DevolucionLinea>();
+        }
+        public async Task UpdateEstado(bool estado, int idDevoluvion)
+        {
+            var conn = await SqlLiteDatabase.GetConnection();
+
+            await conn.ExecuteAsync(@"UPDATE Devolucion 
+                                      SET Enviado =? 
+                                      WHERE IdDevolucion=?;",  
+                                      estado, idDevoluvion );
         }
     }
 }

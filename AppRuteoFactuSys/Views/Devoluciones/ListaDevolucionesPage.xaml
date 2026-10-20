@@ -9,7 +9,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60" />
-            <RowDefinition Height="40" />
+            <RowDefinition Height="20" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <!--  // BUSCAR  -->
@@ -22,32 +22,10 @@
             WidthRequest="150" />
 
         <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="90" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50" />
-            </Grid.RowDefinitions>
-
-
-            <Entry
-                x:Name="txtBuscar"
-                Grid.Column="0"
-                Margin="5,0,0,0"
-                CursorPosition="1"
-                HorizontalOptions="Start"
-                Placeholder="Nombre  a buscar"
-                WidthRequest="300" />
-            <Button
-                Grid.Column="1"
-                FontSize="10"
-                HeightRequest="30"
-                HorizontalOptions="Center"
-                Text="|||"
-                VerticalOptions="Center"
-                WidthRequest="45" />
-
+            <Label
+                FontAttributes="Bold"
+                HorizontalTextAlignment="Center"
+                Text="LISTA DE DEVOLUCIONES" />
         </Grid>
         <!--  PANEL PRINCIPAL  -->
         <!--  DataGrid Cuenta  -->
@@ -55,13 +33,13 @@
         <!--  Header fijo  -->
         <Grid
             Grid.Row="2"
-            Margin="3,10,3,0"
+            Margin="3,12,3,0"
             RowDefinitions="Auto,*">
 
             <!--  Encabezado manual  -->
             <Grid
                 Padding="5"
-                BackgroundColor="#E8EED4"
+                BackgroundColor="#2E61B5"
                 ColumnDefinitions="*,100,35,35">
                 <Label
                     Grid.Column="0"
@@ -90,8 +68,7 @@
                     <DataTemplate>
                         <Grid
                             Padding="2"
-                            BackgroundColor="White"
-                            ColumnDefinitions="*,100,40,40"
+                            ColumnDefinitions="*,100,45"
                             RowSpacing="0">
 
                             <Label
@@ -106,19 +83,13 @@
                                 VerticalTextAlignment="Center" />
 
                             <Button
+                                x:Name="btnVerDevolucion"
                                 Grid.Column="2"
                                 BackgroundColor="Transparent"
-                                Command="{Binding BindingContext.SendSelectedDataCommand, Source={x:Reference cvPreventas}}"
-                                CommandParameter="{Binding .}"
-                                FontSize="10"
-                                Text="✏️" />
-
-                            <Button
-                                Grid.Column="3"
-                                BackgroundColor="Transparent"
+                                Clicked="btnVerDevolucion_Clicked"
                                 Command="{Binding BindingContext.verPdfCommand, Source={x:Reference cvPreventas}}"
                                 CommandParameter="{Binding .}"
-                                FontSize="12"
+                                FontSize="14"
                                 Text="🖨" />
                         </Grid>
                     </DataTemplate>
@@ -127,7 +98,6 @@
                 <!--  Mensaje si no hay datos  -->
                 <CollectionView.EmptyView>
                     <Label
-                        BackgroundColor="White"
                         HorizontalOptions="Center"
                         Text="NO HAY DATOS"
                         VerticalOptions="Center" />

@@ -21,14 +21,13 @@
                 FontSize="16"
                 HorizontalOptions="Center"
                 Text="Datos del Cliente"
-                TextColor="Black"
                 VerticalOptions="Center" />
 
             <BoxView
                 Margin="0,0,0,0"
                 HeightRequest="0.5"
                 HorizontalOptions="FillAndExpand"
-                Color="Black" />
+                Color="Transparent" />
 
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -42,8 +41,7 @@
                     Grid.Column="0"
                     FontSize="Small"
                     HeightRequest="60"
-                    Text="Contado"
-                    TextColor="Black" />
+                    Text="Contado" />
 
                 <Label
                     x:Name="lblTipoCliente"
@@ -109,24 +107,27 @@
             <!--  Header  -->
             <Grid
                 Padding="5"
-                BackgroundColor="#E8EED4"
+                BackgroundColor="#2E61B1"
                 ColumnDefinitions="*,50,65,35">
                 <Label
                     Grid.Column="0"
                     FontAttributes="Bold"
                     Text="Detalle"
+                    TextColor="White"
                     VerticalTextAlignment="Center" />
                 <Label
                     Grid.Column="1"
                     FontAttributes="Bold"
                     HorizontalTextAlignment="Center"
                     Text="Cant"
+                    TextColor="White"
                     VerticalTextAlignment="Center" />
                 <Label
                     Grid.Column="2"
                     FontAttributes="Bold"
                     HorizontalTextAlignment="End"
                     Text="Total"
+                    TextColor="White"
                     VerticalTextAlignment="Center" />
                 <Label Grid.Column="3" Text=" " />
             </Grid>
@@ -145,7 +146,6 @@
                     <DataTemplate>
                         <Grid
                             Padding="5"
-                            BackgroundColor="White"
                             ColumnDefinitions="*,50,65,35"
                             RowSpacing="0">
                             <Label
@@ -179,7 +179,6 @@
                 <!--  Empty view  -->
                 <CollectionView.EmptyView>
                     <Label
-                        BackgroundColor="White"
                         HorizontalOptions="Center"
                         Text="NO HAY PRODUCTOS"
                         VerticalOptions="Center" />
@@ -200,7 +199,6 @@
                 FontSize="20"
                 HorizontalOptions="End"
                 Text="TOTAL:"
-                TextColor="Black"
                 VerticalOptions="Center" />
             <Label
                 x:Name="lblTotal"
@@ -208,7 +206,6 @@
                 FontSize="20"
                 HorizontalOptions="End"
                 Text="0.00"
-                TextColor="Black"
                 VerticalOptions="Center" />
         </StackLayout>
 

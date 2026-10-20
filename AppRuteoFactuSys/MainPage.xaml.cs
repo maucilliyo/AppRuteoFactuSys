@@ -53,13 +53,13 @@ namespace AppRuteoFactuSys
                     else
                     {
                         // Aquí puedes manejar el valor ingresado por el usuario
-                        await DisplayAlert("Aviso", $"Error en la clave", "Aceptar");
+                        await DisplayAlertAsync("Aviso", $"Error en la clave", "Aceptar");
                     }
                 }
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Aviso", ex.Message, "Aceptar");
+                await DisplayAlertAsync("Aviso", ex.Message, "Aceptar");
                 Console.WriteLine($"Error al navegar a PopConfServidor: {ex.Message}");
             }
             // await Navigation.PushAsync(new PopConfServidor());
@@ -95,7 +95,7 @@ namespace AppRuteoFactuSys
 
             var preventa = await _preventaService.GetById(2);
  
-            ImpresionService.ImprimirTicket(preventa);
+            await ImpresionService.ImprimirTicket(preventa);
         }
 
         private async void btnAjusta_Clicked_1(object sender, EventArgs e)
@@ -120,12 +120,12 @@ namespace AppRuteoFactuSys
                 {
 
                     await SqlLiteDatabase.ClearDatabase();
-                    await DisplayAlert("Aviso", $"Base de datos RESETEADA", "Aceptar");
+                    await DisplayAlertAsync("Aviso", $"Base de datos RESETEADA", "Aceptar");
                 }
                 else
                 {
                     // Aquí puedes manejar el valor ingresado por el usuario
-                    await DisplayAlert("Aviso", $"Error en la clave", "Aceptar");
+                    await DisplayAlertAsync("Aviso", $"Error en la clave", "Aceptar");
                 }
             }
         }

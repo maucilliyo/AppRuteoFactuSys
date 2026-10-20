@@ -5,14 +5,14 @@ namespace AppRuteoFactuSys.SqlLite
 {
     public static class SqlLiteDatabase
     {
+        private static readonly string RutaBaseDatos =  Path.Combine(FileSystem.AppDataDirectory, "RuteroApp.db3");
         private static SQLiteAsyncConnection _conexion;
         public static async Task<SQLiteAsyncConnection> GetConnection()
         {
             if (_conexion != null) return _conexion;
-            string nombreBaseDatos = "RuteroApp.db3";
-            string rutaBaseDatos = Path.Combine(FileSystem.AppDataDirectory, nombreBaseDatos);
+ 
 
-            _conexion = new SQLiteAsyncConnection(rutaBaseDatos);
+            _conexion = new SQLiteAsyncConnection(RutaBaseDatos);
 
             // Crea la tabla usando las entidades
             await _conexion.CreateTableAsync<Cliente>();
@@ -28,23 +28,8 @@ namespace AppRuteoFactuSys.SqlLite
         {
             try
             {
+                await BorrarBaseDatos();
                 var conexion = await SqlLiteDatabase.GetConnection();
-
-                await conexion.RunInTransactionAsync(tran =>
-                {
-                    // Primero las tablas hijas, luego las padres
-                    //tran.Execute("DELETE FROM PreventaLineas");
-                    //tran.Execute("DELETE FROM Preventa");
-                    //tran.Execute("DELETE FROM cliente");
-                    //tran.Execute("DELETE FROM producto");
-                    tran.Execute("DELETE FROM Devolucion");
-                    tran.Execute("DELETE FROM DevolucionLinea");
-                    //  reinicia los autoincrement
-                    tran.Execute("DELETE FROM sqlite_sequence");
-                });
-
-                // Fuera de la transacción
-                await conexion.ExecuteAsync("VACUUM");
             }
             catch (Exception ex)
             {
@@ -52,6 +37,20 @@ namespace AppRuteoFactuSys.SqlLite
                 throw;
             }
 
+        }
+        public static async Task BorrarBaseDatos()
+        {
+            if (_conexion != null)
+            {
+                await _conexion.CloseAsync();
+                _conexion = null; // fuerza que GetConnection() la vuelva a crear
+            }
+
+            foreach (var archivo in new[] { RutaBaseDatos, RutaBaseDatos + "-wal", RutaBaseDatos + "-shm", RutaBaseDatos + "-journal" })
+            {
+                if (File.Exists(archivo))
+                    File.Delete(archivo);
+            }
         }
     }
 }

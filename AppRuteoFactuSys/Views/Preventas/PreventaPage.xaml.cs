@@ -247,8 +247,8 @@ namespace AppRuteoFactuSys.Views
             }
             Preventa preventa = new()
             {
-                Nproforma = _preventa.Nproforma,
-                LocalID =_preventa.LocalID,
+                Nproforma = _preventa?.Nproforma ?? 0,
+                LocalID = _preventa?.LocalID ?? 0,
                 Cedcliente = cliente.Cedula,
                 Nombre_Cliente = lblNombreCliente.Text,
                 CodigoMoneda = "CRC",
