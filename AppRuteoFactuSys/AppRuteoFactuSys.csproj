@@ -69,19 +69,19 @@
 		<None Remove="Resources\Splash\splash.svg" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="akgul.Maui.DataGrid" Version="3.0.0" />
+		<PackageReference Include="akgul.Maui.DataGrid" Version="4.0.6" />
 		<PackageReference Include="CommunityToolkit.Maui.Core" Version="15.0.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 		<PackageReference Include="Controls.UserDialogs.Maui" Version="1.12.0" />
-		<PackageReference Include="Dapper" Version="2.1.86" />
-		<PackageReference Include="itext7" Version="9.7.0" />
-		<PackageReference Include="itext7.bouncy-castle-adapter" Version="9.7.0" />
-		<PackageReference Include="Microsoft.Data.Sqlite.Core" Version="10.0.12" />
+		<PackageReference Include="Dapper" Version="2.1.89" />
+		<PackageReference Include="itext7" Version="9.8.0" />
+		<PackageReference Include="itext7.bouncy-castle-adapter" Version="9.8.0" />
+		<PackageReference Include="Microsoft.Data.Sqlite.Core" Version="10.0.13" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.12" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.101" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.12" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.110" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.13" />
 		<PackageReference Include="MySqlConnector" Version="2.6.2" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="Newtonsoft.Json" Version="14.0.1-beta2" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.11.285" />
 	</ItemGroup>
 	<ItemGroup>
@@ -170,6 +170,6 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Update="Microsoft.Maui.Controls" Version="10.0.101" />
+		<PackageReference Update="Microsoft.Maui.Controls" Version="11.0.0-rc.2.26505.5" />
 	</ItemGroup>
 </Project>
