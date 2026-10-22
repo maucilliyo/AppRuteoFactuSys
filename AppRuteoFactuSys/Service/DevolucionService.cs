@@ -27,6 +27,8 @@ namespace AppRuteoFactuSys.Service
                 try
                 {
                     await _devolucionRepository.InsertarAsync(devolucion);
+
+                    await _localDevolucionRepository.UpdateEstado(true, pendiente.IdDevolucion);
                 }
                 catch (Exception ex)
                 {

@@ -84,6 +84,22 @@ public partial class ListaDevolucionesPage : ContentPage
         await Navigation.PushAsync(page);
     }
 
+    private async void btnVerDevolucion_Clicked(object sender, EventArgs e)
+    {
+        UserDialogs.Instance.ShowLoading();
+
+        var btn = sender as Button;
+
+        if (btn?.BindingContext is Devolucion devolucion)
+        {
+ 
+            var data = await _localNotaCreditoRepository.GetById(devolucion.IdDevolucion);
+            await ImpresionService.ImprimirTicketDevolucion(data);
+        }
+
+        UserDialogs.Instance.HideHud();
+    }
+
     private async Task CargarNotas()
     {
         //VALIDAR SI HAY CONEXION

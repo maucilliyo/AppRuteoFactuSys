@@ -1,33 +1,20 @@
-
-
-using AppRuteoFactuSys;
 using AppRuteoFactuSys.Service;
-using AppRuteoFactuSys.Service.Interfaces;
 using CommunityToolkit.Maui.Core.Platform;
-using Controls.UserDialogs.Maui;
-using Microsoft.Maui.ApplicationModel;
 
 namespace AppRuteoFactuSys.Views;
 
 public partial class LoginPage : ContentPage
 {
-    private readonly IClienteService _clienteService;
-    private readonly IPreventaService _preventaService;
-    private readonly IProductoService _productoService;
-    private readonly IUserDialogs _userDialogs;
+
     private readonly ViewFactoryServices _factory;
-    public LoginPage(IClienteService clienteService, IPreventaService preventaService, IProductoService productoService, IUserDialogs userDialogs, ViewFactoryServices viewFactory)
+    public LoginPage(ViewFactoryServices viewFactory)
 	{
 		InitializeComponent();
         NavigationPage.SetHasNavigationBar(this, false);
 
         txtUserName.Text = "Admin";
-        txtPass.Text = "852";
+       // txtPass.Text = "852";
 
-        _clienteService = clienteService;
-        _preventaService = preventaService;
-        _productoService = productoService; 
-        _userDialogs = userDialogs;
         _factory = viewFactory;
     }
 
@@ -41,7 +28,7 @@ public partial class LoginPage : ContentPage
         }
         if (user == string.Empty || pass == string.Empty || user == null || pass == null)
         {
-            await DisplayAlert("Aviso", "Debe ingresar usuario y contraseña", "Aceptar");
+            await DisplayAlertAsync("Aviso", "Debe ingresar usuario y contraseña", "Aceptar");
             return;
         }
         if (txtUserName.Text == "Admin" && txtPass.Text == "852")
@@ -57,7 +44,7 @@ public partial class LoginPage : ContentPage
         }
         else
         {
-            await DisplayAlert("Aviso", "Error en usuario o contraseña", "Aceptar");
+            await DisplayAlertAsync("Aviso", "Error en usuario o contraseña", "Aceptar");
             return;
         }
     }

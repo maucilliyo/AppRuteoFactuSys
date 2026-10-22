@@ -136,13 +136,23 @@ namespace AppRuteoFactuSys.Views.Devoluciones
         private async Task Guardar()
         {
             //VALIDACIONES
-
+            if (ClienteModel == null)
+            {
+                await _dialogService.ShowAlert("AVISO", "DEBE AGREGAR UN CLIENTE PRIMERO");
+                return;
+            }
+            else if (DevolucionModel.Lineas.Count == 0)
+            {
+                await _dialogService.ShowAlert("AVISO", "DEBE AGREGAR ALMENOS UNA LINEA");
+                return;
+            }
             //
 
             try
             {
                 DevolucionModel.Nombre = ClienteModel.Nombre;
                 DevolucionModel.CedCliente = ClienteModel.Cedula;
+                DevolucionModel.TipoCedula = (ClienteModel.TipoCedula ?? "").PadLeft(2, '0');
                 await _devolucionRepository.Nueva(DevolucionModel);
 
                 await Shell.Current.Navigation.PopModalAsync();
@@ -175,7 +185,7 @@ namespace AppRuteoFactuSys.Views.Devoluciones
                     devolucionLinea.SubtotalDescuento = devolucionLinea.PrecioUnidad * nuevaCantidad.Value;
                     devolucionLinea.Impuesto = (devolucionLinea.PrecioUnidad * nuevaCantidad.Value) * devolucionLinea.PorImpuesto;
                     devolucionLinea.ImpuestoNeto = (devolucionLinea.PrecioUnidad * nuevaCantidad.Value) * devolucionLinea.PorImpuesto;
-                    devolucionLinea.TotalLinea *= nuevaCantidad.Value;
+                    devolucionLinea.TotalLinea = devolucionLinea.SubtotalDescuento + devolucionLinea.ImpuestoNeto;
                 }
                 else if (nuevaCantidad == 0)//PARA ELIMINAR
                 {
@@ -191,6 +201,9 @@ namespace AppRuteoFactuSys.Views.Devoluciones
             DevolucionLineas = [.. DevolucionModel.Lineas];
 
             DevolucionModel.TotalComprobante = 0;
+            DevolucionModel.Impuesto = 0;
+
+            DevolucionModel.Impuesto = DevolucionModel.Lineas.Sum(x => x.ImpuestoNeto);
             DevolucionModel.TotalComprobante = DevolucionModel.Lineas.Sum(x => x.TotalLinea);
 
 

@@ -9,6 +9,7 @@ public partial class ProductoAdd2Page : ContentPage
 {
     private readonly IProductoService _productoService;
     private readonly TaskCompletionSource<Producto> _tcs = new();
+    private bool _cargado;
 
     public event EventHandler<Producto> SeleccionadoEvent;
     public Task<Producto> ProductoSeleccionadoTask => _tcs.Task;
@@ -18,18 +19,32 @@ public partial class ProductoAdd2Page : ContentPage
 
     public ProductoAdd2Page(IProductoService productoService)
     {
+        InitializeComponent();
+
+        _productoService = productoService;
+        SendSelectedDataCommand = new Command(SendSelectedData);
         RefreshCommand = new Command(async () =>
         {
-            await CargarProductos();
+            await CargarProductos(txtBuscar.Text);
 
             IsRefreshing = false;
             OnPropertyChanged(nameof(IsRefreshing));
         });
-        InitializeComponent();
-        _productoService = productoService;
-        SendSelectedDataCommand = new Command(SendSelectedData);
+
         BindingContext = this;
-        _ = CargarProductos();
+
+        // Ya no se carga nada aquí: la página se muestra de inmediato
+        // y los datos se cargan en OnAppearing.
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (_cargado) return;
+        _cargado = true;
+
+        await CargarProductos();
     }
 
     private async void SendSelectedData(object parameter)
@@ -43,34 +58,49 @@ public partial class ProductoAdd2Page : ContentPage
         await Navigation.PopModalAsync();
     }
 
-    private async Task CargarProductos()
+    private async Task CargarProductos(string filtro = null)
     {
-        //VALIDAR SI HAY CONEXION
-        if (Conexion.GetConnection() == null)
+        try
         {
-            await DisplayAlert("Aviso", "ERROR DE CONEXION CON EL SERVIDOR", "Aceptar");
-            _tcs.TrySetResult(null);
-            await Navigation.PopModalAsync();
-            return;
-        }
+            IsBusy = true;
 
-        if (!await Conexion.GetConfig())
+            // Validaciones y consulta fuera del hilo de UI
+            var (error, products) = await Task.Run<(string Error, List<Producto> Lista)>(async () =>
+            {
+                //VALIDAR SI HAY CONEXION
+                if (Conexion.GetConnection() == null)
+                    return ("ERROR DE CONEXION CON EL SERVIDOR", null);
+
+                if (!await Conexion.GetConfig())
+                    return ("EL ARCHIVO DE CONEXION NO SE ENCUENTRA", null);
+
+                //VALIDAR SI LA BD SE CARGO BIEN
+                var lista = string.IsNullOrWhiteSpace(filtro)
+                    ? await _productoService.Listar()
+                    : await _productoService.Listar(filtro);
+
+                return (null, lista?.ToList() ?? new List<Producto>());
+            });
+
+            if (error != null)
+            {
+                await DisplayAlert("Aviso", error, "Aceptar");
+                _tcs.TrySetResult(null);
+                await Navigation.PopModalAsync();
+                return;
+            }
+
+            dgProductos.ItemsSource = products;
+        }
+        finally
         {
-            await DisplayAlert("Aviso", "EL ARCHIVO DE CONEXION NO SE ENCUENTRA", "Aceptar");
-            _tcs.TrySetResult(null);
-            await Navigation.PopModalAsync();
-            return;
+            IsBusy = false;
         }
-
-        //VALIDAR SI LA BD SE CARGO BIEN
-        var products = await _productoService.Listar();
-        dgProductos.ItemsSource = products ?? new List<Producto>();
     }
 
     private async void btnBuscar_Clicked(object sender, EventArgs e)
     {
-        var products = await _productoService.Listar(txtBuscar.Text);
-        dgProductos.ItemsSource = products;
+        await CargarProductos(txtBuscar.Text);
     }
 
     private void txtBuscar_Completed(object sender, EventArgs e)

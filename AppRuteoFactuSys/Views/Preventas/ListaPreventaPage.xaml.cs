@@ -77,12 +77,12 @@ public partial class ListaPreventaPage : ContentPage
         //VALIDAR SI HAY CONEXION
         if (Conexion.GetConnection() == null)
         {
-            await DisplayAlert("Aviso", "ERROR DE CONEXION CON EL SERVIDOR", "Aceptar");
+            await DisplayAlertAsync("Aviso", "ERROR DE CONEXION CON EL SERVIDOR", "Aceptar");
             await Navigation.PopAsync();
         }
         if (!await Conexion.GetConfig())
         {
-            await DisplayAlert("Aviso", "EL ARCHIVO DE CONEXION NO SE ENCUENTRA", "Aceptar");
+            await DisplayAlertAsync("Aviso", "EL ARCHIVO DE CONEXION NO SE ENCUENTRA", "Aceptar");
             await Navigation.PopAsync();
         }
         //VALIDAR SI LA BD SE CARGO BIEN

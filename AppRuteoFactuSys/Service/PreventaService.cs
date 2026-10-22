@@ -37,98 +37,56 @@ namespace AppRuteoFactuSys.Service
         }
         public async Task Sincronizar()
         {
-            await SincronizarDBApp();
-            await SincronizarDBSistema();
+            await SincronizarDBs();
+ 
         }
-        private async Task SincronizarDBApp()
+        private async Task SincronizarDBs()
         {
             var preventasServer = await _preventaRepository.GetPreventasSinEntregar();
-            var lol = await _sqlLitePreventaRepository.GetPreventas( );
-            //lista de preventas en la app
-            //var preventasApp = await Listar();
-            //recorer las prventas en el sistema para evaluar cambios u otras
+
+            var preventasApp = await _sqlLitePreventaRepository.GetPreventas();
+
+            var serverPorNproforma = preventasServer.ToDictionary(p => p.Nproforma);
+
+            var appPorNproforma = preventasApp.ToDictionary(p => p.Nproforma);
+
             foreach (var preventaServer in preventasServer)
             {
-                //traer la proforma del sistema
-                var proforma = await _preventaRepository.GetPreventaById(preventaServer.Nproforma);
-                //verificar si no existe la preventa en al app
-                var preventasApp =  await _sqlLitePreventaRepository.GetPreventaByNProforma(preventaServer.Nproforma);
-                //si no existe la agregamos a la app
-                if (preventasApp==null)
+                if (!appPorNproforma.TryGetValue(preventaServer.Nproforma, out var preventaLocal))
                 {
-                    try
-                    {
-                        await _sqlLitePreventaRepository.GuardarPreventa(proforma);
-                    }
-                    catch (Exception ex)
-                    {
+                    // Existe en servidor, pero no en SQLite.
+                    var completa = await _preventaRepository.GetPreventaById(preventaServer.Nproforma);
 
-                        throw new Exception(ex.Message);
-                    }
-
+                    await _sqlLitePreventaRepository.GuardarPreventa(completa);
+                    continue;
                 }
-                // si existe se evalua si algo cambio
-                else
+
+                if (preventaServer.FechaUpdate > preventaLocal.FechaUpdate)
                 {
-                    var proformaApp = await GetPreventaByNProforma(proforma.Nproforma);
+                    // El servidor tiene la versión más reciente.
+                    var completa = await _preventaRepository.GetPreventaById(preventaServer.Nproforma);
+                    completa.LocalID = preventaLocal.LocalID; // Mantener el LocalID de la versión local.
 
-                    TimeSpan diferencia = proforma.FechaUpdate - proformaApp.FechaUpdate;
+                    await _sqlLitePreventaRepository.ActualizarPreventaSync(completa);
+                }
+                else if (preventaLocal.FechaUpdate > preventaServer.FechaUpdate)
+                {
+                    // Android tiene la versión más reciente.
+                    var completa = await _sqlLitePreventaRepository.GetPreventaById(preventaLocal.LocalID);
+                    completa.LocalID = preventaLocal.LocalID; // Mantener el LocalID de la versión local.
 
-                    if (diferencia.TotalSeconds > 1)
-                        try
-                        {
-                            proforma.LocalID = proformaApp.LocalID;
-                            await _sqlLitePreventaRepository.ActualizarPreventaSync(proforma);
-                        }
-                        catch (Exception ex)
-                        {
-
-                            throw new Exception(ex.Message);
-                        }
+                    await _preventaRepository.Actualizar(completa);
                 }
             }
-        }
-        private async Task SincronizarDBSistema()
-        {
-            //listra de preventas en la app
-            var preventasApp = await Listar();
-            //recorrer las lista del la app
-            foreach (var preventa in preventasApp)
+
+            foreach (var preventaLocal in preventasApp)
             {
-                //traer la preventa de la app
-                var preventaApp = await GetById(preventa.LocalID);
-                //verificar si no existe la preventa en el servidor
-                var preventaServer = await _preventaRepository.GetPreventaById(preventa.Nproforma);
-                //validar si no existe y si la proforma es 0 es porque fue creada del lado de la app entonces se guarda en el sistema
-                if (preventaServer == null)
+                if (!serverPorNproforma.ContainsKey(preventaLocal.Nproforma))
                 {
-                    try
-                    {
-                        var id = await _preventaRepository.Guardar(preventaApp);
-                        await _sqlLitePreventaRepository.ActualizarNumeroProforma(id, preventa.LocalID);
-                    }
-                    catch (Exception ex)
-                    {
+                    // Existe únicamente en SQLite.
+                    var completa = await _sqlLitePreventaRepository.GetPreventaById(preventaLocal.LocalID);
 
-                        throw new Exception(ex.Message);
-                    }
-                }
-                // si existe se evalua si algo cambio
-                else
-                {
-                    TimeSpan diferencia = preventa.FechaUpdate - preventaServer.FechaUpdate;
-
-                    if (diferencia.TotalSeconds > 2)
-                        try
-                        {
-
-                            await _preventaRepository.Actualizar(preventaApp);
-                        }
-                        catch (Exception ex)
-                        {
-
-                            throw new Exception(ex.Message);
-                        }
+                    await _preventaRepository.Guardar(completa);
                 }
             }
         }
@@ -138,7 +96,7 @@ namespace AppRuteoFactuSys.Service
         }
         public async Task EliminarFacturadas()
         {
-           await _sqlLitePreventaRepository.EliminarFacturadas();
+            await _sqlLitePreventaRepository.EliminarFacturadas();
         }
         public async Task<List<Preventa>> Listar(bool? entregado = null)
         {
@@ -146,7 +104,7 @@ namespace AppRuteoFactuSys.Service
         }
         public async Task<List<Preventa>> Listar(string provincia, string canton, string distrito, bool? entregado = null)
         {
-           return await _sqlLitePreventaRepository.GetPreventas(provincia,canton, distrito, entregado);
+            return await _sqlLitePreventaRepository.GetPreventas(provincia, canton, distrito, entregado);
         }
         public async Task<List<Preventa>> Listar()
         {

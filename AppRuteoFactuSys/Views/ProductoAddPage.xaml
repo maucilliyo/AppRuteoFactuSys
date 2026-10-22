@@ -54,7 +54,7 @@
                 <!--  Encabezado fijo  -->
                 <Grid
                     Padding="5"
-                    BackgroundColor="#E8EED4"
+                    BackgroundColor="#2E61B1"
                     ColumnDefinitions="80,*,35"
                     RowDefinitions="Auto, *">
 
@@ -62,11 +62,13 @@
                         Grid.Column="0"
                         FontAttributes="Bold"
                         Text="Código"
+                        TextColor="White"
                         VerticalTextAlignment="Center" />
                     <Label
                         Grid.Column="1"
                         FontAttributes="Bold"
                         Text="Detalle"
+                        TextColor="White"
                         VerticalTextAlignment="Center" />
                     <Label Grid.Column="2" Text=" " />
                 </Grid>
@@ -75,7 +77,8 @@
                     x:Name="dgProductos"
                     Grid.Row="1"
                     Margin="0,30,0,0"
-                    BackgroundColor="White"
+                    BackgroundColor="{AppThemeBinding Light=White,
+                                                      Dark=#1C1C1C}"
                     ItemsSource="{Binding Productos}"
                     SelectedItem="{Binding SelectedProducto}"
                     SelectionMode="Single">
@@ -84,7 +87,7 @@
                         <DataTemplate>
                             <Grid
                                 Padding="3"
-                                BackgroundColor="White"
+                                BackgroundColor="Transparent"
                                 ColumnDefinitions="80, *, 35"
                                 RowSpacing="0">
                                 <Label
@@ -112,7 +115,6 @@
                     <!--  Sin datos  -->
                     <CollectionView.EmptyView>
                         <Label
-                            BackgroundColor="White"
                             HorizontalOptions="Center"
                             Text="NO HAY DATOS"
                             VerticalOptions="Center" />

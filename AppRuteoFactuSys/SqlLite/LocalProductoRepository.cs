@@ -12,21 +12,20 @@ namespace AppRuteoFactuSys.SqlLite
             return await conexion.FindAsync<Producto>(codPro);
         }
 
-        public async Task<List<Producto>> GetProductos(
-            string? detalle = null)
+        public async Task<List<Producto>> GetProductos( string? detalle = null)
         {
             var conexion = await SqlLiteDatabase.GetConnection();
 
             if (string.IsNullOrWhiteSpace(detalle))
             {
                 return await conexion.Table<Producto>()
-                                      .Take(600)
+                                      .Take(400)
                                       .ToListAsync();
             }
 
             return await conexion.Table<Producto>()
-                                  .Where(x => x.Detalle.Contains(detalle))
-                                  .Take(600)
+                                  .Where(x => x.Detalle.ToLower().Contains(detalle.ToLower()))
+                                  .Take(400)
                                   .ToListAsync();
         }
 

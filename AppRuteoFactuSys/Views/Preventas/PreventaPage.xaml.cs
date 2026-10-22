@@ -2,6 +2,7 @@ using AppRuteoFactuSys.Models;
 using AppRuteoFactuSys.MySql;
 using AppRuteoFactuSys.Service;
 using AppRuteoFactuSys.Service.Interfaces;
+using Controls.UserDialogs.Maui;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -51,20 +52,23 @@ namespace AppRuteoFactuSys.Views
         {
             base.OnAppearing();
 
-            if (!alreadyLoaded)
-            {
-                //si es una preventa para modificar
-                if (_modificar)
-                {
-                    _ = Task.Run(() => Task.FromResult(CargarPreventaMod()));
-                }
-                else
-                {
-                    cliente = await _clienteService.GetByCedula("0");
-                }
-                await Cargarlineas();
+            if (alreadyLoaded) return;
+            alreadyLoaded = true; // marcar antes del await evita doble carga si OnAppearing se repite
 
-                alreadyLoaded = true;
+            try
+            {
+                UserDialogs.Instance.ShowLoading();
+
+                if (_modificar)
+                    await CargarPreventaMod();   // await directo, en el hilo de UI
+                else
+                    cliente = await _clienteService.GetByCedula("0");
+
+                await Cargarlineas();
+            }
+            finally
+            {
+                UserDialogs.Instance.HideHud();
             }
         }
         //VALIDA EL BOTON CERRAR DEL TELEFONO
@@ -72,7 +76,7 @@ namespace AppRuteoFactuSys.Views
         {
             Device.BeginInvokeOnMainThread(async () =>
             {
-                var response = await DisplayAlert("AVISO", "¿Está seguro de salir sin guardar?", "Sí", "No");
+                var response = await DisplayAlertAsync("AVISO", "¿Está seguro de salir sin guardar?", "Sí", "No");
                 if (response)
                 {
                     await Navigation.PopAsync();
@@ -86,12 +90,12 @@ namespace AppRuteoFactuSys.Views
             //VALIDAR SI HAY CONEXION
             if (Conexion.GetConnection() == null)
             {
-                await DisplayAlert("Aviso", "ERROR DE CONEXION CON EL SERVIDOR", "Aceptar");
+                await DisplayAlertAsync("Aviso", "ERROR DE CONEXION CON EL SERVIDOR", "Aceptar");
                 await Navigation.PopAsync();
             }
             if (!await Conexion.GetConfig())
             {
-                await DisplayAlert("Aviso", "EL ARCHIVO DE CONEXION NO SE ENCUENTRA", "Aceptar");
+                await DisplayAlertAsync("Aviso", "EL ARCHIVO DE CONEXION NO SE ENCUENTRA", "Aceptar");
                 await Navigation.PopAsync();
             }
             //VALIDAR SI LA BD SE CARGO BIEN
@@ -110,7 +114,7 @@ namespace AppRuteoFactuSys.Views
         {
             if (clienteSeleccionado.TipoPrecio != cliente.TipoPrecio && Lineas.Count > 0)
             {
-                var response = await DisplayAlert("AVISO", "El cliente tiene un precio diferente a los agregados, " +
+                var response = await DisplayAlertAsync("AVISO", "El cliente tiene un precio diferente a los agregados, " +
                                                    "desea borrar los productos para agegar el nuevo cliente?", "Sí", "No");
 
                 if (response)
@@ -215,7 +219,7 @@ namespace AppRuteoFactuSys.Views
             }
             else//LA ACCION ES ELIMINAR
             {
-                var response = await DisplayAlert("AVISO", "Esta seguro de eliminar la linea?", "Sí", "No");
+                var response = await DisplayAlertAsync("AVISO", "Esta seguro de eliminar la linea?", "Sí", "No");
 
                 if (response)
                 {
@@ -242,13 +246,13 @@ namespace AppRuteoFactuSys.Views
             //validaciones
             if (Lineas.Count == 0)
             {
-                await DisplayAlert("Aviso", "Debe haber al menos una linea", "Aceptar");
+                await DisplayAlertAsync("Aviso", "Debe haber al menos una linea", "Aceptar");
                 return;
             }
             Preventa preventa = new()
             {
-                Nproforma = _preventa.Nproforma,
-                LocalID =_preventa.LocalID,
+                Nproforma = _preventa?.Nproforma ?? 0,
+                LocalID = _preventa?.LocalID ?? 0,
                 Cedcliente = cliente.Cedula,
                 Nombre_Cliente = lblNombreCliente.Text,
                 CodigoMoneda = "CRC",
@@ -302,12 +306,12 @@ namespace AppRuteoFactuSys.Views
             {
                 preventa.LocalID = idPreventa;
                 await _preventaService.ActualizarOnly(preventa);
-                await DisplayAlert("Aviso", "Preventa Actualizada con exito!", "Aceptar");
+                await DisplayAlertAsync("Aviso", "Preventa Actualizada con exito!", "Aceptar");
             }
             else
             {
                 await _preventaService.Nuevo(preventa);
-                await DisplayAlert("Aviso", "Preventa Guardada con exito!", "Aceptar");
+                await DisplayAlertAsync("Aviso", "Preventa Guardada con exito!", "Aceptar");
             }
             await Navigation.PopAsync();
         }
@@ -333,7 +337,7 @@ namespace AppRuteoFactuSys.Views
         }
         private async void btnFacturar_Clicked(object sender, EventArgs e)
         {
-            var response = await DisplayAlert("AVISO", "Esta seguro de facturar esta preventa?", "Sí", "No");
+            var response = await DisplayAlertAsync("AVISO", "Esta seguro de facturar esta preventa?", "Sí", "No");
 
             if (!response)
             {
@@ -343,7 +347,7 @@ namespace AppRuteoFactuSys.Views
             await GuardarPreventa(true);
             //IMPRIMIR
             var preventa = await _preventaService.GetById(idPreventa);
-            ImpresionService.ImprimirTicket(preventa);
+           await ImpresionService.ImprimirTicket(preventa);
         }
  
 

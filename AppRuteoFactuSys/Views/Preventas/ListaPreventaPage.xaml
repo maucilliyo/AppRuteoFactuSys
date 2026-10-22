@@ -53,7 +53,7 @@
             <!--  Encabezado manual  -->
             <Grid
                 Padding="5"
-                BackgroundColor="#E8EED4"
+                BackgroundColor="#2E61B5"
                 ColumnDefinitions="*,100,35,35">
                 <Label
                     Grid.Column="0"
@@ -82,7 +82,6 @@
                     <DataTemplate>
                         <Grid
                             Padding="2"
-                            BackgroundColor="White"
                             ColumnDefinitions="*,100,40,40"
                             RowSpacing="0">
 
@@ -119,7 +118,7 @@
                 <!--  Mensaje si no hay datos  -->
                 <CollectionView.EmptyView>
                     <Label
-                        BackgroundColor="White"
+                        BackgroundColor="Transparent"
                         HorizontalOptions="Center"
                         Text="NO HAY DATOS"
                         VerticalOptions="Center" />

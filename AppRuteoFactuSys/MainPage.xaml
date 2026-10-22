@@ -60,6 +60,7 @@
                     HeightRequest="40"
                     HorizontalOptions="Center"
                     Text="PREVENTAS"
+                    TextColor="White"
                     WidthRequest="150" />
                 <Button
                     x:Name="btnFacturadas"
@@ -70,6 +71,7 @@
                     HeightRequest="40"
                     HorizontalOptions="Center"
                     Text="ENTREGADAS"
+                    TextColor="White"
                     WidthRequest="150" />
 
                 <Button
@@ -81,6 +83,7 @@
                     HeightRequest="40"
                     HorizontalOptions="Center"
                     Text="DEVOLUCIONES"
+                    TextColor="White"
                     WidthRequest="150" />
 
                 <Button
@@ -92,6 +95,7 @@
                     HeightRequest="40"
                     HorizontalOptions="Center"
                     Text="SINCONIZAR"
+                    TextColor="White"
                     WidthRequest="150" />
                 <Button
                     x:Name="btnConexion"
@@ -102,6 +106,7 @@
                     HeightRequest="40"
                     HorizontalOptions="Center"
                     Text="CONEXION"
+                    TextColor="White"
                     WidthRequest="150" />
 
                 <Button
@@ -113,6 +118,7 @@
                     HeightRequest="40"
                     HorizontalOptions="Center"
                     Text="Resetear BD local"
+                    TextColor="White"
                     WidthRequest="150" />
 
                 <!--  IMAGEN  -->
@@ -124,7 +130,6 @@
                     FontSize="20"
                     HorizontalOptions="Center"
                     Text=" Distribuidora La Familia E R "
-                    TextColor="Black"
                     VerticalOptions="Center" />
             </Grid>
 

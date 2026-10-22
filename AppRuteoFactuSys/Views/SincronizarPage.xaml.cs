@@ -46,12 +46,13 @@ namespace AppRuteoFactuSys.Views
                     await _clienteService.Sincronizar();
                     await _preventaService.Sincronizar();
                     await _productoService.Sincronizar();
+                    await _devolucionService.Sincronizar();
                 }
             }
             catch (Exception ex)
             {
                 // Manejar cualquier excepción mostrando un mensaje de error
-                await DisplayAlert("Error", $"Error durante la sincronización: {ex.Message}", "Aceptar");
+                await DisplayAlertAsync("Error", $"Error durante la sincronización: {ex.Message}", "Aceptar");
             }
             finally
             {
@@ -112,7 +113,7 @@ namespace AppRuteoFactuSys.Views
 
         private async void btnEliminarFacturadas_Clicked(object sender, EventArgs e)
         {
-            var response = await DisplayAlert("AVISO", "Esta seguro de eliminar las preventas facturadas?", "Sí", "No");
+            var response = await DisplayAlertAsync("AVISO", "Esta seguro de eliminar las preventas facturadas?", "Sí", "No");
 
             if (response)
             {
@@ -122,7 +123,7 @@ namespace AppRuteoFactuSys.Views
 
         private async void btnEliminarPreventas_Clicked(object sender, EventArgs e)
         {
-            var response = await DisplayAlert("AVISO", "Esta seguro de eliminar las preventas?", "Sí", "No");
+            var response = await DisplayAlertAsync("AVISO", "Esta seguro de eliminar las preventas?", "Sí", "No");
 
             if (response)
             {
@@ -132,7 +133,12 @@ namespace AppRuteoFactuSys.Views
 
         private async void btnEliminarDevoluciones_Clicked(object sender, EventArgs e)
         {
-            await _devolucionRepository.EliminarTodas();
+            var response = await DisplayAlertAsync("AVISO", "Esta seguro de eliminar las devoluciones?", "Sí", "No");
+
+            if (response)
+            {
+                await _devolucionRepository.EliminarTodas();
+            }
         }
 
         private async void btnSincronizarDevoluciones_Clicked(object sender, EventArgs e)
